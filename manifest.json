@@ -109,6 +109,7 @@
         "optimization": {
             "subPackages": true
         },
+        "runmode" : "liberate", // 开启分包优化后，必须配置资源释放模式
         "usingComponents": true
     },
     "mp-alipay": {
