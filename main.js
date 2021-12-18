@@ -14,8 +14,7 @@ Vue.prototype.$store = store
 Vue.config.productionTip = false
 
 App.mpType = 'app'
-Vue.use(uView)
-
+Vue.component('navigation',navigation)
 // #ifdef MP
 // 引入uView对小程序分享的mixin封装
 const mpShare = require('@/uni_modules/uview-ui/libs/mixin/mpShare.js')

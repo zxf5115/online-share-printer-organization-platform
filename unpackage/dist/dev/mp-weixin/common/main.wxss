@@ -196,4 +196,7 @@
   color: #8f9ca2;
   margin-bottom: 8px;
 }
+page {
+  background-color: #f9faff;
+}
 
