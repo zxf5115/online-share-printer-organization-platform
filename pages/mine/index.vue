@@ -1,14 +1,7 @@
 <template>
 <div>
-     <u-navbar
-            title="我的"
-            fixed
-            placeholder
-            safeAreaInsetTop
-            @rightClick="rightClick"
-            @leftClick="leftClick"
-        >
-        </u-navbar>
+        <p-nav title="我的" />
+
         <div>
             我的
         </div>

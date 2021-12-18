@@ -1,44 +1,43 @@
 {
-    "pages": [
-        "pages/home/index",
-        "pages/printRevenue/index",
-        "pages/mine/index"
-    ],
-    "subPackages": [],
-    "window": {
-        "navigationStyle": "custom",
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "uView",
-        "navigationBarBackgroundColor": "#FFFFFF",
-        "backgroundColor": "#FFFFFF"
-    },
-    "tabBar": {
-        "selectedColor": "#25A1F9",
-        "color": "#454564",
-        "backgroundColor": "#ffffff",
-        "borderStyle": "white",
-        "height": "0px",
-        "list": [
-            {
-                "pagePath": "pages/home/index",
-                "text": "首页",
-                "iconPath": "static/tabbar/home.png",
-                "selectedIconPath": "static/tabbar/home_s.png"
-            },
-            {
-                "pagePath": "pages/printRevenue/index",
-                "text": "打印收益",
-                "iconPath": "static/tabbar/printRevenue.png",
-                "selectedIconPath": "static/tabbar/printRevenue_s.png"
-            },
-            {
-                "pagePath": "pages/mine/index",
-                "text": "我的",
-                "iconPath": "static/tabbar/mine.png",
-                "selectedIconPath": "static/tabbar/mine_s.png"
-            }
-        ]
-    },
-    "usingComponents": {},
-    "sitemapLocation": "sitemap.json"
+  "pages": [
+    "pages/home/index",
+    "pages/printRevenue/index",
+    "pages/mine/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uView",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF"
+  },
+  "tabBar": {
+    "selectedColor": "#25A1F9",
+    "color": "#454564",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "height": "0px",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home_s.png"
+      },
+      {
+        "pagePath": "pages/printRevenue/index",
+        "text": "打印收益",
+        "iconPath": "static/tabbar/printRevenue.png",
+        "selectedIconPath": "static/tabbar/printRevenue_s.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/mine.png",
+        "selectedIconPath": "static/tabbar/mine_s.png"
+      }
+    ]
+  },
+  "usingComponents": {}
 }

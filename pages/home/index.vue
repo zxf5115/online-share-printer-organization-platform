@@ -1,15 +1,16 @@
 <template>
 <div>
-     <navigation />
-        <div>
-            首页
-        </div>
+    <p-nav 
+    :leftClick="leftClick"
+    />
+    <div>
+        首页
+    </div>
 </div>
 </template>
 
 <script>
 export default {
-    components: { navigation },
     onLaunch: function() {
     },
     onShow: function() {
@@ -19,9 +20,6 @@ export default {
         
     },
     methods: {
-        rightClick(e) {
-            console.log(e);
-        },
         leftClick(e) {
             console.log(e);
         }

@@ -1,17 +1,9 @@
 <template>
 <div>
-     <u-navbar
-            title="打印收益"
-            fixed
-            placeholder
-            safeAreaInsetTop
-            @rightClick="rightClick"
-            @leftClick="leftClick"
-        >
-        </u-navbar>
-        <div>
-            打印收益
-        </div>
+    <p-nav title="打印收益" />
+    <div>
+        打印收益
+    </div>
 </div>
 </template>
 
