@@ -1,22 +1,62 @@
 <template>
-<div>
+    <div>
         <p-nav title="我的" />
-
-        <div>
-            我的
+        <div class="ctn">
+            <div class="top">
+                <image class="ava vertical-center" src="https://cdn.uviewui.com/uview/album/1.jpg" />
+                <span class="username">阿高</span>
+                <p class="edit fl jc-sb fd-r ai-ctr">
+                    编辑个人资料
+                    <image src="../../static/icon/edit.png" />
+                </p>
+            </div>
+            <div class="item fl fd-r ai-ctr" v-for="(item, i) in items" :key="i">
+                <image :src="item.icon" />
+                <p>{{item.title}}</p>
+                <u-icon name="arrow-right" color="#B7B7B7" size="16"></u-icon>
+            </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script>
 export default {
-    onLaunch: function() {
-    },
     onShow: function() {
         
     },
     onHide: function() {
         
+    },
+    data() {
+        return {
+            items: [
+                {
+                    icon: require('../../static/mine/index/item1.png'),
+                    title: '我的设备',
+                    path: '',
+                }, {
+                    icon: require('../../static/mine/index/item2.png'),
+                    title: '收益统计',
+                    path: '',
+                }, {
+                    icon: require('../../static/mine/index/item3.png'),
+                    title: '我的钱包',
+                    path: '',
+                }, {
+                    icon: require('../../static/mine/index/item4.png'),
+                    title: '绑定设备',
+                    path: '',
+                }, {
+                    icon: require('../../static/mine/index/item5.png'),
+                    title: '意见反馈',
+                    path: '',
+                }, {
+                    icon: require('../../static/mine/index/item6.png'),
+                    title: '联系我们',
+                    path: '',
+                }, 
+            ]
+        }
     },
     methods: {
         rightClick(e) {
@@ -28,6 +68,57 @@ export default {
     },
 }
 </script>
+<style lang="scss" scoped>
+page {background-color: white !important;}
+.ctn {
+    padding-left: 40rpx;
+    background-color: white;
+    .top {
+        height: 236rpx;
+        position: relative;
+        border-bottom: 1rpx solid #F0F0F0;
+        .ava {
+            width: 118rpx;
+            height: 118rpx;
+            border-radius: 59rpx;
+            left: 0;
+        }
+        .username  {
+            position: absolute;
+            color: #454564;
+            font-size: 36rpx;
+            left: 150rpx;
+            top: 66rpx;
+        }
+        .edit {
+            position: absolute;
+            color: #B0B0B8;
+            width: 206rpx;
+            font-size: 28rpx;
+            top: 128rpx;
+            left: 150rpx;
+            image {
+                width: 30rpx;
+                height: 30rpx;
+            }
+        }
+    }
+    .item {
+        height: 154rpx;
+        border-bottom: 1rpx solid #F0F0F0;
+        padding-right: 70rpx;
+        &:nth-last-child(1) {
+            border-bottom: 0;
+        }
+        image:nth-child(1) {
+            width: 76rpx;
+            height: 76rpx;
+        }
+        p {
+            flex: 1;
+            margin: 0 40rpx;
+        }
 
-<style>
+    }
+}
 </style>

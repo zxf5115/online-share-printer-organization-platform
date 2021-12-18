@@ -1,5 +1,6 @@
 <template>
-  <u-navbar
+  <div style="border-bottom: 1px solid #f0f0f0;">
+    <u-navbar
         :title="title"
         fixed
         placeholder
@@ -9,6 +10,7 @@
           <u-icon  v-if="leftBtnFlag" name="arrow-left" color="#000000" size="18" @click="leftAction"></u-icon>
         </div>
     </u-navbar>
+  </div>
 </template>
 
 <script>
@@ -38,6 +40,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-</style>
