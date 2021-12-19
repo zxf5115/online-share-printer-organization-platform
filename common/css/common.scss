@@ -262,3 +262,30 @@ div, p, span {
     -ms-user-select:none;
     user-select:none;
   }
+  /**
+  * 字号
+  */
+  .ft-14 {
+    font-size: 28rpx;
+  }
+  .ft-12 {
+    font-size: 23rpx;
+  }
+  /**
+  * common color
+  */
+  .cl-main {
+    color: #07C160
+  }
+  // common btn
+  .green-btn {
+    width: 398rpx;
+    height: 94rpx;
+    background-color: #07C160;
+    font-size: 36rpx;
+    color: #ffffff;
+    border-radius: 138rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
