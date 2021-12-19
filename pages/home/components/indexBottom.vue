@@ -19,19 +19,19 @@ export default {
         {
           title: '我的设备',
           icon: require('../../../static/home/index/item1.png'),
-          path: 'pages/mine/myDevice/index',
+          path: '/pages/mine/myDevice/index',
         }, {
           title: '收益统计',
           icon: require('../../../static/home/index/item2.png'),
-          path: 'pages/mine/profit/index',
+          path: '/pages/mine/profit/index',
         }, {
           title: '分销管理',
           icon: require('../../../static/home/index/item3.png'),
-          path: 'pages/home/distributionManager/index',
+          path: '/pages/home/distributionManager/index',
         }, {
           title: '我的钱包',
           icon: require('../../../static/home/index/item4.png'),
-          path: 'pages/mine/myDevice/wallet',
+          path: '/pages/mine/wallet/index',
         }, 
       ]
     }
