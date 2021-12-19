@@ -68,8 +68,10 @@ export default {
     },
 }
 </script>
+<style>
+::v-deep page { background-color: rgb(255, 255, 255) !important; }
+</style>
 <style lang="scss" scoped>
-page {background-color: white !important;}
 .ctn {
     padding-left: 40rpx;
     background-color: white;

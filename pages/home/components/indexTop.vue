@@ -5,10 +5,10 @@
     <span class="means-sum level-center">总资产</span>
     <p class="means-txt level-center">
       <span>￥</span>
-      <span>9186.88</span>
+      <span><u-count-to class="count" :endVal="9186.88" :decimals="2" fontSize="72rpx" color="white"></u-count-to></span>
     </p>
-    <span class="yesterday">昨日收益 ￥190.55</span>
-    <span class="now-month">当月收益 ￥1800.96</span>
+    <span class="yesterday">昨日收益 ￥<u-count-to class="count" :endVal="500" :decimals="2" fontSize="28rpx" color="white"></u-count-to></span>
+    <span class="now-month">当月收益 ￥<u-count-to class="count" :endVal="1800.96" :decimals="2" fontSize="28rpx" color="white"></u-count-to></span>
   </div>
 </template>
 

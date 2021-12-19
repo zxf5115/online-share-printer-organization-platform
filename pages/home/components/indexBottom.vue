@@ -27,7 +27,7 @@ export default {
         }, {
           title: '分销管理',
           icon: require('../../../static/home/index/item3.png'),
-          path: 'pages/mine/distributionManager/index',
+          path: 'pages/home/distributionManager/index',
         }, {
           title: '我的钱包',
           icon: require('../../../static/home/index/item4.png'),
