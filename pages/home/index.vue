@@ -1,11 +1,12 @@
 <template>
 <div>
-    <p-nav 
-    :leftClick="leftClick"
-    />
+    <p-nav/>
     <div class="ctn">
-        <div class="bg-img"></div>
+        <!-- 背景 -->
+        <div class="bg-img" />
+        <!-- 顶部数据 -->
         <top />
+        <!-- 底部菜单 -->
         <bottom />
     </div>
 </div>
