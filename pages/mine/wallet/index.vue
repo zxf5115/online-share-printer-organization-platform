@@ -1,14 +1,80 @@
 <template>
   <div class="wallet fl-r">
-    fjhdhfh
+    <p-nav :title="title"/>
+    <div class="wallet-top bg-w">
+      <div class="total-num fl fd-r ai-ctr">
+         <span class="num-tit">收益总金额：</span>
+         <span>￥<u-count-to class="count" :endVal="2000.00" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
+      </div>
+      <div class="total-num fl fd-r ai-ctr">
+        <span>可提现金额：</span>
+        <span>￥<u-count-to class="count" :endVal="2000.00" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
+      </div>
+    </div>
+    <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb">
+      <span class="ft-14">银行卡：</span>
+      <span>中国工商银行（9552）</span>
+      <u-icon name="arrow-right" color="#B7B7B7" size="18" @click="leftAction"></u-icon>
+    </div>
+    <div class="withdrawl fl fd-c ai-ctr">
+      <span class="cl-main ft-14">提现记录</span>
+      <span class="green-btn">提现</span>
+      <span class="ft-12">
+        提现成功后七个工作日到账<br />
+        最小提现金额为2000元
+      </span>
+    </div>
   </div>
 </template>
 <script>
 
 export default {
-
+  data() {
+    return {
+      title: '我的钱包'
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
+.wallet-top {
+  height: 298rpx;
+  .total-num {
+    height: 149rpx;
+    line-height: 149rpx;
+    padding: 0 40rpx;
+    span {
+      color: #454564;
+      &:nth-child(2) {
+        color: #FF8A00;
+        font-size: 48rpx;
+        margin-right: -10rpx;
+        margin-left: 58rpx;
+      }
 
+    }
+    &:nth-child(1) {
+      border-bottom: 1rpx solid #f0f0f0;
+    }
+  }
+}
+.select-bankCard {
+  margin-top: 9rpx;
+  height: 152rpx;
+  padding: 0 40rpx;
+  span {
+    color: #454564;
+  }
+}
+.withdrawl {
+  margin-top: 344rpx;
+  span {
+    &:nth-child(3) {
+      color: #454564
+    }
+  }
+  .green-btn {
+    margin: 22rpx 0 22rpx
+  }
+}
 </style>
