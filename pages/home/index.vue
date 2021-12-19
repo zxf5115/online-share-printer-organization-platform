@@ -1,15 +1,15 @@
 <template>
-<div>
-    <p-nav/>
-    <div class="ctn">
-      <!-- 背景 -->
-      <div class="bg-img" />
-      <!-- 顶部数据 -->
-      <top />
-      <!-- 底部菜单 -->
-      <bottom />
-    </div>
-</div>
+	<div class="index">
+	    <p-nav/>
+	    <div class="ctn">
+	      <!-- 背景 -->
+	      <div class="bg-img" />
+	      <!-- 顶部数据 -->
+	      <top />
+	      <!-- 底部菜单 -->
+	      <bottom />
+	    </div>
+	</div>
 </template>
 
 <script>
@@ -33,6 +33,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.index {
+	overflow: hidden;
+}
 .ctn {
     position: relative;
     min-height: calc(734rpx + 288rpx);

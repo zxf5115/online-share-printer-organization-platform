@@ -4,10 +4,10 @@
     :scroll-top="scrollTop"
     scroll-y="true"
     :refresher-enabled="!firstLoad & !nodata"
-    :refresher-triggered="triggered"
+    :refresher-triggered="downRefresh"
     :refresher-threshold="firstLoad ? 0 : 100"
-    @scrolltolower="onDown"
-    @refresherrefresh="firstLoad ? void 0 : onPulling"
+    @scrolltolower="pull"
+    @refresherrefresh="refresh"
     @scroll="scroll"
   >
     <!-- 初次加载内容 整页展示加载 -->
@@ -23,7 +23,7 @@
       <slot></slot>	
     </template>
     <!-- 加载更多 -->
-		<u-loadmore :status="more == 1 ? 'loading' : 'nomore'" line v-if="more && !firstLoad && !nodata" />
+		<u-loadmore v-if="more && !firstLoad && !nodata" :status="loadmore[more - 1]" line  />
   </scroll-view>
 </template>
 <script>
@@ -33,8 +33,9 @@ export default {
     /**
      * 上拉加载状态
      * 0: 不显示加载
-     * 1: 加载中
-     * 2: 没有更多
+     * 1: 加载更多
+     * 2: 加载中
+     * 3: 没有更多
      */
     more: {
       type: Number,
@@ -63,17 +64,25 @@ export default {
   data() {
     return {
       triggered: false,
+      loadmore: [
+        'loadmore',
+        'loading',
+        'nomore',
+      ]
     };
   },
   methods: {
     scroll(e) {
       // console.log(e);
     },
-    onPulling(e) {
-      console.log(e)
+    refresh(e) { // 下拉刷新
+      console.log('下拉刷新', e);
+      this.firstLoad ? void 0 : this.$emit('refresh', e);
+      
     },
-    onDown(e) {
-      console.log(e);
+    pull(e) { // 上拉加载
+      console.log('上拉加载', e)
+      this.$emit('pull', e);
     }
   },
 };

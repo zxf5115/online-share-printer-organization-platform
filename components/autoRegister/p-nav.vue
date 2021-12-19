@@ -1,6 +1,6 @@
 <template>
-  <div style="border-bottom: 1px solid #f0f0f0" id="NAV_BODY">
-    <u-navbar :title="title" fixed placeholder safeAreaInsetTop>
+  <div id="NAV_BODY">
+    <u-navbar :title="title" fixed placeholder safeAreaInsetTop  style="border-bottom: 1px solid #f0f0f0">
       <div slot="left">
         <u-icon
           v-if="leftBtnFlag"

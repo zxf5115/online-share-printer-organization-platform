@@ -21,7 +21,12 @@
 			"path": "pages/mine/wallet/index"
 		},
 		{
-			"path": "pages/home/distributionManager/index"
+			"path": "pages/home/distributionManager/index",
+			"style": {
+				"app-plus": {
+					"bounce":"none" // 将回弹属性关掉
+				}
+			}
 		}
 	],
 	// 分包暂时不需要
