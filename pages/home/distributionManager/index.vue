@@ -64,7 +64,7 @@ export default {
 			cover = cover || firstLoad;
 			setTimeout(() => {
 				this.l_total = 11;
-				let res = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+				let res = [1,1,1,1,1,1,1,1,1,1];
 				cover ? this.$_setListData(res) : this.$_appendListData(res);
 			}, 200);
 		}
