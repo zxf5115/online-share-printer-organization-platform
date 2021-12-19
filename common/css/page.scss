@@ -5,4 +5,18 @@ page {
         margin: 0;
         padding: 0;
     }
+    button {
+        border: 0;
+        background-color: rgba($color: #000000, $alpha: 0);
+        border-radius:0;
+        font-size: 28rpx;
+        color: #454564;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &::after {
+            border: none;
+        }
+        
+    }
 }
