@@ -1,4 +1,12 @@
 {
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "分销管理", //模式名称
+			"path": "pages/home/distributionManager/index", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/mine/wallet/index"
@@ -11,6 +19,12 @@
 		},
 		{
 			"path": "pages/mine/index"
+		},
+		{
+			"path": "pages/mine/wallet/index"
+		},
+		{
+			"path": "pages/home/distributionManager/index"
 		}
 	],
 	// 分包暂时不需要
