@@ -13,11 +13,13 @@
     </div>
     <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb">
       <span class="ft-14">银行卡：</span>
-      <span>中国工商银行（9552）</span>
+      <span>
+        <image class="bankCard-image" src="../../../../../../static/mine/wallet/iconRight.png">中国工商银行（9552）
+      </span>
       <u-icon name="arrow-right" color="#B7B7B7" size="18" @click="leftAction"></u-icon>
     </div>
-    <div class="withdrawl fl fd-c ai-ctr">
-      <span class="cl-main ft-14">提现记录</span>
+    <div class="takeNotes fl fd-c ai-ctr">
+      <span class="cl-main ft-14" @click="takeNotesClick">提现记录</span>
       <span class="green-btn">提现</span>
       <span class="ft-12">
         提现成功后七个工作日到账<br />
@@ -33,7 +35,14 @@ export default {
     return {
       title: '我的钱包'
     }
+  },
+  methods: {
+    takeNotesClick() {
+      console.log("djdjjdjdjd")
+      uni.navigateTo({ url: '/pages/mine/wallet/takeNotes/index'})
+    }
   }
+  
 }
 </script>
 <style scoped lang="scss">
@@ -64,9 +73,14 @@ export default {
   padding: 0 40rpx;
   span {
     color: #454564;
+    .bankCard-image {
+      width: 20rpx;
+      height: 32rpx;
+      margin-right: 12rpx;
+    }
   }
 }
-.withdrawl {
+.takeNotes {
   margin-top: 344rpx;
   span {
     &:nth-child(3) {
