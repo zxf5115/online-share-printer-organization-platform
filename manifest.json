@@ -1,7 +1,7 @@
 {
     "name" : "SharePointer",
-    "appid" : "",
-    "description": "多平台快速开发的UI框架",
+    "appid" : "wxe011d49d77124e2b",
+    "description": "",
     "versionName": "1.0.0",
     "versionCode": 1,
     "transformPx": false,
@@ -99,7 +99,7 @@
     },
     "quickapp": {},
     "mp-weixin": {
-        "appid": "",
+        "appid": "wxe011d49d77124e2b",
         "setting": {
             "urlCheck": false,
             "es6": false,

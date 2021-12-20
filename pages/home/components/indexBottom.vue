@@ -39,9 +39,7 @@ export default {
   methods: {
     jump(e) {
       console.log(e);
-      uni.navigateTo({
-                url: e.path,
-            });
+      uni.navigateTo({url: e.path,});
 
     }
   },

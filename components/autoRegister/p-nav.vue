@@ -31,7 +31,6 @@ export default {
     };
   },
   created() {
-    
     this.leftBtnFlag = getCurrentPages().length > 1;
     // 返回组件信息 有些需要计算高度的地方等需要使用
     this.$nextTick((e) => {
