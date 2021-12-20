@@ -6,7 +6,7 @@ import store from './store'
 
 // 引入全局uView
 import uView from '@/uni_modules/uview-ui'
-
+Vue.use(uView);
 import mixin from './common/mixin'
 
 Vue.prototype.$store = store
