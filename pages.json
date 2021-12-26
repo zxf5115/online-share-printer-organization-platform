@@ -18,11 +18,10 @@
 			"path": "pages/home/distributionManager/index",
 			"style": {
 				"app-plus": {
-					"bounce":"none" // 将回弹属性关掉
+					"bounce":"none" // 将回弹属性关掉 这玩意不好使 不道咋回事
 				}
 			}
 		},
-
 		{
 			"path": "pages/home/distributionManager/detail/index"
 		},
@@ -64,7 +63,6 @@
         "color": "#454564",
         "backgroundColor":"#ffffff",
         "borderStyle": "white",
-        "height":"0px",
         "list": [{
             "pagePath":"pages/home/index",
             "text": "首页",

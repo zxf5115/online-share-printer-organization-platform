@@ -175,7 +175,7 @@ function DateManager ()
     return date;
   }
   /**
-   * 根据format格式反序列化时间 返回Date对象 仅支持解析年、月、日
+   * 根据format格式反序列化时间 返回Date对象 仅支持解析年、月、日 年月日顺序不可变 支持的字符 yyyy MM M dd
    * 例: getDateWidthFormat('现在时间为: 2020年1月1日', '现在时间为: yyyy年M月d日')
    */
   this.getDateWidthFormat = (value, format) => {
@@ -187,14 +187,15 @@ function DateManager ()
     rule = rule.replace('dd', '(\\S*)')
     rule = rule.replace('d', '(\\S*)')
     let reg = new RegExp(rule, 'g');
-    let formatDate = '';
+    let formatDate = [];
     let res = reg.exec(value);
     res.forEach((e, i) => {
-      console.log(e, i)
-      let append = i != res.length - 1 ? '-' : '';
-      formatDate += i ? e + append : '';
+      if (!i) return;
+      // 月份的时候需要减1
+      formatDate.push(i == 2 ? parseInt(e) - 1 : parseInt(e));
     })
-    return new Date(formatDate)
+    console.log(formatDate);
+    return new Date(...formatDate)
   }
 }
 const dateManager = new DateManager();

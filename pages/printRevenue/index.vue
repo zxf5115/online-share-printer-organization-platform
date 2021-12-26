@@ -1,8 +1,8 @@
 <template>
 	<div class="dm ">
 		<p-nav title="打印收益" @callback="navInfo = $event" />
-		{{timestamp}}
-		<date-view :show.sync="showDate" :top="`${navInfo.height}px`" :value.sync="timestamp" type="datemonth" format="yyyy年M月"/>
+		{{timestamp}}{{showDate}}
+		<date-view :show.sync="showDate" :value.sync="timestamp" type="datemonth" format="yyyy年M月"/>
 		<div class="profit fl fd-r ai-ctr bg-w" @click="showDate = !showDate">
 			您的收益分成：<span class="mgr-l">¥0.20/页</span>
 		</div>
@@ -65,8 +65,8 @@ export default {
 		return {
 			navInfo: void 0,
 			activeIndex: 0,
-			showDate: true,
-			timestamp: '2021年5月',
+			showDate: false,
+			timestamp: '2021年5月1日',
 		}
 	},
 	watch: {
