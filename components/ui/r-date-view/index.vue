@@ -40,7 +40,12 @@
 
 <script>
 import {dateManager} from '../../../util/date/DateManager'
-// var toPdf = require("office-to-pdf");
+/**
+ * 确认按钮回调 
+ * confirm 参数 { e: this, value: 选中时间回调 }
+ * 取消按钮回调
+ * cancel  参数 { e: this }
+ */
 export default {
   name: "r-date-view",
   props: {
@@ -68,7 +73,7 @@ export default {
       default: new Date().getTime(),
     },
     minTimestamp: {
-      default: 1426975229000,
+      default: 0,
     },
     value: {
       type: String|Number,
@@ -234,10 +239,17 @@ export default {
     },
     cancel() {
       this.closeAction();
+      this.$emit('cancel', {
+        target: this,
+      });
     },
     confirm() {
-      this.callbackValue();
       this.closeAction();
+      this.callbackValue();
+      this.$emit('confirm', {
+        target: this,
+        value: this.getValue(),
+      });
     },
     yearLeft() {
       if (!this.canYearLeft) return;
@@ -281,15 +293,18 @@ export default {
       }
       console.log(this.dateValue);
     },
-    callbackValue() {
+    getValue() {
       let value;
       if (this.format === 'timestamp') {
          value = this.nowDate.getTime();
       } else {
          value = dateManager.format(this.nowDate, this.format);
       }
+      return value;
+    },
+    callbackValue() {
+      let value = this.getValue();
       this.$emit('update:value', value);
-      this.$emit('changed', value);
     }
   },
 };

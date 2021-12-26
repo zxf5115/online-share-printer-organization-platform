@@ -1,8 +1,7 @@
 <template>
 	<div class="dm ">
 		<p-nav title="打印收益" @callback="navInfo = $event" />
-		{{timestamp}}{{showDate}}
-		<date-view :show.sync="showDate" :value.sync="timestamp" type="datemonth" format="yyyy年M月"/>
+		<date-view :show.sync="showDate" :value="timestamp" type="datemonth" format="yyyy年M月" @confirm="timestamp = $event.value"/>
 		<div class="profit fl fd-r ai-ctr bg-w" @click="showDate = !showDate">
 			您的收益分成：<span class="mgr-l">¥0.20/页</span>
 		</div>
@@ -57,7 +56,7 @@
 </template>
 <script>
 import listViewMixin from '../../mixins/listView'
-import dateView from '../../components/ui/r-date-view'
+import dateView from '../..//components/ui/r-date-view'
 export default {
 	components: {dateView},
 	mixins: [ listViewMixin ],
@@ -78,6 +77,10 @@ export default {
 		this.requestList(1);
 	},
 	methods: {
+		dateChanged(e) {
+			console.log(e);
+			this.timestamp = e.value;
+		},
 		temestampChange(e) {
 			console.log(e);
 		},
