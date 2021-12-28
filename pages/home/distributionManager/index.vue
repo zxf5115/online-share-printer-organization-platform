@@ -18,37 +18,23 @@
 		}">
 			<!-- 数据列表 -->
 			<!-- TODO: 这里有个bug  如果不用v-if切换的话 scrollview的高度不会自动更新 先这样处理 后续再搞别的办法 -->
-			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" v-if="activeIndex">
-				<div class="list">
-					<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
-						<!-- 头像 -->
-						<u-image src="https://cdn.uviewui.com/uview/album/1.jpg" width="80rpx" height="80rpx" class="ava" shape="circle"></u-image>
-						<!-- 信息 -->
-						<div class="userinfo fl-wp jc-sb">
-							<span>辰东</span>
-							<span :class="{'shopowner': activeIndex,'level2': !activeIndex}">店长</span>
+			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" :scrollTop="scrollTop">
+				<template v-slot:list>
+					<div class="list">
+						<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
+							<!-- 头像 -->
+							<image src="https://cdn.uviewui.com/uview/album/1.jpg" width="80rpx" height="80rpx" class="ava" shape="circle"></image>
+							<!-- 信息 -->
+							<div class="userinfo fl-wp jc-sb">
+								<span>辰东</span>
+								<span :class="{'shopowner': activeIndex,'level2': !activeIndex}">店长</span>
+							</div>
+							<!-- 右边俩标签 -->
+							<span class="price vertical-center">￥0.30</span>
+							<span class="detail vertical-center" @click="toDetail(item)">详情</span>
 						</div>
-						<!-- 右边俩标签 -->
-						<span class="price vertical-center">￥0.30</span>
-						<span class="detail vertical-center" @click="toDetail(item)">详情</span>
 					</div>
-				</div>
-			</p-list-view>
-			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" v-else>
-				<div class="list">
-					<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
-						<!-- 头像 -->
-						<u-image src="https://cdn.uviewui.com/uview/album/1.jpg" width="80rpx" height="80rpx" class="ava" shape="circle"></u-image>
-						<!-- 信息 -->
-						<div class="userinfo fl-wp jc-sb">
-							<span>辰东</span>
-							<span :class="{'shopowner': activeIndex,'level2': !activeIndex}">店长</span>
-						</div>
-						<!-- 右边俩标签 -->
-						<span class="price vertical-center">￥0.30</span>
-						<span class="detail vertical-center" @click="toDetail(item)">详情</span>
-					</div>
-				</div>
+				</template>
 			</p-list-view>
 		</div>
 	</div>
@@ -61,30 +47,30 @@ export default {
 		return {
 			navInfo: void 0,
 			activeIndex: 0,
+			scrollTop: '',
 		}
 	},
 	watch: {
 		activeIndex() {
-			this.requestList(1)
+			this.requestList(true)
 		},
 	},
 	created() {
-		this.requestList(1);
+		this.requestList(true);
 	},
 	methods: {
 		toDetail(item) {
-			console.log(item)
 			uni.navigateTo({url: '/pages/home/distributionManager/detail/index'});
 		},
 		requestList(firstLoad = false, cover = false) {
 			console.log('模拟请求数据', firstLoad, cover)
-			this.l_firstLoad = firstLoad;
+			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
 			setTimeout(() => {
 				this.l_total = 11;
 				let res = [1,1,1,1,1,1,1,1,1,1];
 				cover ? this.$_setListData(res) : this.$_appendListData(res);
-			}, 200);
+			}, 1200);
 		}
 	},
 }
@@ -132,6 +118,7 @@ export default {
 			.ava {
 				width: 80rpx;
 				height: 80rpx;
+				border-radius: 50%;
 			}
 			.userinfo {
 				margin-left: 20rpx;

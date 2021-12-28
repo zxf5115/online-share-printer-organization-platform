@@ -1,175 +1,156 @@
 <template>
-	<div class="dm ">
+	<div class="content ">
 		<p-nav title="打印收益" @callback="navInfo = $event" />
-		<date-view :show.sync="showDate" :value="timestamp" type="datemonth" format="yyyy年M月" @confirm="timestamp = $event.value"/>
-		<div class="profit fl fd-r ai-ctr bg-w" @click="showDate = !showDate">
-			您的收益分成：<span class="mgr-l">¥0.20/页</span>
-		</div>
-		<div class="head-menu fl jc-sb fd-r ai-ctr">
-			您的下级分销收益分成
-			<div class="btns fl fd-r">
-				<!-- 这里判断loading 避免页面混乱 -->
-				<button :class="{ 'is-active': !activeIndex }" @tap="!l_isLoading ? activeIndex = 0 : void 0">只看店长</button>
-				<button :class="{ 'is-active':  activeIndex }" @tap="!l_isLoading ? activeIndex = 1 : void 0">只看代理商</button>
+		<div class="top">
+			<!-- 年月账单 -->
+			<div class="date fl fd-r jc-sb ai-ctr">
+				<label :class="{'is-active': topDateIndex === 0}" @click="topDateIndex = 0">月账单</label>
+				<label :class="{'is-active': topDateIndex === 1}" @click="topDateIndex = 1">年账单</label>
+			</div>
+			<!-- 时间、身份切换栏 -->
+			<div class="handle fl fd-r jc-sb ai-ctr ">
+				<selectDate :value.sync="yearDate" type="dateyear"  v-if="topDateIndex" />
+				<selectDate :value.sync="monthDate" type="datemonth" v-else />
+				<div class="switch fl fd-r jc-sb">
+					<p :class="{'is-active': identity === 0}" @click="identity = 0">店长</p>
+					<p :class="{'is-active': identity === 1}" @click="identity = 1">代理商</p>
+				</div>
+			</div>
+			<!-- 收益详情 -->
+			<div class="profit">
+				<label>共收入{{viewData.count}}笔，合计</label>
+				<p>￥{{viewData.price}}</p>
 			</div>
 		</div>
+		<!-- 列表 -->
 		<div class="list" :style="{
-			height: `calc(100vh - ${navInfo.height||0}px - 268rpx)`,
-			background: '#fff'
-		}" v-if="false">
-			<!-- 数据列表 -->
-			<!-- TODO: 这里有个bug  如果不用v-if切换的话 scrollview的高度不会自动更新 先这样处理 后续再搞别的办法 -->
-			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" v-if="activeIndex">
-				<div class="list">
-					<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
-						<!-- 头像 -->
-						<u-image src="https://cdn.uviewui.com/uview/album/1.jpg" width="80rpx" height="80rpx" class="ava" shape="circle"></u-image>
-						<!-- 信息 -->
-						<div class="userinfo fl-wp jc-sb">
-							<span>辰东</span>
-							<span :class="{'shopowner': activeIndex,'level2': !activeIndex}">店长</span>
-						</div>
-						<!-- 右边俩标签 -->
-						<span class="price vertical-center">￥0.30</span>
-						<span class="detail vertical-center" @click="toDetail(item)">详情</span>
-					</div>
-				</div>
-			</p-list-view>
-			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" v-else>
-				<div class="list">
-					<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
-						<!-- 头像 -->
-						<u-image src="https://cdn.uviewui.com/uview/album/1.jpg" width="80rpx" height="80rpx" class="ava" shape="circle"></u-image>
-						<!-- 信息 -->
-						<div class="userinfo fl-wp jc-sb">
-							<span>辰东</span>
-							<span :class="{'shopowner': activeIndex,'level2': !activeIndex}">店长</span>
-						</div>
-						<!-- 右边俩标签 -->
-						<span class="price vertical-center">￥0.30</span>
-						<span class="detail vertical-center" @click="toDetail(item)">详情</span>
-					</div>
-				</div>
-			</p-list-view>
+			height: `calc(100vh - ${navHeight}px - 470rpx)`
+		}">
+			
 		</div>
 	</div>
 </template>
 <script>
-import listViewMixin from '../../mixins/listView'
-import dateView from '../..//components/ui/r-date-view'
+import selectDate from '../../components/ui/select-date'
+import { dateManager } from '../../util/date/DateManager'
 export default {
-	components: {dateView},
-	mixins: [ listViewMixin ],
+	components: { selectDate },
 	data() {
 		return {
-			navInfo: void 0,
-			activeIndex: 0,
-			showDate: false,
-			timestamp: '2021年5月1日',
+			navInfo: [],
+			topDateIndex: 0,
+			monthDate: new Date(),
+			yearDate: new Date(),
+			identity: 0, // 身份
+			viewData: {
+				count: 1324,
+				price: '48340.00',
+			}
 		}
+	},
+	computed: {
+		monthDateParam() {
+			let y = dateManager.year (this.monthDate);
+			let m = dateManager.month(this.monthDate);
+			return [
+				dateManager.format(new Date(y, m - 1, 1), 'yyyy-MM-dd hh:mm:ss'),
+				`${dateManager.format(new Date(y, m, 0), 'yyyy-MM-dd ')}23:59:59`,
+			];
+		},
+		yearDateParam() {
+			let y = dateManager.year (this.yearDate);
+			return [
+				`${y}-01-01 00:00:00`,
+				`${y}-12-31 23:59:59`,
+			];
+		},
+		navHeight: () => getApp().globalData.navHeight,
 	},
 	watch: {
-		activeIndex() {
-			this.requestList(1)
+		nowMonthDate() {
+			console.log(this.nowMonthDate);
 		},
-	},
-	created() {
-		this.requestList(1);
-	},
-	methods: {
-		dateChanged(e) {
-			console.log(e);
-			this.timestamp = e.value;
+		nowYearDate() {
+			console.log(this.nowYearDate);
 		},
-		temestampChange(e) {
-			console.log(e);
-		},
-		toDetail(item) {
-			console.log(item)
-			uni.navigateTo({url: '/pages/home/distributionManager/detail/index'});
-		},
-		requestList(firstLoad = false, cover = false) {
-			console.log('模拟请求数据', firstLoad, cover)
-			this.l_firstLoad = firstLoad;
-			cover = cover || firstLoad;
-			setTimeout(() => {
-				this.l_total = 11;
-				let res = [1,1,1,1,1,1,1,1,1,1];
-				cover ? this.$_setListData(res) : this.$_appendListData(res);
-			}, 200);
-		}
 	},
 }
 </script>
 <style lang="scss" scoped>
-.dm {
-	.profit {
-		height: 148rpx;
+.content {
+	.top {
 		padding: 0 40rpx;
-		span {
-			font-size: 48rpx;
-			color: #FF8A00;
-		}
-	}
-	.head-menu {
-		padding: 0 40rpx;
+		background-color: white;
+		height: 430rpx;
 		color: #454564;
-		font-size: 24rpx;
-		height: 120rpx;
-		.btns {
-			button {
+		.date {
+			width: calc(100% - 300rpx);
+			margin: 40rpx 150rpx;
+			label {
+				height: 54rpx;
 				width: 180rpx;
-				height: 60rpx;
-				border-radius: 30rpx;
-				font-size: 24rpx;
-				white-space:nowrap;
+				line-height: 54rpx;
+				text-align: center;
+				color: #454564;
+				font-size: 32rpx;
 			}
 			.is-active {
-				background: #25A1F9;
-				color: white;
+				position: relative;
+				&::after {
+					content: '';
+					position: absolute;
+					left: 0;
+					bottom: 0;
+					width: 100%;
+					height: 4rpx;
+					background: #454564;
+					border-radius: 2rpx;
+				}
 			}
 		}
-	}
-	.list {
-		.item {
-			width: calc(100% - 40rpx);
-			position: relative;
-			height: 120rpx;
-			padding-left: 40rpx;
-			// padding: 0 40rpx;
-			border-bottom: 1rpx solid #f0f0f0;
-			&:nth-last-child(1) {
-				border: 0;
-			}
-			.ava {
-				width: 80rpx;
-				height: 80rpx;
-			}
-			.userinfo {
-				margin-left: 20rpx;
-				height: 80rpx;
-				.level2 {
-					color: #10D13A !important;
+		.handle {
+			height: 50rpx;
+			margin-bottom: 40rpx;
+			.switch {
+				width: 240rpx;
+				p {
+					width: 100rpx;
+					height: 44rpx;
+					line-height: 44rpx;
+					text-align: center;
 				}
-				.shopowner {
-					color: #FF8A00 !important;
-				}
-				span {
-					color: #454564;
-					&:nth-child(2) {
-						font-size: 24rpx;
+				.is-active {
+					position: relative;
+					&::after {
+						content: '';
+						position: absolute;
+						left: -4rpx;
+						top: -4rpx;
+						width: 100%;
+						height: 100%;
+						background: transparent;
+						border-radius: 22rpx;
+						border: 4rpx solid #25A1F9;
 					}
 				}
 			}
-			.price {
-				color: #454564;
-				right: 140rpx;
+		}
+		.profit {
+			label {
+				margin-top: 30rpx;
+				font-size: 28rpx;
 			}
-			.detail {
-				color: #0066FF;
-				right: 40rpx;
+			p {
+				margin-top: 30rpx;
+				font-size: 48rpx;
+				color: #FF8A00;
 			}
 		}
+		
+	}
+	.list {
+		margin-top: 40rpx;
+		background-color: white;
 	}
 }
 </style>

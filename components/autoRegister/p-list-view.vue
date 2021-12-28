@@ -1,26 +1,28 @@
 <template>
   <scroll-view
     style="height: 100%;"
+    class="scroll"
     :scroll-top="scrollTop"
     scroll-y="true"
-    :refresher-enabled="!firstLoad & !nodata"
+    :refresher-enabled="!nodata"
     :refresher-triggered="downRefresh"
     :refresher-threshold="firstLoad ? 0 : 100"
     @scrolltolower="pull"
     @refresherrefresh="refresh"
     @scroll="scroll"
+    ref="scroll"
   >
     <!-- 初次加载内容 整页展示加载 -->
     <!-- TODO: 这部分后续需要考虑怎么换骨架屏 -->
-    <div style="width: 100%; height: 100%;" class="fl jc-ctr ai-ctr" v-if="firstLoad">
+    <div class="fl jc-ctr ai-ctr loading" v-if="firstLoad">
       <u-loading-icon mode="semicircle"></u-loading-icon>
     </div>
-    <div style="width: 100%; height: 100%;" class="fl jc-ctr ai-ctr" v-else-if="nodata">
+    <div style="width: 100%; height: 100%;" class="fl jc-ctr ai-ctr" v-if="nodata">
       <u-empty mode="data" :text="emptyTxt" />
     </div>
     <!-- 外传slot -->
     <template v-else>
-      <slot></slot>	
+      <slot name="list"></slot>	
     </template>
     <!-- 加载更多 -->
 		<u-loadmore v-if="more && !firstLoad && !nodata" :status="loadmore[more - 1]" line  />
@@ -59,6 +61,10 @@ export default {
     emptyTxt: {
       type: String,
       default: '无数据'
+    },
+    scrollTop: {
+      type: Number|String,
+      default: '',
     }
   },
   data() {
@@ -70,6 +76,11 @@ export default {
         'nomore',
       ]
     };
+  },
+  created() {
+    this.$nextTick(() => {
+      console.log(this.$refs.scroll);
+    })
   },
   methods: {
     scroll(e) {
@@ -88,7 +99,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.aaa {
-  height: 500px;
+.scroll {
+  position: relative;
+  .loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: 222;
+  }
 }
+
 </style>

@@ -15,11 +15,6 @@ export default {
       l_refresh: false, // 刷新标志
     }
   },
-  watch: {
-    l_firstLoad() {
-      // this.$_listInit();
-    }
-  },
 	computed: {
     // 还有没有更多数据
 		l_hasMoreData() {
@@ -29,7 +24,7 @@ export default {
 		},
     l_isLoading() {
       const {l_more , l_firstLoad , l_listPulling , l_refresh} = this
-      return this.l_more == 2 || this.l_firstLoad || this.l_listPulling || this.l_refresh;
+      return l_more == 2 || l_firstLoad || l_listPulling || l_refresh;
     },
 	},
   methods: {

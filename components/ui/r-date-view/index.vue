@@ -162,13 +162,9 @@ export default {
       let minDate = new Date(this.minTimestamp);
       // 当前最小日值 
       let nowDate = new Date(this.nowy, this.nowM - 1, 1);
-      console.log(this.nowy, this.nowM, dateManager.format(nowDate, 'yyyy-MM-dd'))
-      console.log(minDate.getTime(), nowDate.getTime());
       if (nowDate.getTime() <= minDate.getTime()) {
-        console.log('来取设置的最小day', parseInt(dateManager.format(minDate, 'd')));
         return parseInt(dateManager.format(minDate, 'd'));
       } else {
-        console.log('走默认最小day');
         return parseInt(dateManager.format(nowDate, 'd'));
       }
     },
@@ -182,7 +178,7 @@ export default {
       return dateManager.format(this.nowDate, 'M');
     },
     nowDate() {
-      if (!this.dateValue) return 0;
+      if (!this.dateValue) return new Date(0);
       if (this.format === 'timestamp') {
         return new Date(this.dateValue);
       }
@@ -239,17 +235,12 @@ export default {
     },
     cancel() {
       this.closeAction();
-      this.$emit('cancel', {
-        target: this,
-      });
+      this.$emit('cancel', {});
     },
     confirm() {
       this.closeAction();
       this.callbackValue();
-      this.$emit('confirm', {
-        target: this,
-        value: this.getValue(),
-      });
+      this.$emit('confirm', this.getValue());
     },
     yearLeft() {
       if (!this.canYearLeft) return;
@@ -281,17 +272,14 @@ export default {
       }
     },
     setDate({year = this.nowy, month = this.nowM, day = this.nowd}) {
-      console.log(this.nowDate.getTime(), (new Date(year, month, day)).getTime())
       if (day > this.maxDay) day = this.maxDay;
       day = this.getCorrectDate({year, month, day}).day;
       if (this.nowDate.getTime() === (new Date(year, month - 1, day)).getTime()) return;
-      console.log('setDate111', `${year}-${month}-${day}`, this.nowy, this.nowM, this.nowd);
       if (this.format === 'timestamp') {
          this.dateValue = this.nowDate.getTime();
       } else {
          this.dateValue = dateManager.format(`${year}/${month}/${day}`, this.format);
       }
-      console.log(this.dateValue);
     },
     getValue() {
       let value;
@@ -304,7 +292,7 @@ export default {
     },
     callbackValue() {
       let value = this.getValue();
-      this.$emit('update:value', value);
+      // this.$emit('update:value', value);
     }
   },
 };

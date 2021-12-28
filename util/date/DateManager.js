@@ -179,7 +179,6 @@ function DateManager ()
    * 例: getDateWidthFormat('现在时间为: 2020年1月1日', '现在时间为: yyyy年M月d日')
    */
   this.getDateWidthFormat = (value, format) => {
-    console.log('getDateWidthFormat', value, format);
     let rule = format;
     rule = rule.replace('yyyy', '(\\S*)')
     rule = rule.replace('MM', '(\\S*)')
@@ -194,9 +193,20 @@ function DateManager ()
       // 月份的时候需要减1
       formatDate.push(i == 2 ? parseInt(e) - 1 : parseInt(e));
     })
-    console.log(formatDate);
+    if (formatDate.length < 3) { // 加个补充不然年会有问题
+      for (let i = formatDate.length; i <= 3; i++) {
+        formatDate.push(1);
+      }
+    }
     return new Date(...formatDate)
   }
+  this.month = (date) => {
+    return this.format(date, 'MM');
+  }
+  this.year = (date) => {
+    return this.format(date, 'yyyy');
+  }
+
 }
 const dateManager = new DateManager();
 export {DateManager, dateManager};

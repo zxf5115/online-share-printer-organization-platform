@@ -34,15 +34,14 @@ export default {
 				    // #ifdef MP-WEIXIN
 				    //获取胶囊按钮的布局位置信息，坐标信息以屏幕左上角为原点
 				    let custom = uni.getMenuButtonBoundingClientRect()   
-					console.log(custom);
 				    //导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度。
 				    that.globalData.customBar = custom.bottom + custom.top - e.statusBarHeight
 				    // #endif
 				    // #ifdef MP-ALIPAY
 				    that.globalData.customBar = e.statusBarHeight + e.titleBarHeight
 				    // #endif
-					that.globalData.navHeight = that.globalData.customBar + that.globalData.statusBar;
-					console.log(that.globalData);
+					// 使用 uview 时 默认导航栏高度
+					that.globalData.navHeight = that.globalData.statusBar + 44;
 			  	}
 			})
 		},
