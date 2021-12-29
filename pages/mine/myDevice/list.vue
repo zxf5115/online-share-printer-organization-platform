@@ -21,23 +21,25 @@
           @refresh="$_refresh(requestList, 0, 1)"
           @pull="$_loadMore(requestList)"
         >
-          <div
-            class="item fl ai-ctr fd-r jc-sb"
-            v-for="(item, i) in l_listData"
-            :key="i"
-            @click="toDetail(item)"
-          >
-            <p>万三打印机</p>
-            <div class="fl fd-r jc-sb">
-              <device-status :status="i % 3" style="margin-right: 20rpx"/>
-              <u-icon
-                name="arrow-right"
-                color="#B7B7B7"
-                size="32rpx"
-                @click="leftAction"
-              />
+          <template v-slot:list>
+            <div
+              class="item fl ai-ctr fd-r jc-sb"
+              v-for="(item, i) in l_listData"
+              :key="i"
+              @click="toDetail(item)"
+            >
+              <p>万三打印机</p>
+              <div class="fl fd-r jc-sb">
+                <device-status :status="i % 3" style="margin-right: 20rpx"/>
+                <u-icon
+                  name="arrow-right"
+                  color="#B7B7B7"
+                  size="32rpx"
+                  @click="leftAction"
+                />
+              </div>
             </div>
-          </div>
+          </template>
         </p-list-view>
       </div>
     </div>
@@ -55,7 +57,7 @@ export default {
     };
   },
   created() {
-    this.requestList(1);
+    this.requestList(true);
   },
   methods: {
     toDetail(item) {

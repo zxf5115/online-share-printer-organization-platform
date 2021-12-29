@@ -1,10 +1,17 @@
 <template>
-  <div id="NAV_BODY">
-    <u-navbar :title="title" fixed placeholder safeAreaInsetTop  style="border-bottom: 1px solid #f0f0f0">
+  <div id="NAV_BODY" :class="{'nav-line': line}">
+    <u-navbar :title="title" fixed placeholder safeAreaInsetTop>
       <div slot="left">
         <u-icon
           v-if="leftBtnFlag"
           name="arrow-left"
+          color="#000000"
+          size="36rpx"
+          @click="leftAction"
+        />
+        <u-icon
+          v-else-if="notBlackList"
+          name="home"
           color="#000000"
           size="36rpx"
           @click="leftAction"
@@ -23,11 +30,16 @@ export default {
     placeholder: { type: Boolean, default: true },
     safeAreaInsetTop: { type: Boolean, default: true },
     leftClick: { type: Function, required: false },
+    line: { type:String|Boolean, default: true }
   },
   data() {
-    // TODO: 这里需要设置个白名单， 防止后续有分享需求情况， 暂时先不做 这部分后续再做  目前没需求。
     return {
       leftBtnFlag: true,
+      blackList: [
+        'pages/home/index',
+        'pages/mine/index',
+        'pages/printRevenue/index',
+      ]
     };
   },
   created() {
@@ -41,9 +53,22 @@ export default {
       }).exec();
     });
   },
+  computed: {
+    notBlackList() {
+      let path = getCurrentPages()[getCurrentPages().length - 1].route;
+      console.log(this.blackList.indexOf(path), path);
+      if (this.blackList.indexOf(path) >= 0) {
+        return false;
+      }
+      return true;
+    }
+  },
   methods: {
     leftAction() {
-      this.leftClick ? this.leftClick() : uni.navigateBack();
+      if (this.leftBtnFlag)
+        this.leftClick ? this.leftClick() : uni.navigateBack();
+      else if (this.notBlackList)
+        uni.switchTab({url: '/pages/home/index'})  
     },
   },
 };

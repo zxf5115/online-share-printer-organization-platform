@@ -23,7 +23,8 @@ export default {
         }, {
           title: '收益统计',
           icon: require('../../../static/home/index/item2.png'),
-          path: '/pages/mine/profit/index',
+          path: '/pages/printRevenue/index',
+          type: 'tabbar'
         }, {
           title: '分销管理',
           icon: require('../../../static/home/index/item3.png'),
@@ -38,9 +39,10 @@ export default {
   },
   methods: {
     jump(e) {
-      console.log(e);
-      uni.navigateTo({url: e.path,});
-
+      if (e.type === 'tabbar')
+        uni.switchTab({url: e.path})
+      else
+        uni.navigateTo({url: e.path,});
     }
   },
 }

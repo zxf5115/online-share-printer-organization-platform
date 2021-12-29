@@ -17,7 +17,6 @@
 			background: '#fff'
 		}">
 			<!-- 数据列表 -->
-			<!-- TODO: 这里有个bug  如果不用v-if切换的话 scrollview的高度不会自动更新 先这样处理 后续再搞别的办法 -->
 			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" :scrollTop="scrollTop">
 				<template v-slot:list>
 					<div class="list">

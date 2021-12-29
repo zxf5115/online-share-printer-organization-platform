@@ -7,54 +7,58 @@
     <div  @click="showCalender('endT')" class="calenderLeft fl fd-r ai-ctr">
       <image src="../../../../../../static/icon/date.png">{{endTime}}
     </div>
-    <u-datetime-picker
-      :show="showStartTime"
-      v-model="startTime"
-      :maxDate="startTimestamp"
-      mode="date"
-      @confirm="confirmStartTime"
-    ></u-datetime-picker>
-    <u-datetime-picker
-      :show="showEndTime"
-      v-model="endTime"
-      :maxDate="endTimestamp"
-      mode="date"
-      @confirm="confirmEndTime"
-    ></u-datetime-picker>
+    <r-date-view :show.sync="showDateBox" :maxTimestamp="maxTimestamp" :minTimestamp="minTimestamp" :value="dateValue" type="dateday" :format="format" @confirm="confirm"/>
   </div>
 </template>
 <script>
-
+import rDateView from '../../../../../../components/ui/r-date-view/index.vue'
+import { dateManager } from '../../../../../../util/date/DateManager';
 export default {
+  components: { rDateView },
   data() {
     return {
-      showStartTime: false, // 开始日期弹出框显示隐藏
-      showEndTime: false, // 结束日期弹出框显示隐藏
-      startTime: Number(new Date()), // 绑定的选中值
-      endTime: Number(new Date()), // 绑定的选中值
-      startTimestamp: Number(new Date()), // 日历组件默认最大展示值(截止日期)
+      startTime: void 0, // 绑定的选中值
+      endTime: void 0, // 绑定的选中值
+      startTimestamp: 0, // 日历组件默认最大展示值(截止日期)
       endTimestamp: Number(new Date()), // 日历组件默认最大展示值(截止日期)
+      selectType: void 0,
+      showDateBox: false,
+      format: 'yyyy年MM月dd日',
     }
   },
-  mounted() {
-    this.startTime = uni.$u.timeFormat(new Date(), 'yyyy年-mm月-dd日')
-    this.endTime = uni.$u.timeFormat(new Date(), 'yyyy年-mm月-dd日')
-    // 传入开始、结束日期请求接口
+  watch: {
+    startTime () {
+      if (this.endTime)
+        this.$emit('changed', {startTime: this.startTime + ' 00:00:00', endTime: this.endTime + ' 23:59:59'})
+    },
+    endTime() {
+      if (this.startTime) 
+        this.$emit('changed', {startTime: this.startTime + ' 00:00:00', endTime: this.endTime + ' 23:59:59'})
+    }
+  },
+  computed: {
+    dateValue() {
+      return this.selectType === 'startT' ? this.startTime : this.endTime;
+    },
+    maxTimestamp() {
+      return this.selectType === 'startT' ? dateManager.getDateWidthFormat(this.endTime, this.format).getTime() : this.endTimestamp;
+    },
+    minTimestamp() {
+      return this.selectType === 'startT' ? 0 : dateManager.getDateWidthFormat(this.startTime, this.format).getTime();
+    }
+  },
+  created() {
+      this.startTime = dateManager.format(new Date(), this.format); // 绑定的选中值
+      this.endTime   = dateManager.format(new Date(), this.format); // 绑定的选中值
   },
   methods: {
+    confirm(e) {
+      this.selectType === 'startT' ? this.startTime = e : this.endTime = e;
+    },
     showCalender(v) {
-      v === 'startT' ? this.showStartTime = true : this.showEndTime = true
+      this.selectType = v;
+      this.showDateBox = true;
     },
-    confirmStartTime(e) {
-      this.showStartTime = false
-      this.startTime = uni.$u.timeFormat(e.value, 'yyyy年-mm月-dd日')
-      console.log(this.startTime, this.endTime)
-    },
-    confirmEndTime(e) {
-      this.showEndTime = false
-      this.endTime = uni.$u.timeFormat(e.value, 'yyyy年-mm月-dd日')
-      console.log(this.startTime, this.endTime)
-    }
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<div class="content ">
-		<p-nav title="打印收益" @callback="navInfo = $event" />
+		<p-nav title="收益统计"/>
 		<div class="top">
 			<!-- 年月账单 -->
 			<div class="date fl fd-r jc-sb ai-ctr">
@@ -12,8 +12,8 @@
 				<selectDate :value.sync="yearDate" type="dateyear"  v-if="topDateIndex" />
 				<selectDate :value.sync="monthDate" type="datemonth" v-else />
 				<div class="switch fl fd-r jc-sb">
-					<p :class="{'is-active': identity === 0}" @click="identity = 0">店长</p>
-					<p :class="{'is-active': identity === 1}" @click="identity = 1">代理商</p>
+					<p :class="{'is-active': role_id === 2}" @click="role_id = 2">店长</p>
+					<p :class="{'is-active': role_id === 3}" @click="role_id = 3">代理商</p>
 				</div>
 			</div>
 			<!-- 收益详情 -->
@@ -24,24 +24,30 @@
 		</div>
 		<!-- 列表 -->
 		<div class="list" :style="{
-			height: `calc(100vh - ${navHeight}px - 470rpx)`
+			height: `calc(100vh - ${navHeight}px - 450rpx)`
 		}">
-			
+			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, false, true)" @pull="$_loadMore(requestList)" :scrollTop="scrollTop">
+				<template v-slot:list>
+					<list-item :source="item" v-for="(item, i) in l_listData" :key="i" @detail="toDetail(item)"></list-item>
+				</template>
+			</p-list-view>
 		</div>
 	</div>
 </template>
 <script>
 import selectDate from '../../components/ui/select-date'
 import { dateManager } from '../../util/date/DateManager'
+import listView from "../../mixins/listView";
+import listItem from './components/listItem.vue'
 export default {
-	components: { selectDate },
+	components: { selectDate, listItem },
+	mixins: [ listView ],
 	data() {
 		return {
-			navInfo: [],
-			topDateIndex: 0,
+			topDateIndex: 0, // 顶部选择
 			monthDate: new Date(),
 			yearDate: new Date(),
-			identity: 0, // 身份
+			role_id: 2, // 身份
 			viewData: {
 				count: 1324,
 				price: '48340.00',
@@ -64,15 +70,53 @@ export default {
 				`${y}-12-31 23:59:59`,
 			];
 		},
+		requestParams() { // 获取请求入参
+			let asset_create_time = this.topDateIndex ? this.yearDateParam : this.monthDateParam;
+			let { role_id } = this;
+			let params = {
+				role_id,
+				asset_create_time,
+				...this.l_pageinfo,
+			};
+			return params;
+		},
 		navHeight: () => getApp().globalData.navHeight,
 	},
 	watch: {
-		nowMonthDate() {
-			console.log(this.nowMonthDate);
+		// 改变了就刷新请求数据
+		topDateIndex() {
+			this.requestList(true);
 		},
-		nowYearDate() {
-			console.log(this.nowYearDate);
+		role_id() {
+			this.requestList(true);
 		},
+		monthDate() {
+			this.requestList(true);
+		},
+		yearDate() {
+			this.requestList(true);
+		},
+	},
+	created() {
+		this.requestList(true);
+	},
+	methods: {
+		toDetail(e) {
+			console.log('去详情', e);
+			uni.navigateTo({
+				url: '/pages/printRevenue/profitList/list'
+			})
+		},
+		requestList(firstLoad = false, cover = false) {
+			console.log('模拟请求数据', firstLoad, cover, this.requestParams)
+			firstLoad ? this.$_listInit() : void 0;
+			cover = cover || firstLoad;
+			setTimeout(() => {
+				this.l_total = 11;
+				let res = [1,1,1,1,1,1,1,1,1,1];
+				cover ? this.$_setListData(res) : this.$_appendListData(res);
+			}, 1200);
+		}
 	},
 }
 </script>
@@ -149,7 +193,7 @@ export default {
 		
 	}
 	.list {
-		margin-top: 40rpx;
+		margin-top: 20rpx;
 		background-color: white;
 	}
 }

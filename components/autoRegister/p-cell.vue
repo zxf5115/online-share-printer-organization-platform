@@ -7,12 +7,13 @@
       'color': labelColor,
       'font-size': labelSize,
       'width' : labelWidth 
-    }">{{label}}</label>
+    }" class="p-cell-label">{{label}}</label>
     <div class="p-cell-right" :style="{
       'color': valueColor,
       'font-size': valueSize,
       'flex': 1,
-      'margin-left': margin
+      'margin-left': margin,
+      'text-align': textAlign,
       }">
       <slot>{{value}}</slot>
     </div>
@@ -34,6 +35,12 @@ export default {
     margin    : { type: String, default: '0'},
     bg        : { type: String, default: 'white'},
     padding   : { type: String, default: '10rpx 40rpx'},
+    textAlign : { type: String, default: 'left' },
   },
 };
 </script>
+<style lang="scss" scoped>
+.p-cell-label {
+  width: auto;
+}
+</style>

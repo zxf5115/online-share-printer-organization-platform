@@ -1,3 +1,6 @@
 ::v-deep .u-navbar--fixed {
     z-index: 99999 !important;
 }
+.nav-line ::v-deep .u-navbar--fixed{
+    border-bottom: 1rpx solid #f0f0f0 !important;
+}

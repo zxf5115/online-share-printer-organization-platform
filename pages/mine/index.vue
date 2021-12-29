@@ -5,12 +5,12 @@
             <div class="top">
                 <image class="ava vertical-center" src="https://cdn.uviewui.com/uview/album/1.jpg" />
                 <span class="username">阿高</span>
-                <p class="edit fl jc-sb fd-r ai-ctr">
+                <p class="edit fl jc-sb fd-r ai-ctr" @click="jump({path: '/pages/mine/userinfo/index'})">
                     编辑个人资料
                     <image src="../../static/icon/edit.png" />
                 </p>
             </div>
-            <div class="item fl fd-r ai-ctr" v-for="(item, i) in items" :key="i">
+            <div class="item fl fd-r ai-ctr" v-for="(item, i) in items" :key="i" @click="jump(item)">
                 <image :src="item.icon" />
                 <p>{{item.title}}</p>
                 <u-icon name="arrow-right" color="#B7B7B7" size="16"></u-icon>
@@ -33,15 +33,16 @@ export default {
                 {
                     icon: require('../../static/mine/index/item1.png'),
                     title: '我的设备',
-                    path: '',
+                    path: '/pages/mine/myDevice/index',
                 }, {
                     icon: require('../../static/mine/index/item2.png'),
                     title: '收益统计',
-                    path: '',
+                    path: '/pages/printRevenue/index',
+                    type: 'tabbar',
                 }, {
                     icon: require('../../static/mine/index/item3.png'),
                     title: '我的钱包',
-                    path: '',
+                    path: '/pages/mine/wallet/index',
                 }, {
                     icon: require('../../static/mine/index/item4.png'),
                     title: '绑定设备',
@@ -49,16 +50,22 @@ export default {
                 }, {
                     icon: require('../../static/mine/index/item5.png'),
                     title: '意见反馈',
-                    path: '',
+                    path: '/pages/mine/feedback/index',
                 }, {
                     icon: require('../../static/mine/index/item6.png'),
                     title: '联系我们',
-                    path: '',
+                    path: '/pages/mine/contact/index',
                 }, 
             ]
         }
     },
     methods: {
+        jump(e) {
+          if (e.type === 'tabbar')
+            uni.switchTab({url: e.path})
+          else
+            uni.navigateTo({url: e.path,});
+        },
         rightClick(e) {
             console.log(e);
         },
@@ -68,7 +75,7 @@ export default {
     },
 }
 </script>
-<style>
+<style scoped>
 ::v-deep page { background-color: rgb(255, 255, 255) !important; }
 </style>
 <style lang="scss" scoped>

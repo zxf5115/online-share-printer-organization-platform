@@ -24,16 +24,18 @@
           @refresh="$_refresh(requestList, 0, 1)"
           @pull="$_loadMore(requestList)"
         >
-          <div
-            class="item fl ai-ctr fd-r jc-sb"
-            v-for="(item, i) in l_listData"
-            :key="i"
-            @click="toDeviceList(item)"
-          >
-            <u-image width="80rpx" height="80rpx" :src="require('../../../static/home/index/item1.png')"/>
-            <p><span>辰东</span><span>134 5568 889</span></p>
-            <span>100台</span>
-          </div>
+          <template v-slot:list>
+            <div
+              class="item fl ai-ctr fd-r jc-sb"
+              v-for="(item, i) in l_listData"
+              :key="i"
+              @click="toDeviceList(item)"
+            >
+              <u-image width="80rpx" height="80rpx" :src="require('../../../static/home/index/item1.png')"/>
+              <p><span>辰东</span><span>134 5568 889</span></p>
+              <span>100台</span>
+            </div>
+          </template>
         </p-list-view>
       </div>
     </div>
@@ -50,7 +52,7 @@ export default {
     };
   },
   created() {
-    this.requestList(1);
+    this.requestList(true);
   },
   methods: {
     toDeviceList(item) {
@@ -60,14 +62,14 @@ export default {
       })
     },
     requestList(firstLoad = false, cover = false) {
-      console.log("模拟请求数据", firstLoad, cover);
-      this.l_firstLoad = firstLoad;
-      cover = cover || firstLoad;
-      setTimeout(() => {
-        this.l_total = 11;
-        let res = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-        cover ? this.$_setListData(res) : this.$_appendListData(res);
-      }, 200);
+      console.log('模拟请求数据', firstLoad, cover)
+			firstLoad ? this.$_listInit() : void 0;
+			cover = cover || firstLoad;
+			setTimeout(() => {
+				this.l_total = 11;
+				let res = [1,1,1,1,1,1,1,1,1,1];
+				cover ? this.$_setListData(res) : this.$_appendListData(res);
+			}, 1200);
     },
   },
 };

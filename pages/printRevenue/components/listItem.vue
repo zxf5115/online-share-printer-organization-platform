@@ -9,7 +9,7 @@
 		</div>
 		<!-- 右边俩标签 -->
 		<span class="price vertical-center">￥0.30</span>
-		<span class="detail vertical-center" @click="toDetail(item)">详情</span>
+		<span class="detail vertical-center" @click="toDetail">详情</span>
 	</div>
 </template>
 
@@ -20,7 +20,12 @@ export default {
       type: Object,
       default: () => {},
     }
-  }
+  },
+  methods: {
+	  toDetail() {
+		  this.$emit('detail', this.source);
+	  }
+  },
 }
 </script>
 <style lang="scss" scoped>
@@ -37,6 +42,8 @@ export default {
 	.ava {
 		width: 80rpx;
 		height: 80rpx;
+		border-radius: 50%;
+		background-color: #dfdfdf;
 	}
 	.userinfo {
 		margin-left: 20rpx;

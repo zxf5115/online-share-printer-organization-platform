@@ -1,32 +1,33 @@
 <template>
-  <scroll-view
-    style="height: 100%;"
-    class="scroll"
-    :scroll-top="scrollTop"
-    scroll-y="true"
-    :refresher-enabled="!nodata"
-    :refresher-triggered="downRefresh"
-    :refresher-threshold="firstLoad ? 0 : 100"
-    @scrolltolower="pull"
-    @refresherrefresh="refresh"
-    @scroll="scroll"
-    ref="scroll"
-  >
+  <div class="scroll">
     <!-- 初次加载内容 整页展示加载 -->
-    <!-- TODO: 这部分后续需要考虑怎么换骨架屏 -->
-    <div class="fl jc-ctr ai-ctr loading" v-if="firstLoad">
+    <div class="fl jc-ctr ai-ctr loading" v-if="firstLoad" @touchmove.stop.prevent="()=>{}">
       <u-loading-icon mode="semicircle"></u-loading-icon>
     </div>
-    <div style="width: 100%; height: 100%;" class="fl jc-ctr ai-ctr" v-if="nodata">
+    <div style="width: 100%; height: 100%;" class="fl jc-ctr ai-ctr" v-if="nodata" @touchmove.stop.prevent="()=>{}">
       <u-empty mode="data" :text="emptyTxt" />
     </div>
-    <!-- 外传slot -->
-    <template v-else>
-      <slot name="list"></slot>	
-    </template>
-    <!-- 加载更多 -->
-		<u-loadmore v-if="more && !firstLoad && !nodata" :status="loadmore[more - 1]" line  />
-  </scroll-view>
+    <scroll-view
+      style="height: 100%;"
+      class="scroll"
+      :scroll-top="scrollTop"
+      scroll-y="true"
+      :refresher-enabled="!nodata"
+      :refresher-triggered="downRefresh"
+      :refresher-threshold="firstLoad ? 0 : 100"
+      @scrolltolower="pull"
+      @refresherrefresh="refresh"
+      @scroll="scroll"
+      ref="scroll"
+    >
+      <!-- 外传slot -->
+      <template>
+        <slot name="list"></slot>	
+      </template>
+      <!-- 加载更多 -->
+  		<u-loadmore v-if="more && !firstLoad && !nodata" :status="loadmore[more - 1]" line  />
+    </scroll-view>
+  </div>
 </template>
 <script>
 export default {
@@ -77,22 +78,14 @@ export default {
       ]
     };
   },
-  created() {
-    this.$nextTick(() => {
-      console.log(this.$refs.scroll);
-    })
-  },
   methods: {
     scroll(e) {
       // console.log(e);
     },
     refresh(e) { // 下拉刷新
-      console.log('下拉刷新', e);
       this.firstLoad ? void 0 : this.$emit('refresh', e);
-      
     },
     pull(e) { // 上拉加载
-      console.log('上拉加载', e)
       this.$emit('pull', e);
     }
   },
@@ -101,6 +94,8 @@ export default {
 <style lang="scss" scoped>
 .scroll {
   position: relative;
+  width: 100%;
+  height: 100%;
   .loading {
     position: absolute;
     left: 0;
