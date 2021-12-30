@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="fl" style="height: 100vh;">
 	    <p-nav :title="isLogin ? ' ' : '授权'"/>
-	    <div class="ctn">
+	    <div class="ctn" v-if="!isLogin">
 	      <div class="banner">
               <image :src="require('@/static/login/banner.png')" />
           </div>
@@ -15,18 +15,20 @@
               <button :class="{'is-read': isRead}" @click="getUserinfo">授权登录</button>
           </div>
 	    </div>
+        <div class="loading fl fd-r jc-ctr ai-ctr" v-else>
+            <u-loading-icon mode="semicircle"></u-loading-icon>
+        </div>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     computed: {
-        isLogin() {
-            return false;
-        },
         isRead() {
             return !!this.readFlag.length;
-        }
+        },
+        ...mapGetters(['isLogin']),
     },
     data() {
         return {
@@ -34,7 +36,12 @@ export default {
         }
     },
     created() {
-        this.getUserProfile();
+        console.log(process.env);
+        if (this.isLogin) { // 已登录就直接跳转到home/index
+            uni.switchTab({url: '/pages/home/index'})  
+        } else { // 未登录就去登录
+            
+        }
     },
     methods: {
         getUserinfo() {
@@ -62,6 +69,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.loading {
+    flex: 1;
+}
 .ctn {
     .banner {
         image {
