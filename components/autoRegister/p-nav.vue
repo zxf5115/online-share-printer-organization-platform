@@ -36,6 +36,7 @@ export default {
     return {
       leftBtnFlag: true,
       blackList: [
+        'pages/login/index',
         'pages/home/index',
         'pages/mine/index',
         'pages/printRevenue/index',

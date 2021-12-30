@@ -25,6 +25,21 @@ export default {
     onHide: function() {
         
     },
+    created() {
+        let that =this;
+        uni.login({
+			provider:'weixin',
+			success:function(loginRes) {
+			// 获取用户信息
+			    uni.getUserInfo({
+				    provider:'weixin',
+					success:function(infoRes){
+                        console.log(infoRes);
+					}
+				});
+			}
+		});
+    },
     methods: {
         leftClick(e) {
             console.log(e);
