@@ -1,7 +1,23 @@
 {
-	"id": "uview-ui",
-	"scripts": {
-		"test": "eslint . --fix"
+	"uni-app": {
+		"scripts": {
+			"mp-weixin:dev": {
+				"title": "微信小程序:dev",
+				"env": {
+					"UNI_PLATFORM": "mp-weixin",
+					"ENV": "development",
+					"API_URL": "https://organization.vstown.cc/api/"
+				}
+			},
+			"mp-weixin:pro": {
+				"title": "微信小程序:pro",
+				"env": {
+					"UNI_PLATFORM": "mp-weixin",
+					"ENV": "production",
+					"API_URL": "https://organization.vstown.cc/api/"
+				}
+			}
+		}
 	},
 	"dependencies": {
 		"vuex-persistedstate": "^4.1.0"

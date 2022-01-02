@@ -36,7 +36,9 @@ export default {
         }
     },
     created() {
-        console.log(process.env);
+        this.$api('user').login({open_id: 123}).then(res => {
+            console.log('========>',res);
+        })
         if (this.isLogin) { // 已登录就直接跳转到home/index
             uni.switchTab({url: '/pages/home/index'})  
         } else { // 未登录就去登录

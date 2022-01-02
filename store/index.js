@@ -25,13 +25,13 @@ const store = new Vuex.Store({
         createPersistedState({  
           key: 'share_pointer_org_data',  // 状态保存到本地的 key   
           reducer: state => ({ // 需要持久化存储的数据
-            
+            user: state.user,
           }),
           storage: {  // 存储方式定义  
             getItem: (key) => uni.getStorageSync(key), // 获取  
             setItem: (key, value) => uni.setStorageSync(key, value), // 存储  
             removeItem: (key) => uni.removeStorageSync(key) // 删除  
-          }  
+          }
         })  
     ],
 })

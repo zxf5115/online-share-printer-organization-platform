@@ -35,6 +35,7 @@ export default {
 				    provider:'weixin',
 					success:function(infoRes){
                         console.log(infoRes);
+				    	console.log(that.yonghuwx)
 					}
 				});
 			}

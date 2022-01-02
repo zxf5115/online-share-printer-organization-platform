@@ -28,6 +28,6 @@ const app = new Vue({
 })
 
 // 引入请求封装
-require('./util/request/index')(app)
+require('./util/request/index')(app, Vue)
 
 app.$mount()
