@@ -1,5 +1,5 @@
 <template>
-  	<u-popup :show="show" @close="closeAction" mode="top" :safeAreaInsetBottom="false">
+  	<u-popup :show="show" @close="closeAction" mode="top" :safeAreaInsetBottom="false" class="date-view">
       <!-- 年组件 -->
       <div class="year fl fd-r jc-sb ai-ctr" :style="{
         'margin-top': navHeight+'px',
@@ -98,8 +98,10 @@ export default {
     },
     show() {
       if (this.show) {
-        this.dateValue = this.value;
-        this.setArrayList();
+        this.$nextTick(e => {
+          this.dateValue = this.value;
+          this.setArrayList();
+        })
       }
     },
   },
@@ -303,6 +305,11 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
+.date-view {
+  div {
+    background-color: white;
+  }
+}
 .year {
   height: 146rpx;
   padding: 0 40rpx;

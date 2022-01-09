@@ -1,19 +1,29 @@
 <template>
-  <div class="ctn">
-    <span class="label">权限：二级</span>
-    <span class="up-org">上级经销商：张三</span>
+  <div class="it-ctn">
+    <span class="label" v-if="another_nameFlag">权限：{{userinfo.another_name}}</span>
+    <span class="up-org" v-if="parentFlag">上级经销商：{{userinfo.parent_id}}</span>
     <span class="means-sum level-center">总资产</span>
     <p class="means-txt level-center">
       <span>￥</span>
-      <span><u-count-to class="count" :endVal="9186.88" :decimals="2" fontSize="72rpx" color="white"></u-count-to></span>
+      <span><u-count-to class="count" :endVal="asset.money" :decimals="2" fontSize="72rpx" color="white"></u-count-to></span>
     </p>
-    <span class="yesterday">昨日收益 ￥<u-count-to class="count" :endVal="500" :decimals="2" fontSize="28rpx" color="white"></u-count-to></span>
-    <span class="now-month">当月收益 ￥<u-count-to class="count" :endVal="1800.96" :decimals="2" fontSize="28rpx" color="white"></u-count-to></span>
+    <span class="yesterday">昨日收益 ￥<u-count-to class="count" :endVal="asset.yesterday_money" :decimals="2" fontSize="28rpx" color="white"></u-count-to></span>
+    <span class="now-month">当月收益 ￥<u-count-to class="count" :endVal="asset.current_month_money" :decimals="2" fontSize="28rpx" color="white"></u-count-to></span>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
+  computed: {
+    ...mapGetters(['asset', 'userinfo']),
+    another_nameFlag () { 
+      return this.userinfo.another_name && this.userinfo.another_name.length
+    },
+    parentFlag () { 
+      return this.userinfo.parent       && this.userinfo.parent.length;
+    },
+  },
   props: ['source'],
   data() {
     
@@ -27,7 +37,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.ctn {
+.it-ctn {
   height: 500rpx;
   width: 100vw;
   position: relative;

@@ -3,8 +3,8 @@
         <p-nav title="我的" />
         <div class="ctn">
             <div class="top">
-                <image class="ava vertical-center" src="https://cdn.uviewui.com/uview/album/1.jpg" />
-                <span class="username">阿高</span>
+                <image class="ava vertical-center" :src="userinfo.avatar" />
+                <span class="username">{{userinfo.nickname}}</span>
                 <p class="edit fl jc-sb fd-r ai-ctr" @click="jump({path: '/pages/mine/userinfo/index'})">
                     编辑个人资料
                     <image src="../../static/icon/edit.png" />
@@ -20,7 +20,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
+    computed: {
+        ...mapGetters(['userinfo']),
+    },
     onShow: function() {
         
     },

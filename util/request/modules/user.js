@@ -1,15 +1,26 @@
+import config from '@/common/config.js'
 export default { // 这里的this指向会变成Request类
     // 这个是微信小程序操作
-    login() {
-        uni.login({
-            provider: 'weixin',
-            success: res => {
-                console.log(res.code);
-            },
-            fail: err => {
-                console.log('登录失败：', err)
-            }
-        })
-        return this.post('weixin_login', {'open_id':'111'});
+    async login(...args) {
+        let code = await this.api('user').wxLogin();
+        // 获取code openid错误 返回个空指针
+        if (!code) return void 0;
+        return this.post('weixin_login', {code, ...(args[0]||{})});
     },
+    async wxLogin() {
+        return new Promise((resolve, reject) => {
+            uni.login({
+                provider: 'weixin',
+                success: res => {
+                    resolve(res.code)
+                },
+                fail: err => {
+                    reject(void 0);
+                }
+            })
+        })
+    },
+    setUserinfo(userinfo) {
+        return this.post('organization/handle', userinfo);
+    }
 };

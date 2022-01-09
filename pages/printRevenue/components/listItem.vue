@@ -1,14 +1,14 @@
 <template>
   <div class="item fl ai-ctr fd-r">
 		<!-- 头像 -->
-		<image src="https://cdn.uviewui.com/uview/album/1.jpg" width="80rpx" height="80rpx" class="ava" shape="circle"></image>
+		<image :src="source.item.avatar" width="80rpx" height="80rpx" class="ava" shape="circle"></image>
 		<!-- 信息 -->
-		<div class="userinfo fl-wp jc-sb">
-			<span>辰东</span>
-			<span :class="{'shopowner': activeIndex,'level2': !activeIndex}">店长</span>
+		<div class="userinfo fl-wp jc-sb fd-c">
+			<span>{{source.item.nickname}}</span>
+			<span :class="{'shopowner': source.item.level.value == 3,'level2': source.item.level.value == 2}">{{source.item.level.text}}</span>
 		</div>
 		<!-- 右边俩标签 -->
-		<span class="price vertical-center">￥0.30</span>
+		<span class="price vertical-center">￥{{source.item.obtain_money}}</span>
 		<span class="detail vertical-center" @click="toDetail">详情</span>
 	</div>
 </template>

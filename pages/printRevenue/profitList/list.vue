@@ -1,24 +1,24 @@
 <template>
-	<div class="content ">
+	<div class="content "  @touchmove.stop.prevent @catchtouchmove="()=>{}">
 		<p-nav title="收益统计"/>
 		<div class="handle  fl fd-r jc-sb ai-ctr">
 			<selectDate :value.sync="yearDate" type="dateyear"  v-if="type == 'dateyear'" />
 			<selectDate :value.sync="monthDate" type="datemonth" v-else />
-			<p>收益：￥545.00</p>
+			<p>收益：￥{{sum}}</p>
 		</div>
 		<!-- 列表 -->
 		<div class="list" :style="{
-			height: `calc(100vh - ${navHeight}px - 100rpx)`
+			height: `calc(100vh - ${l_navHeight}px - 100rpx)`
 		}">
 			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, false, true)" @pull="$_loadMore(requestList)" :scrollTop="scrollTop">
 				<template v-slot:list>
 					<div class="item fl fd-r jc-sb ai-ctr" v-for="(item, i) in l_listData" :key="i" @click="detail(item)">
 						<image :src="'https://cdn.uviewui.com/uview/album/1.jpg'" class="ava"/>
-						<p class="info fl">
-							<label class="name">艾高冷食店</label>
-							<label class="time">2021-21-21</label>
+						<p class="info fl fd-c">
+							<label class="name">{{item.organization.nickname}}</label>
+							<label class="time">{{item.create_time}}</label>
 						</p>
-						<p class="price">￥{{`20.00`}}</p>
+						<p class="price">￥{{item.money}}</p>
 					</div>
 				</template>
 			</p-list-view>
@@ -37,8 +37,8 @@ export default {
 		return {
 			monthDate: new Date(),
 			yearDate: new Date(),
-			role_id: 2, // 身份
 			type: 'dateyear', // 年或月
+			sum: '-',
 		}
 	},
 	computed: {
@@ -58,25 +58,17 @@ export default {
 			];
 		},
 		requestParams() { // 获取请求入参
-			let asset_create_time = this.topDateIndex ? this.yearDateParam : this.monthDateParam;
-			let { role_id } = this;
+			let create_time = JSON.stringify(this.type == 'dateyear' ? this.yearDateParam : this.monthDateParam);
+			let { member_id } = this;
 			let params = {
-				role_id,
-				asset_create_time,
+				member_id,
+				create_time,
 				...this.l_pageinfo,
 			};
 			return params;
 		},
-		navHeight: () => getApp().globalData.navHeight,
 	},
 	watch: {
-		// 改变了就刷新请求数据
-		topDateIndex() {
-			this.requestList(true);
-		},
-		role_id() {
-			this.requestList(true);
-		},
 		monthDate() {
 			this.requestList(true);
 		},
@@ -84,10 +76,11 @@ export default {
 			this.requestList(true);
 		},
 	},
-	onLoad({type = "dateyear", timestamp = void 0, role_id = 2}) { // 初始化数据
+	onLoad({type = "dateyear", timestamp = void 0,  member_id, sum}) { // 初始化数据
 		timestamp = timestamp ? parseInt(timestamp) : void 0;
 		this.type = type;
-		this.role_id = role_id;
+		this.member_id = member_id;
+		this.sum = sum;
 		if (timestamp) {
 			if (type == `dateyear`) {
 				this.yearDate  = new Date(timestamp);
@@ -97,24 +90,24 @@ export default {
 		}
 	},
 	created() {
-		this.requestList(true);
+		// this.requestList(true);
 	},
 	methods: {
 		detail(item) {
 			console.log(item);
 			uni.navigateTo({
-				url: '/pages/printRevenue/profitList/detail'
+				url: '/pages/printRevenue/profitList/detail?id='+item.order_id,
 			})
 		},
 		requestList(firstLoad = false, cover = false) {
-			console.log('模拟请求数据', firstLoad, cover, this.requestParams)
 			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
-			setTimeout(() => {
-				this.l_total = 11;
-				let res = [1,1,1,1,1,1,1,1,1,1];
-				cover ? this.$_setListData(res) : this.$_appendListData(res);
-			}, 1200);
+			this.$api('obtain').data(this.requestParams).then(res => {
+				console.log(res.data);
+				this.l_total = res.total;
+				let list = res.data;
+				cover ? this.$_setListData(list) : this.$_appendListData(list);
+			})
 		}
 	},
 }
@@ -136,6 +129,9 @@ export default {
 			border-bottom: 2rpx #F0F0F0 solid;
 			height: 162rpx;
 			color: #434343;
+			&:nth-last-child(1) {
+				border: 0;
+			}
 			.ava {
 				width: 80rpx;
 				height: 80rpx;

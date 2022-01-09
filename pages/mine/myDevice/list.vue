@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div  @touchmove.stop.prevent @catchtouchmove="()=>{}">
     <p-nav title="我的设备" @callback="navInfo = $event"/>
     <div class="m-d">
       <div class="head fl jc-sb fd-r ai-ctr bg-w">
-        <u-image width="80rpx" height="80rpx" :src="require('../../../static/home/index/item1.png')"/>
-        <p class="fl fd-r jc-sb ai-ctr"><span>辰东</span><label>100台</label></p>
+        <image style="width: 80rpx;height:80rpx;" :src="avatar"/>
+        <p class="fl fd-r jc-sb ai-ctr"><span>{{nickname}}</span><label>{{sum}}台</label></p>
       </div>
       <!-- 列表主体 -->
       <div :style="{
@@ -28,9 +28,9 @@
               :key="i"
               @click="toDetail(item)"
             >
-              <p>万三打印机</p>
+              <p>{{item.code}}</p>
               <div class="fl fd-r jc-sb">
-                <device-status :status="i % 3" style="margin-right: 20rpx"/>
+                <device-status :status="item.activate_status.value" style="margin-right: 20rpx"/>
                 <u-icon
                   name="arrow-right"
                   color="#B7B7B7"
@@ -53,27 +53,36 @@ export default {
   components: {deviceStatus},
   data() {
     return {
-      navInfo: {}
+      navInfo: {},
+      id: void 0,
+      sum: '-',
+      nickname: '-',
+      avatar: '',
     };
   },
-  created() {
+  // id=55&sum=2&nickname=123&avatar=
+  onLoad({id, sum, nickname, avatar}) {
+    this.id = id;
+    this.sum = sum;
+    this.nickname = nickname;
+    this.avatar = avatar;
     this.requestList(true);
   },
   methods: {
     toDetail(item) {
       uni.navigateTo({
-        url: '/pages/mine/myDevice/detail'
+        url: `/pages/mine/myDevice/detail?id=${item.id}`
       })
     },
     requestList(firstLoad = false, cover = false) {
       console.log("模拟请求数据", firstLoad, cover);
       this.l_firstLoad = firstLoad;
       cover = cover || firstLoad;
-      setTimeout(() => {
-        this.l_total = 11;
-        let res = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-        cover ? this.$_setListData(res) : this.$_appendListData(res);
-      }, 200);
+      this.$api('printer').list(Object.assign(this.l_pageinfo, {member_id: this.id})).then(res => {
+				this.l_total = res.total;
+				let list = res.data;
+				cover ? this.$_setListData(list) : this.$_appendListData(list);
+			})
     },
   },
 };

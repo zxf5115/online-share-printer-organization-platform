@@ -23,15 +23,17 @@ export default {
       endTimestamp: Number(new Date()), // 日历组件默认最大展示值(截止日期)
       selectType: void 0,
       showDateBox: false,
-      format: 'yyyy年MM月dd日',
+      format: 'yyyy-MM-dd',
     }
   },
   watch: {
     startTime () {
+      console.log('startTime', this.endTime, this.startTime);
       if (this.endTime)
         this.$emit('changed', {startTime: this.startTime + ' 00:00:00', endTime: this.endTime + ' 23:59:59'})
     },
     endTime() {
+      console.log('endTime', this.endTime, this.startTime);
       if (this.startTime) 
         this.$emit('changed', {startTime: this.startTime + ' 00:00:00', endTime: this.endTime + ' 23:59:59'})
     }
@@ -49,7 +51,9 @@ export default {
   },
   created() {
       this.startTime = dateManager.format(new Date(), this.format); // 绑定的选中值
-      this.endTime   = dateManager.format(new Date(), this.format); // 绑定的选中值
+      setTimeout(() => {// 这里不分轮处理会导致两次触发changed
+        this.endTime   = dateManager.format(new Date(), this.format); // 绑定的选中值
+      }, 0);
   },
   methods: {
     confirm(e) {

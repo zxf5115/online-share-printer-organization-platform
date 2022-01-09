@@ -4,6 +4,7 @@
         <div class="ctn">
             <div class="top fl jc-ctr ai-ctr">
                 <image src="https://cdn.uviewui.com/uview/album/1.jpg" />
+                <span>点击获取微信头像</span>
             </div>
             <p-cell label="姓名：" padding="20rpx 40rpx">
                 <u--input placeholder="请输入姓名" border="bottom" clearable v-model="source.name" />
@@ -37,12 +38,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
-    onShow: function() {
-        
-    },
-    onHide: function() {
-        
+    computed: {
+        ...mapGetters(['userinfo']),
     },
     data() {
         return {
@@ -70,6 +69,11 @@ export default {
             width: 166rpx;
             height: 166rpx;
             border-radius: 50%;
+        }
+        span {
+            margin-top: 20rpx;
+            font-size: 24rpx;
+            color: #616161;
         }
     }
     .submit {

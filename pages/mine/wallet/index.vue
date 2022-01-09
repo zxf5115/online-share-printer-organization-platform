@@ -14,7 +14,7 @@
     <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb">
       <span class="ft-14">银行卡：</span>
       <span>
-        <image class="bankCard-image" src="../../../../../../static/mine/wallet/iconRight.png">中国工商银行（9552）
+        <image class="bankCard-image" src="@/static/mine/wallet/iconRight.png">中国工商银行（9552）
       </span>
       <u-icon name="arrow-right" color="#B7B7B7" size="18" @click="leftAction"></u-icon>
     </div>

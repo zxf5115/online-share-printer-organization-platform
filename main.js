@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import App from './App'
 
-// vuex
-import store from './store'
-
 // 引入全局uView
 import uView from '@/uni_modules/uview-ui'
 Vue.use(uView);
@@ -28,6 +25,8 @@ const app = new Vue({
 })
 
 // 引入请求封装
-require('./util/request/index')(app, Vue)
+require('./util/request/index').import(app, Vue)
+// vuex
+import store from './store'
 
 app.$mount()

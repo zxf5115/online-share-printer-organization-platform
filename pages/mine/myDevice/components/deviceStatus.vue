@@ -13,9 +13,9 @@ export default {
   data() {
     return {
       statusLabel: {
-        0: '离线',
-        1: '异常',
-        2: '正常',
+        2: '离线',
+        0: '异常',
+        1: '正常',
       }
     }
   },
@@ -32,15 +32,15 @@ export default {
   height: 20rpx;
   border-radius: 10rpx;
 }
-.status-0 {
+.status-2 {
   label { color: #717E96; }
   .point { background-color: #717E96; }
 }
-.status-1 {
+.status-0 {
   label { color: #FF0000; }
   .point { background-color: #FF0000; }
 }
-.status-2 {
+.status-1 {
   label { color: #07C160; }
   .point { background-color: #07C160; }
 }

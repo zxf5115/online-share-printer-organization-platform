@@ -1,5 +1,5 @@
 <template>
-	<div class="dm ">
+	<div class="dm "  @touchmove.stop.prevent @catchtouchmove="()=>{}">
 		<p-nav title="分销管理" @callback="navInfo = $event" />
 		<div class="profit fl fd-r ai-ctr bg-w">
 			您的收益分成：<span class="mgr-l">¥0.20/页</span>
@@ -8,8 +8,8 @@
 			您的下级分销收益分成
 			<div class="btns fl fd-r">
 				<!-- 这里判断loading 避免页面混乱 -->
-				<button :class="{ 'is-active': !activeIndex }" @tap="!l_isLoading ? activeIndex = 0 : void 0">只看店长</button>
-				<button :class="{ 'is-active':  activeIndex }" @tap="!l_isLoading ? activeIndex = 1 : void 0">只看代理商</button>
+				<button :class="{ 'is-active':  activeIndex == 2 }" @tap="!l_isLoading ? activeIndex = 2 : void 0">只看店长</button>
+				<button :class="{ 'is-active':  activeIndex == 3 }" @tap="!l_isLoading ? activeIndex = 3 : void 0">只看代理商</button>
 			</div>
 		</div>
 		<div class="list" :style="{
@@ -22,14 +22,14 @@
 					<div class="list">
 						<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
 							<!-- 头像 -->
-							<image src="https://cdn.uviewui.com/uview/album/1.jpg" width="80rpx" height="80rpx" class="ava" shape="circle"></image>
+							<image :src="item.avatar" width="80rpx" height="80rpx" class="ava" shape="circle"></image>
 							<!-- 信息 -->
 							<div class="userinfo fl-wp jc-sb">
-								<span>辰东</span>
-								<span :class="{'shopowner': activeIndex,'level2': !activeIndex}">店长</span>
+								<span>{{item.nickname}}</span>
+								<span :class="{'shopowner': activeIndex == 2,'level2': activeIndex == 3}">{{item.level.text}}</span>
 							</div>
 							<!-- 右边俩标签 -->
-							<span class="price vertical-center">￥0.30</span>
+							<span class="price vertical-center">￥{{item.asset.proportion}}</span>
 							<span class="detail vertical-center" @click="toDetail(item)">详情</span>
 						</div>
 					</div>
@@ -45,7 +45,7 @@ export default {
 	data() {
 		return {
 			navInfo: void 0,
-			activeIndex: 0,
+			activeIndex: 3,
 			scrollTop: '',
 		}
 	},
@@ -59,23 +59,23 @@ export default {
 	},
 	methods: {
 		toDetail(item) {
-			uni.navigateTo({url: '/pages/home/distributionManager/detail/index'});
+			uni.navigateTo({url: '/pages/home/distributionManager/detail/index?id=' + item.id});
 		},
 		requestList(firstLoad = false, cover = false) {
-			console.log('模拟请求数据', firstLoad, cover)
 			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
-			setTimeout(() => {
-				this.l_total = 11;
-				let res = [1,1,1,1,1,1,1,1,1,1];
-				cover ? this.$_setListData(res) : this.$_appendListData(res);
-			}, 1200);
+			this.$api('org').subordinate({page: this.l_pageinfo.page, role_id: this.activeIndex}).then(res => {
+				this.l_total = res.total;
+				let list = res.data;
+				cover ? this.$_setListData(list) : this.$_appendListData(list);
+			})
 		}
 	},
 }
 </script>
 <style lang="scss" scoped>
 .dm {
+	z-index: 10;
 	.profit {
 		height: 148rpx;
 		padding: 0 40rpx;

@@ -31,7 +31,6 @@ Object.defineProperty(uni.$R, 'api', {
                 });
                 return api;
             } catch (error) {
-                console.log(error);
                 throw new Error(`未定义的request模块${moduleName}.js`)
             }
             
@@ -44,8 +43,12 @@ Object.defineProperty(uni, '$api', {
     }
 })
 
-module.exports = (vm, Vue) => {
-    require('./requestInterceptors')(vm)
-    require('./responseInterceptors')(vm)
-    Vue.prototype.$api = uni.$api;
+module.exports = {
+    api: uni.$api,
+    request: uni.$u.http,
+    import: (vm, Vue) => {
+        require('./requestInterceptors')(vm)
+        require('./responseInterceptors')(vm)
+        Vue.prototype.$api = uni.$api;
+    }
 }

@@ -2,7 +2,7 @@
 	"uni-app": {
 		"scripts": {
 			"mp-weixin:dev": {
-				"title": "微信小程序:dev",
+				"title": "打印机分销端:dev",
 				"env": {
 					"UNI_PLATFORM": "mp-weixin",
 					"ENV": "development",
@@ -10,7 +10,7 @@
 				}
 			},
 			"mp-weixin:pro": {
-				"title": "微信小程序:pro",
+				"title": "打印机分销端:pro",
 				"env": {
 					"UNI_PLATFORM": "mp-weixin",
 					"ENV": "production",

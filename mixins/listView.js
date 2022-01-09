@@ -3,8 +3,8 @@ export default {
   data() {
     return{
       l_pageinfo: {
-        p: 1,
-        s: 10,
+        page: 1,
+        size: 10,
       },
       l_total: 0, // 总数据
       l_firstLoad: true, // 是否第一次加载
@@ -16,6 +16,8 @@ export default {
     }
   },
 	computed: {
+    // 导航栏高度
+		l_navHeight: () => getApp().globalData.navHeight,
     // 还有没有更多数据
 		l_hasMoreData() {
       let res = (this.l_listData || []).length < this.l_total;
@@ -48,7 +50,7 @@ export default {
 		$_appendListData(listData) {
 			this.l_listData = this.l_listData.concat(listData);
       this.l_hasMoreData;
-      if (!this.l_listData.length) this.l_nodata = true;
+      this.l_nodata = !this.l_listData.length;
       this.$nextTick(e => {
         this.$_initLoading();
       })
@@ -57,7 +59,7 @@ export default {
 		$_setListData(listData) {
       this.l_listData = listData;
       this.l_hasMoreData;
-      if (!this.l_listData.length) this.l_nodata = true;
+      this.l_nodata = !this.l_listData.length;
       this.$nextTick(e => {
         this.$_initLoading();
       })
@@ -65,7 +67,7 @@ export default {
     $_loadMore(action, ...args) {
       if (!this.l_hasMoreData || this.l_isLoading) return;
       this.l_more = 2;
-      this.l_pageinfo.p ++;
+      this.l_pageinfo.page ++;
       action(...args);
     },
     $_refresh(action, ...args) {
@@ -76,7 +78,7 @@ export default {
         });
       }
       this.l_refresh    = true;
-      this.l_pageinfo.p = 1;
+      this.l_pageinfo.page = 1;
       action(...args);
     }
   }

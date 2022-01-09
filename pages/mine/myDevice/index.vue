@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div  @touchmove.stop.prevent @catchtouchmove="()=>{}">
     <p-nav title="我的设备" @callback="navInfo = $event"/>
     <div class="m-d">
       <div class="head fl jc-sb fd-r ai-ctr bg-w">
-        <p><span>500</span><label>设备数量</label></p>
+        <p><span>{{printerInfo.printer_total}}</span><label>设备数量</label></p>
         <icon class="line" />
-        <p><span>500</span><label>已分配</label></p>
+        <p><span>{{printerInfo.already_printer_total}}</span><label>已分配</label></p>
         <icon class="line" />
-        <p><span>500</span><label>未分配</label></p>
+        <p><span>{{printerInfo.without_printer_total}}</span><label>未分配</label></p>
       </div>
       <!-- 列表主体 -->
       <div :style="{
@@ -31,9 +31,9 @@
               :key="i"
               @click="toDeviceList(item)"
             >
-              <u-image width="80rpx" height="80rpx" :src="require('../../../static/home/index/item1.png')"/>
-              <p><span>辰东</span><span>134 5568 889</span></p>
-              <span>100台</span>
+              <image width="80rpx" height="80rpx" :src="item.avatar" style="width:80rpx;height:80rpx;"/>
+              <p><span>{{item.nickname}}</span><span>{{item.username}}</span></p>
+              <span>{{item.asset.should_printer_total}}台</span>
             </div>
           </template>
         </p-list-view>
@@ -48,28 +48,33 @@ export default {
   mixins: [listView],
   data() {
     return {
-      navInfo: {}
+      navInfo: {},
+      printerInfo: {},
     };
   },
   created() {
     this.requestList(true);
+    this.$api('asset').equipment().then(res => {
+      console.log(res);
+      this.printerInfo = res;
+    })
   },
   methods: {
     toDeviceList(item) {
       console.log(item);
       uni.navigateTo({
-        url: '/pages/mine/myDevice/list',
+        url: `/pages/mine/myDevice/list?&id=${item.id}&sum=${item.asset.should_printer_total}&nickname=${item.nickname}&avatar=${item.avatar}`,
       })
     },
     requestList(firstLoad = false, cover = false) {
       console.log('模拟请求数据', firstLoad, cover)
 			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
-			setTimeout(() => {
-				this.l_total = 11;
-				let res = [1,1,1,1,1,1,1,1,1,1];
-				cover ? this.$_setListData(res) : this.$_appendListData(res);
-			}, 1200);
+      this.$api('org').subordinate(this.l_pageinfo).then(res => {
+				this.l_total = res.total;
+				let list = res.data;
+				cover ? this.$_setListData(list) : this.$_appendListData(list);
+			})
     },
   },
 };

@@ -4,7 +4,7 @@
     <div class="fl jc-ctr ai-ctr loading" v-if="firstLoad" @touchmove.stop.prevent="()=>{}">
       <u-loading-icon mode="semicircle"></u-loading-icon>
     </div>
-    <div style="width: 100%; height: 100%;" class="fl jc-ctr ai-ctr" v-if="nodata" @touchmove.stop.prevent="()=>{}">
+    <div style="width: 100%; height: 100%;" class="fl jc-ctr ai-ctr" v-else-if="nodata" @touchmove.stop.prevent="()=>{}">
       <u-empty mode="data" :text="emptyTxt" />
     </div>
     <scroll-view
@@ -19,11 +19,11 @@
       @refresherrefresh="refresh"
       @scroll="scroll"
       ref="scroll"
+      v-else
     >
       <!-- 外传slot -->
-      <template>
+
         <slot name="list"></slot>	
-      </template>
       <!-- 加载更多 -->
   		<u-loadmore v-if="more && !firstLoad && !nodata" :status="loadmore[more - 1]" line  />
     </scroll-view>

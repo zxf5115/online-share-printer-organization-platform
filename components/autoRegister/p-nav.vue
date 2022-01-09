@@ -49,7 +49,6 @@ export default {
     this.$nextTick((e) => {
       const query = uni.createSelectorQuery().in(this);
       query.select("#NAV_BODY").boundingClientRect((data) => {
-        console.log(data);
         this.$emit("callback", data);
       }).exec();
     });
@@ -57,7 +56,6 @@ export default {
   computed: {
     notBlackList() {
       let path = getCurrentPages()[getCurrentPages().length - 1].route;
-      console.log(this.blackList.indexOf(path), path);
       if (this.blackList.indexOf(path) >= 0) {
         return false;
       }

@@ -1,8 +1,8 @@
 <template>
-  <div class="wr-record">
+  <div class="wr-record"  @touchmove.stop.prevent @catchtouchmove="()=>{}">
     <p-nav :title="title"/>
     <div class="calendarCom">
-      <calendar />
+      <calendar @changed="timeChanged"/>
     </div>
     <div class="recordList bg-w" :style="{
       height: `calc(100vh - ${navHeight}px - 104rpx)`
@@ -21,9 +21,9 @@
             <image src="@/static/icon/$.png" />
             <div class="info">
               <p>收益提现-到工商银行（9551）</p>
-              <p>2021-11-11 12:22:12</p>
+              <p>{{item.create_time}}</p>
             </div>
-            <label>￥2000</label>
+            <label>￥{{item.money}}</label>
           </div>
         </template>
       </p-list-view>
@@ -41,15 +41,21 @@ export default {
   data() {
     return {
       title: '提现', // title
+      time: void 0,
     }
   },
-   created() {
-    this.requestList(1);
+  watch: {
+    time () {
+      this.requestList(1);
+    }
   },
   computed: {
 		navHeight: () => getApp().globalData.navHeight,
   },
   methods: {
+    timeChanged(e) {
+      this.time = [e.startTime, e.endTime];
+    },
     detail() {
       uni.navigateTo({
         url: '/pages/mine/wallet/takeNotes/detail'
@@ -62,11 +68,11 @@ export default {
       console.log("模拟请求数据", firstLoad, cover);
       this.l_firstLoad = firstLoad;
       cover = cover || firstLoad;
-      setTimeout(() => {
-        this.l_total = 11;
-        let res = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-        cover ? this.$_setListData(res) : this.$_appendListData(res);
-      }, 200);
+      this.$api('withdrawal').list({create_time: JSON.stringify(this.time), ...this.l_pageinfo}).then(res => {
+				this.l_total = res.total;
+				let list = res.data;
+				cover ? this.$_setListData(list) : this.$_appendListData(list);
+			})
     },
   }
 }

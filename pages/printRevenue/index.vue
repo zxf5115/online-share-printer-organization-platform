@@ -1,5 +1,5 @@
 <template>
-	<div class="content ">
+	<div class="content " @touchmove.stop.prevent @catchtouchmove="()=>{}">
 		<p-nav title="收益统计"/>
 		<div class="top">
 			<!-- 年月账单 -->
@@ -24,11 +24,11 @@
 		</div>
 		<!-- 列表 -->
 		<div class="list" :style="{
-			height: `calc(100vh - ${navHeight}px - 450rpx)`
+			height: listHeight,
 		}">
-			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, false, true)" @pull="$_loadMore(requestList)" :scrollTop="scrollTop">
+			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, false, true)" @pull="$_loadMore(requestList)">
 				<template v-slot:list>
-					<list-item :source="item" v-for="(item, i) in l_listData" :key="i" @detail="toDetail(item)"></list-item>
+					<list-item :source="{'item': item}" v-for="(item, i) in l_listData" :key="i" @detail="toDetail(item)"></list-item>
 				</template>
 			</p-list-view>
 		</div>
@@ -51,7 +51,8 @@ export default {
 			viewData: {
 				count: 1324,
 				price: '48340.00',
-			}
+			},
+			listHeight: '',
 		}
 	},
 	computed: {
@@ -60,7 +61,7 @@ export default {
 			let m = dateManager.month(this.monthDate);
 			return [
 				dateManager.format(new Date(y, m - 1, 1), 'yyyy-MM-dd hh:mm:ss'),
-				`${dateManager.format(new Date(y, m, 0), 'yyyy-MM-dd ')}23:59:59`,
+				`${dateManager.format(new Date(y, m, 0), 'yyyy-MM-dd 23:59:59')}`,
 			];
 		},
 		yearDateParam() {
@@ -71,11 +72,11 @@ export default {
 			];
 		},
 		requestParams() { // 获取请求入参
-			let asset_create_time = this.topDateIndex ? this.yearDateParam : this.monthDateParam;
+			let create_time = JSON.stringify(this.topDateIndex ? this.yearDateParam : this.monthDateParam);
 			let { role_id } = this;
 			let params = {
 				role_id,
-				asset_create_time,
+				create_time,
 				...this.l_pageinfo,
 			};
 			return params;
@@ -98,30 +99,36 @@ export default {
 		},
 	},
 	created() {
+		// #ifdef MP	
+		this.listHeight = `calc(100vh - ${this.navHeight}px - 450rpx)`;
+		// #endif
+		// #ifdef H5		
+		this.listHeight = `calc(100vh - ${this.navHeight}px - 550rpx)`;
+		// #endif
 		this.requestList(true);
 	},
 	methods: {
 		toDetail(e) {
 			console.log('去详情', e);
 			uni.navigateTo({
-				url: '/pages/printRevenue/profitList/list'
+				url: `/pages/printRevenue/profitList/list?type=${this.topDateIndex?'dateyear':'datemonth'}&timestamp=${this.topDateIndex?this.yearDate.getTime():this.monthDate.getTime()}&member_id=${e.id}&sum=${e.obtain_money}`
 			})
 		},
 		requestList(firstLoad = false, cover = false) {
-			console.log('模拟请求数据', firstLoad, cover, this.requestParams)
 			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
-			setTimeout(() => {
-				this.l_total = 11;
-				let res = [1,1,1,1,1,1,1,1,1,1];
-				cover ? this.$_setListData(res) : this.$_appendListData(res);
-			}, 1200);
+			this.$api('obtain').getSubLevelObtain(this.requestParams).then(res => {
+				this.l_total = res.total;
+				let list = res.data;
+				cover ? this.$_setListData(list) : this.$_appendListData(list);
+			})
 		}
 	},
 }
 </script>
 <style lang="scss" scoped>
 .content {
+	overflow: hidden;
 	.top {
 		padding: 0 40rpx;
 		background-color: white;
@@ -129,7 +136,7 @@ export default {
 		color: #454564;
 		.date {
 			width: calc(100% - 300rpx);
-			margin: 40rpx 150rpx;
+			padding: 40rpx 150rpx;
 			label {
 				height: 54rpx;
 				width: 180rpx;

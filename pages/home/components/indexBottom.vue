@@ -1,5 +1,5 @@
 <template>
-  <div class="fl-wp jc-sb fd-r ctn">
+  <div class="fl-wp jc-sb fd-r ib-ctn">
     <div class="item fl jc-ctr ai-ctr" v-for="(item, i) in items" :key="i" @click.stop="jump(item)">
       <div style="width: 100rpx;height: 100rpx">
         <u-image :src="item.icon" alt="" width="100rpx" height="100rpx" @click="jump(item)"/>
@@ -48,7 +48,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.ctn {
+.ib-ctn {
   height: auto;
   width: calc(100vw - 72rpx);
   padding: 56rpx 36rpx;
@@ -60,6 +60,7 @@ export default {
     box-shadow: 0px 4rpx 8rpx rgba(0, 0, 0, 0.1);
     color: #454564;
     margin-top: 26rpx;
+    z-index: 1;
     img {
       height: 100rpx;
       width: 100rpx;
