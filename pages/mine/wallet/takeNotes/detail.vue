@@ -3,7 +3,7 @@
     <p-nav title="提现"/>
     <div class="top">
       <p>收益提现-到工商银行（9551）</p>
-      <p>￥2000</p>
+      <p>￥{{source.money}}</p>
     </div>
     <div class="take-info">
       <div class="status fl fd-r ">
@@ -34,10 +34,24 @@
 export default {
   data() {
     return {
-      
+      id: void 0,
+      source: {},
     }
   },
-
+  onLoad({id}) {
+    this.id = id;
+    this.requestData();
+  },
+  methods: {
+    requestData() {
+      this.$api('withdrawal').view(this.id).then(res => {
+        console.log(res);
+        this.source = res;
+      }).catch(error => {
+        console.log(error);
+      })
+    }
+  },
 }
 </script>
 <style scoped>

@@ -56,9 +56,9 @@ export default {
     timeChanged(e) {
       this.time = [e.startTime, e.endTime];
     },
-    detail() {
+    detail(item) {
       uni.navigateTo({
-        url: '/pages/mine/wallet/takeNotes/detail'
+        url: '/pages/mine/wallet/takeNotes/detail?id='+item.id
       })
     },
     confirm(e) {

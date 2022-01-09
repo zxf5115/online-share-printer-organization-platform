@@ -12,7 +12,7 @@
           </div>
           <div class="read fl fd-r jc-ctr">
               <u-checkbox-group v-model="readFlag" placement="row">
-            	<u-checkbox labelColor="#000出" :label="'已阅读并同意'"></u-checkbox>
+            	<u-checkbox labelColor="#000" :label="'已阅读并同意'"></u-checkbox>
             </u-checkbox-group>
             <span @click="jumpAgreement">《打印机用户协议》</span>
           </div>
