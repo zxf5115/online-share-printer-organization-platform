@@ -1,5 +1,5 @@
 <template>
-  <div class="wallet fl-r">
+  <div class="wallet">
     <p-nav :title="title"/>
     <div class="wallet-top bg-w">
       <div class="total-num fl fd-r ai-ctr">
@@ -11,19 +11,15 @@
         <span>￥<u-count-to class="count" :endVal="2000.00" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
       </div>
     </div>
-    <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb">
+    <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb" @click="myBankcard">
       <span class="ft-14">银行卡：</span>
-      <span>
-        <image class="bankCard-image" src="@/static/mine/wallet/iconRight.png">中国工商银行（9552）
-      </span>
+      <span><image class="bankCard-image" src="@/static/mine/wallet/bankImg.png">中国工商银行（9552）</span>
       <u-icon name="arrow-right" color="#B7B7B7" size="18" @click="leftAction"></u-icon>
     </div>
     <div class="takeNotes fl fd-c ai-ctr">
       <span class="cl-main ft-14" @click="takeNotesClick">提现记录</span>
       <span class="green-btn">提现</span>
-      <span class="ft-12">
-        提现成功后七个工作日到账<br />
-        最小提现金额为2000元
+      <span class="ft-12 tl-ctr"> 提现成功后七个工作日到账<br />最小提现金额为2000元
       </span>
     </div>
   </div>
@@ -39,7 +35,13 @@ export default {
   methods: {
     takeNotesClick() {
       console.log("djdjjdjdjd")
-      uni.navigateTo({ url: '/pages/mine/wallet/takeNotes/index'})
+      uni.navigateTo({ url: '/pages/mine/wallet/takeNotes/index' })
+    },
+    leftAction() {
+      uni.navigateTo({ url: '/pages/mine/wallet/takeNotes/index' })
+    },
+    myBankcard() {
+      uni.navigateTo({ url: '/pages/mine/wallet/Withdrawal/index' })
     }
   }
   
@@ -73,10 +75,12 @@ export default {
   padding: 0 40rpx;
   span {
     color: #454564;
+    display: flex;
     .bankCard-image {
-      width: 20rpx;
-      height: 32rpx;
+      width: 41rpx;
+      height: 41rpx;
       margin-right: 12rpx;
+      margin-top: 6rpx;
     }
   }
 }

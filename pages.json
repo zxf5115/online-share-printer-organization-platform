@@ -64,6 +64,12 @@
 		},
 		{
 			"path": "pages/mine/userinfo/index"
+		},
+		{
+			"path": "pages/mine/wallet/Withdrawal/index"
+		},
+		{
+			"path": "pages/mine/wallet/addBankcard/index"
 		}
 	],
 	

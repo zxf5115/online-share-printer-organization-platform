@@ -42,6 +42,7 @@ export default {
     return {
       title: '提现', // title
       time: void 0,
+      l_listData: []
     }
   },
   watch: {
