@@ -1,7 +1,7 @@
 <template>
   <div class="addBankcard">
     <p-nav title="添加银行卡"/>
-    <u-form :model="bankcardMessage" :rules="rules" ref="uForm" label-width="140" >
+    <u-form :model="bankcardMessage" :rules="rules" ref="uForm" label-width="140" :labelStyle="labelStyle">
       <div class="addBankcardTop bg-w">
         <u-form-item label="姓名: " prop="name">
           <u-input v-model="bankcardMessage.name" border="none" placeholder="请输入您的姓名"></u-input>
@@ -34,7 +34,7 @@
         </u-form-item>
       </div>
       <div class="submitBankCard">
-        <u-button @click="submitBankCard" :customStyle="{width:'396rpx',height: '94rpx', background: '#07C160', color: '#fff', borderRadius: '50rpx'}">{{submitTips}}</u-button>
+        <u-button @click="submitBankCard" :customStyle="SubmitCustomStyle">{{submitTips}}</u-button>
       </div>
     </u-form>
     
@@ -57,7 +57,17 @@ export default {
         name: [{ required: true, message: '请输入姓名', trigger: ['blur', 'change']}]
       },
       tips: "发送验证码",
-      submitTips: "添加银行卡"
+      submitTips: "添加银行卡",
+      labelStyle: {
+        fontSize: "28rpx"
+      },
+      SubmitCustomStyle: {
+        width:'396rpx',
+        height: '94rpx',
+        background: '#07C160',
+        color: '#fff',
+        borderRadius: '50rpx'
+      }
     }
   },
   methods: {
@@ -100,8 +110,12 @@ export default {
 <style scoped lang="scss">
 .addBankcard {
   margin: 12rpx 0 auto;
+  font-size: 14rpx;
   /deep/.u-form-item__body__right {
-    border-bottom: 1px solid #F0F0F0
+    border-bottom: 1px solid #F0F0F0;
+  }
+  /deep/.u-input__content__field {
+    font-size: 28rpx!important
   }
   .addBankcardTop {
     height: 298rpx;
