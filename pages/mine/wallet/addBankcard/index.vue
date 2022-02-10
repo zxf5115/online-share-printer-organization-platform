@@ -1,6 +1,6 @@
 <template>
   <div class="addBankcard">
-    <p-nav title="添加银行卡"/>
+    <p-nav :title="title"/>
     <u-form :model="bankcardMessage" ref="uForm" label-width="140" :labelStyle="labelStyle">
       <div class="addBankcardTop bg-w">
         <u-form-item label="姓名: " prop="name">
@@ -30,15 +30,14 @@
               <u-button @tap="getCode" :text="tips" type="primary" :customStyle="{width:'226rpx',height: '70rpx'}" shape="circle"></u-button>
             </template>
           </u-input>
-
         </u-form-item>
       </div>
       <div class="submitBankCard">
-        <u-button @click="submitBankCard" :customStyle="SubmitCustomStyle">{{submitTips}}</u-button>
+        <u-button @click="submitBankCard" :customStyle="SubmitCustomStyle">{{title}}</u-button>
       </div>
     </u-form>
-    
   </div>
+
 </template>
 <script>
 import common from "@/util/date/common.js"
@@ -63,18 +62,19 @@ export default {
         phone: [{ required: true, message: '请输入手机号', trigger: ['blur', 'change']}],
         verificationCode: [{ required: true, message: '请输入验证码', trigger: ['blur', 'change']}]
       },
+      title: "添加银行卡",
       tips: "发送验证码",
-      submitTips: "添加银行卡",
-      labelStyle: {
+      labelStyle: { // 表单的样式
         fontSize: "28rpx"
       },
-      SubmitCustomStyle: {
+      SubmitCustomStyle: { // 提交按钮的样式
         width:'396rpx',
         height: '94rpx',
         background: '#07C160',
         color: '#fff',
         borderRadius: '50rpx'
-      }
+      },
+      resultParams: {} // 成功失败结果
     }
   },
   methods: {
@@ -89,29 +89,30 @@ export default {
         uni.$u.toast('请先输入银行卡预留号码') 
         return 
       }
-      this.$nextTick(() => {
-        console.log(this.$refs.uCode)
-      })
-      // if (this.$refs.uCode.canGetCode) {
+      if (this.$refs.uCode.canGetCode) {
         uni.showLoading({
           title: '正在获取验证码'
         })
         setTimeout(() => {
           uni.hideLoading()
           uni.$u.toast("验证码已发送")
-          // this.$refs.uCode.start()
+          this.$refs.uCode.start()
         }, 2000)
-      // }
+      }
     },
     /**
      * 提交银行卡信息
      */
     submitBankCard() {
-      console.log(this.bankcardMessage) 
       let flag = common.checkRules(this.bankcardMessage, this.rules)
       if (flag) {
-        console.log("校验通过")
-      }
+        this.resultParams = {
+          title: '添加成功'
+        }
+        uni.navigateTo({
+          url: '/pages/mine/wallet/resultView/index?resultParams=' + encodeURIComponent(JSON.stringify(this.resultParams))
+        })
+      } 
       // this.$refs.uForm.validate(valid => { // 不好使
       //   console.log(valid)
       //   if(valid) { uni.$u.toast("验证通过")} else { uni.$u.toast("验证不通过")}
