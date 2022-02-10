@@ -24,7 +24,7 @@
           <u-input v-model="bankcardMessage.phone" type="number" border="none" placeholder="请输入银行卡预留号码"></u-input>
         </u-form-item>
          <u-form-item label="验证码: " prop="verificationCode">
-          <u-input type="number" placeholder="请输入验证码" border="none">
+          <u-input type="number" placeholder="请输入验证码" border="none" v-model="bankcardMessage.verificationCode">
             <template slot="suffix">
               <u-code @change="codeChange" ref="uCode" seconds="60" changeText="X秒重新获取"></u-code>
               <u-button @tap="getCode" :text="tips" type="primary" :customStyle="{width:'226rpx',height: '70rpx'}" shape="circle"></u-button>
@@ -109,7 +109,6 @@ export default {
     submitBankCard() {
       console.log(this.bankcardMessage) 
       let flag = common.checkRules(this.bankcardMessage, this.rules)
-      console.log(flag) 
       if (flag) {
         console.log("校验通过")
       }
