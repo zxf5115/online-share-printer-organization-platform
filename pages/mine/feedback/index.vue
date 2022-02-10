@@ -19,7 +19,9 @@
                 	:maxCount="6"
                 ></u-upload>
             </div>
-            <div class="feed-label fl fd-r jc-sb ai-ctr">联系方式<span>*</span></div>
+            <div class="feed-label fl fd-r jc-sb ai-ctr">
+                <p class="fl fd-r">联系方式<span>*</span></p><label></label>
+            </div>
             <u-input placeholder="留下联系方式，方便客服为您更好的解决问题" type="number" maxlength="11" border="" v-model="params.contact" />
             <div class="btns fl jc-ctr ai-ctr">
                 <button @click="submit">提交</button>
