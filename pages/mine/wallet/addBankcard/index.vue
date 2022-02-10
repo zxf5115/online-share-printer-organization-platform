@@ -1,7 +1,7 @@
 <template>
   <div class="addBankcard">
     <p-nav title="添加银行卡"/>
-    <u-form :model="bankcardMessage" :rules="rules" ref="uForm" label-width="140" :labelStyle="labelStyle">
+    <u-form :model="bankcardMessage" ref="uForm" label-width="140" :labelStyle="labelStyle">
       <div class="addBankcardTop bg-w">
         <u-form-item label="姓名: " prop="name">
           <u-input v-model="bankcardMessage.name" border="none" placeholder="请输入您的姓名"></u-input>
@@ -18,13 +18,13 @@
           <u-input v-model="bankcardMessage.bankDeposit" border="none" placeholder="请输入开户行"></u-input>
         </u-form-item>
          <u-form-item label="开户支行: " prop="depositBranch">
-          <u-input v-model="bankcardMessage.DepositBranch" border="none" placeholder="请输入开户行支行"></u-input>
+          <u-input v-model="bankcardMessage.depositBranch" border="none" placeholder="请输入开户行支行"></u-input>
         </u-form-item>
          <u-form-item label="银行卡预留号码: " prop="phone">
-          <u-input v-model="bankcardMessage.phone" border="none" placeholder="请输入银行卡预留号码"></u-input>
+          <u-input v-model="bankcardMessage.phone" type="number" border="none" placeholder="请输入银行卡预留号码"></u-input>
         </u-form-item>
          <u-form-item label="验证码: " prop="verificationCode">
-          <u-input placeholder="请输入验证码" border="none">
+          <u-input type="number" placeholder="请输入验证码" border="none">
             <template slot="suffix">
               <u-code @change="codeChange" ref="uCode" seconds="60" changeText="X秒重新获取"></u-code>
               <u-button @tap="getCode" :text="tips" type="primary" :customStyle="{width:'226rpx',height: '70rpx'}" shape="circle"></u-button>
@@ -41,6 +41,7 @@
   </div>
 </template>
 <script>
+import common from "@/util/date/common.js"
 export default {
   data() {
     return {
@@ -54,7 +55,13 @@ export default {
         verificationCode: ""
       },
       rules: {
-        name: [{ required: true, message: '请输入姓名', trigger: ['blur', 'change']}]
+        name: [{ required: true, message: '请输入姓名', trigger: ['blur', 'change']}],
+        id: [{ required: true, message: '请输入身份证号', trigger: ['blur', 'change']}],
+        cardId: [{ required: true, message: '请输入银行卡号', trigger: ['blur', 'change']}],
+        bankDeposit: [{ required: true, message: '请输入开户行', trigger: ['blur', 'change']}],
+        depositBranch: [{ required: true, message: '请输入开户支行', trigger: ['blur', 'change']}],
+        phone: [{ required: true, message: '请输入手机号', trigger: ['blur', 'change']}],
+        verificationCode: [{ required: true, message: '请输入验证码', trigger: ['blur', 'change']}]
       },
       tips: "发送验证码",
       submitTips: "添加银行卡",
@@ -82,27 +89,34 @@ export default {
         uni.$u.toast('请先输入银行卡预留号码') 
         return 
       }
-      if (this.$refs.uCode.canGetCode) {
+      this.$nextTick(() => {
+        console.log(this.$refs.uCode)
+      })
+      // if (this.$refs.uCode.canGetCode) {
         uni.showLoading({
           title: '正在获取验证码'
         })
         setTimeout(() => {
           uni.hideLoading()
-          console.log("请求接口 接口请求成功倒计时")
           uni.$u.toast("验证码已发送")
-          this.$refs.uCode.start()
+          // this.$refs.uCode.start()
         }, 2000)
-      }
+      // }
     },
     /**
      * 提交银行卡信息
      */
     submitBankCard() {
-      console.log(this.$refs.uForm)
-      this.$refs.uForm.validate(valid => {
-        console.log(valid)
-        if(valid) { uni.$u.toast("验证通过")} else { uni.$u.toast("验证不通过")}
-      })
+      console.log(this.bankcardMessage) 
+      let flag = common.checkRules(this.bankcardMessage, this.rules)
+      console.log(flag) 
+      if (flag) {
+        console.log("校验通过")
+      }
+      // this.$refs.uForm.validate(valid => { // 不好使
+      //   console.log(valid)
+      //   if(valid) { uni.$u.toast("验证通过")} else { uni.$u.toast("验证不通过")}
+      // })
     }
   }
 }
