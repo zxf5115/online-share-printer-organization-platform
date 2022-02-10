@@ -106,13 +106,28 @@ export default {
     submitBankCard() {
       let flag = common.checkRules(this.bankcardMessage, this.rules)
       if (flag) {
-        this.resultParams = {
-          title: '添加成功'
+        this.resultParams =  {
+          type: 1, // 成功
+          title: '添加成功',
+          img: require("@/static/mine/wallet/Done.png"),
+          titleColor: '#07C160',
+          subtitleTitle: "",
+          resultBtn: "确定"
         }
-        uni.navigateTo({
-          url: '/pages/mine/wallet/resultView/index?resultParams=' + encodeURIComponent(JSON.stringify(this.resultParams))
-        })
-      } 
+       
+      } else {
+        this.resultParams =  {
+          type: 0, // 成功
+          title: '添加失败',
+          img: require("@/static/mine/wallet/Info.png"),
+          titleColor: '#F76160',
+          subtitleTitle: "请重新添加银行卡",
+          resultBtn: "重新添加银行卡"
+        }
+      }
+      uni.navigateTo({
+        url: '/pages/mine/wallet/resultView/index?resultParams=' + encodeURIComponent(JSON.stringify(this.resultParams))
+      })
       // this.$refs.uForm.validate(valid => { // 不好使
       //   console.log(valid)
       //   if(valid) { uni.$u.toast("验证通过")} else { uni.$u.toast("验证不通过")}

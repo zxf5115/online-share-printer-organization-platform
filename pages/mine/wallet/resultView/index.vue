@@ -5,7 +5,7 @@
       <div class="resultImg"><img :src="resultParams.img" alt=""></div>
       <div :style="{color: resultParams.titleColor}" class="resultTip">{{resultParams.title}}</div>
       <div v-if="resultParams.subtitleTitle" class="subtitleTitle">{{resultParams.subtitleTitle}}</div>
-      <div class="resultBtn fl ai-ctr jc-ctr" :style="{background: resultParams.type ? '#25A1F9' : '#07C160'}">
+      <div @click="pageLink(resultParams.type)" class="resultBtn fl ai-ctr jc-ctr" :style="{background: resultParams.type ? '#25A1F9' : '#07C160'}">
         {{resultParams.resultBtn}}
       </div>
     </div>
@@ -15,27 +15,21 @@
 export default {
   data() {
     return {
-      resultParams: {
-        type: 0, // 成功
-        title: '添加失败',
-        img: require("@/static/mine/wallet/Info.png"),
-        titleColor: '#F76160',
-        subtitleTitle: "请重新添加银行卡",
-        resultBtn: "重新添加银行卡"
-      }
-      // {
-      //   type: 1, // 成功
-      //   title: '添加成功',
-      //   img: require("@/static/mine/wallet/Done.png"),
-      //   titleColor: '#07C160',
-      //   subtitleTitle: "",
-      //   resultBtn: "确定"
-      // }
+      resultParams: {}
     }
   },
   onLoad(option) {
-    // this.resultParams = JSON.parse(decodeURIComponent(option.resultParams))
-    // console.log(this.resultParams)
+    this.resultParams = JSON.parse(decodeURIComponent(option.resultParams))
+    console.log(this.resultParams)
+  },
+  methods: {
+    pageLink(type) {
+      if(type) {
+
+      } else {
+        
+      }
+    }
   }
 }
 </script>
