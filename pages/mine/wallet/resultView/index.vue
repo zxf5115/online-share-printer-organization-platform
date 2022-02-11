@@ -3,9 +3,10 @@
     <p-nav :title="resultParams.title"/>
     <div class="resultContent fl ai-ctr">
       <div class="resultImg"><img :src="resultParams.img" alt=""></div>
-      <div :style="{color: resultParams.titleColor}" class="resultTip">{{resultParams.title}}</div>
-      <div v-if="resultParams.subtitleTitle" class="subtitleTitle">{{resultParams.subtitleTitle}}</div>
-      <div @click="pageLink(resultParams.type)" class="resultBtn fl ai-ctr jc-ctr" :style="{background: resultParams.type ? '#25A1F9' : '#07C160'}">
+      <div class="resultTip" :style="{color: resultParams.titleColor}">{{resultParams.title}}</div>
+      <div class="subtitleTitle" v-if="resultParams.subtitleTitle">{{resultParams.subtitleTitle}}</div>
+      <div class="resultBtn fl ai-ctr jc-ctr" @click="pageLink(resultParams.type)" :style="{background: resultParams.type ? '#25A1F9' : '#07C160'}">{{resultParams.resultBtn}}</div>
+      <div class="resultBtn fl ai-ctr jc-ctr" @click="pageLink(resultParams.type)">
         {{resultParams.resultBtn}}
       </div>
     </div>
@@ -23,11 +24,14 @@ export default {
     console.log(this.resultParams)
   },
   methods: {
+    /**
+      * 根据当前类型跳转
+     */
     pageLink(type) {
       if(type) {
 
       } else {
-        
+
       }
     }
   }
