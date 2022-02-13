@@ -40,6 +40,13 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.$api('bank').data().then(res => {
+      console.log(res);
+    }).catch(error => {
+      console.log(error);
+    })
+  },
   methods: {
     /**
      * 添加银行卡
@@ -50,7 +57,13 @@ export default {
   }
 }
 </script>
+<style scoped>
+::v-deep  .u-button__text {
+  font-size: 28rpx !important;
+}
+</style>
 <style scoped lang="scss">
+
 .myBankcard {
   margin: 16rpx 18rpx 32rpx;
   .bankCard-list {

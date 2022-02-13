@@ -1,9 +1,9 @@
 <template>
   <div class="addBankcard">
     <p-nav title="添加银行卡"/>
-    <u-form :model="bankcardMessage" ref="uForm" label-width="140" :labelStyle="labelStyle">
+    <u-form :model="bankcardMessage" ref="uForm" label-width="240rpx" :labelStyle="labelStyle">
       <div class="addBankcardTop bg-w">
-        <u-form-item label="姓名: " prop="name">
+        <u-form-item label="姓名: " prop="name" >
           <u-input v-model="bankcardMessage.name" border="none" placeholder="请输入您的姓名"></u-input>
         </u-form-item>
         <u-form-item label="身份证号: " prop="id">
@@ -26,8 +26,10 @@
          <u-form-item label="验证码: " prop="verificationCode">
           <u-input type="number" placeholder="请输入验证码" border="none" v-model="bankcardMessage.verificationCode">
             <template slot="suffix">
-              <u-code @change="codeChange" ref="uCode" seconds="60" changeText="X秒重新获取"></u-code>
-              <u-button @tap="getCode" :text="tips" type="primary" :customStyle="{width:'226rpx',height: '70rpx'}" shape="circle"></u-button>
+              <div class="fl fd-c jc-sb ai-ctr">
+                <u-code @change="codeChange" ref="uCode" seconds="60" changeText="X秒重新获取"></u-code>
+                <u-button @tap="getCode" :text="tips" type="primary" :customStyle="{width:'226rpx',height: '70rpx'}" shape="circle"></u-button>
+              </div>
             </template>
           </u-input>
 
@@ -92,7 +94,7 @@ export default {
       this.$nextTick(() => {
         console.log(this.$refs.uCode)
       })
-      // if (this.$refs.uCode.canGetCode) {
+      if (this.$refs.uCode.canGetCode) {
         uni.showLoading({
           title: '正在获取验证码'
         })
@@ -101,7 +103,7 @@ export default {
           uni.$u.toast("验证码已发送")
           // this.$refs.uCode.start()
         }, 2000)
-      // }
+      }
     },
     /**
      * 提交银行卡信息
@@ -120,10 +122,15 @@ export default {
   }
 }
 </script>
+<style scoped>
+::v-deep  .u-button__text {
+  font-size: 28rpx !important;
+}
+</style>
 <style scoped lang="scss">
 .addBankcard {
   margin: 12rpx 0 auto;
-  font-size: 14rpx;
+  font-size: 28rpx !important;
   /deep/.u-form-item__body__right {
     border-bottom: 1px solid #F0F0F0;
   }
@@ -142,7 +149,7 @@ export default {
   .addBankcardBottom {
     height: auto;
     padding: 58rpx 28rpx 0 20rpx;
-    margin-top: 14rpx;
+    margin-top: 30rpx;
     border-radius: 16rpx;
     /deep/.u-form-item {
       margin-bottom: 30rpx!important
