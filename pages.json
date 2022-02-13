@@ -70,6 +70,9 @@
 		},
 		{
 			"path": "pages/mine/wallet/addBankcard/index"
+		},
+		{
+			"path": "pages/mine/wallet/resultView/index"
 		}
 	],
 	
