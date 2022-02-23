@@ -35,23 +35,31 @@ export default {
         },
         ...mapGetters(['isLogin', 'hasUserinfo']),
     },
+    onLoad(e = {}) {
+        console.log(e);
+        this.token = (e||{}).token||void 0;
+        
+    },
+    mounted() {
+        if (this.isLogin && this.hasUserinfo && !this.token) { // 已登录就直接跳转到home/index
+            this.jumpHome();
+        } else if (!this.isLogin || this.token) { // 未登录就去登录
+            this.login();
+        }
+    },
     data() {
         return {
             readFlag: [],
             errorFlag: false,
-        }
-    },
-    created() {
-        if (this.isLogin && this.hasUserinfo) { // 已登录就直接跳转到home/index
-            this.jumpHome();
-        } else if (!this.isLogin) { // 未登录就去登录
-            this.login();
+            token: void 0,
         }
     },
     methods: {
         login(...args) {
             this.errorFlag = false;
-            this.$store.dispatch('user/login', args[0]||{}).then(res => {
+            let params = args[0]||{};
+            if (this.token) params.token = this.token;
+            this.$store.dispatch('user/login', params).then(res => {
                 if (this.isLogin && this.hasUserinfo) { // 已登录就直接跳转到home/index
                     this.jumpHome();
                 }
