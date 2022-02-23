@@ -13,7 +13,8 @@
     </div>
     <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb" @click="myBankcard">
       <span class="ft-14">银行卡：</span>
-      <span><image class="bankCard-image" src="@/static/mine/wallet/bankImg.png">中国工商银行（9552）</span>
+      <span v-if="hasBank"><image class="bankCard-image" src="@/static/mine/wallet/bankImg.png">中国工商银行（9552）</span>
+      <span v-else>点击设置银行卡</span>
       <u-icon name="arrow-right" color="#B7B7B7" size="18" @click="leftAction"></u-icon>
     </div>
     <div class="takeNotes fl fd-c ai-ctr">
@@ -25,12 +26,22 @@
   </div>
 </template>
 <script>
-
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
       title: '我的钱包'
     }
+  },
+  computed: {
+    ...mapGetters([ 'hasBank', 'bankinfo' ]),
+  },
+  created() {
+      this.$api('bank').data().then(res => {
+      console.log(res);
+    }).catch(error => {
+      console.log(error);
+    })
   },
   methods: {
     takeNotesClick() {
@@ -41,7 +52,11 @@ export default {
       uni.navigateTo({ url: '/pages/mine/wallet/takeNotes/index' })
     },
     myBankcard() {
-      uni.navigateTo({ url: '/pages/mine/wallet/Withdrawal/index' })
+      if (this.hasBank) {
+        uni.navigateTo({ url: '/pages/mine/wallet/bankDetail/index' })
+      } else {
+        uni.navigateTo({ url: '/pages/mine/wallet/addBankcard/index' })
+      }
     }
   }
   

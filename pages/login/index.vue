@@ -55,7 +55,7 @@ export default {
         }
     },
     methods: {
-        login(...args) {
+        async login(...args) {
             this.errorFlag = false;
             let params = args[0]||{};
             if (this.token) params.token = this.token;
@@ -72,11 +72,16 @@ export default {
         },
         jumpHome() {
             // 跳转之前应该要请求一些必要数据
-            this.$store.dispatch('user/getOrgAsset').then(res => {
+            Promise.all([
+                this.$store.dispatch('user/getOrgAsset'),
+                this.$store.dispatch('user/getBankInfo'),
+            ]).then(res => {
+                console.log('jump获取必要数据');
                 uni.switchTab({url: '/pages/home/index'});
             }).catch(err => {
+                console.log('jump获取必要数据');
                 this.errorFlag = true;
-            })
+            });
         },
         getUserinfo() {
             if (!this.isRead) return;

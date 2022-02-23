@@ -28,11 +28,7 @@ export default {
       * 根据当前类型跳转
      */
     pageLink(type) {
-      if(type) {
-
-      } else {
-
-      }
+      uni.navgateBack();
     }
   }
 }
@@ -64,7 +60,7 @@ export default {
   .resultBtn {
     width: 396rpx;
     height: 94rpx;
-    margin: 574rpx 0 180rpx;
+    margin: 274rpx 0 180rpx;
     color: #ffffff;
     border-radius: 50rpx;
     

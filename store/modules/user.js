@@ -14,6 +14,7 @@ const state = {
   userinfo: {},
   openid: void 0,
   token: void 0,
+  bank: void 0, // 银行卡信息
   asset: {}, // 供销商资产
 }
 
@@ -22,9 +23,20 @@ const mutations = {
   SET_USERINFO: (state, userinfo) => state.userinfo = userinfo,
   SET_TOKEN   : (state, token)    => state.token    = token,
   SET_ASSET   : (state, asset)    => state.asset    = asset,
+  SET_BANK    : (state, bank)     => state.bank     = bank,
 }
 const actions = {
-  
+  getBankInfo({ commit, state }){
+    return new Promise((resolve, reject) => {
+      api('bank').data().then(res => {
+        commit('SET_BANK', res);
+        resolve(res);
+      }).catch(error => {
+        console.log(error);
+        reject(error);
+      })
+    })
+  },
   login({ commit, state }, ...args) {
     return new Promise((resolve, reject) => {
       // 调用登录 这部分获取code部分在api请求内

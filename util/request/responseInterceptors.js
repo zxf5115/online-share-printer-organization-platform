@@ -7,20 +7,22 @@ module.exports = (vm) => {
         const data = response.data||{}
         // 自定义参数
         const custom = response.config?.custom
+        console.log(data, !custom.notCheck && data.status !== 200);
         if (!custom.notCheck && data.status !== 200) { // 服务端返回的状态码不等于200，则reject()
             // 如果没有显式定义custom的toast参数为false的话，默认对报错进行toast弹出提示
-            if (custom.toast) {
+            if (custom.notShowToast) {
                 uni.$u.toast(data.message||'未知错误');
             }
             // 如果需要catch返回，则进行reject 
             // TODO: 这里后面再改 困了 看看有没有办法捕捉到不实现catch的情况
-            if (custom?.catch) {
+            // if (custom?.catch) {
                 return Promise.reject(data)
-            } else {
-                // 否则返回一个pending中的promise
-                return new Promise(() => { })
-            }
+            // } else {
+            //     // 否则返回一个pending中的promise
+            //     return new Promise(() => { })
+            // }
         }
+        console.log(111);
         if (custom.responseAll)
             return data || {};
         else

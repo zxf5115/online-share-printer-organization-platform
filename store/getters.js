@@ -6,5 +6,6 @@ const getters = {
   asset       : state => state.user.asset,
   isLogin     : state => !!state.user.token, // 已登录状态
   hasUserinfo : state => ((state.user.userinfo.avatar||'').length && (state.user.userinfo.nickname||'').length), // 已经设置了用户信息
+  hasBank     : state => state.user.bank && !!Object.keys(state.user.bank).length
 }
 export default getters

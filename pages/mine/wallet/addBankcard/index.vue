@@ -1,35 +1,19 @@
 <template>
   <div class="addBankcard">
     <p-nav :title="title"/>
-    <u-form :model="bankcardMessage" ref="uForm" label-width="140" :labelStyle="labelStyle">
-      <div class="addBankcardTop bg-w">
-        <u-form-item label="姓名: " prop="name">
-          <u-input v-model="bankcardMessage.name" border="none" placeholder="请输入您的姓名"></u-input>
-        </u-form-item>
-        <u-form-item label="身份证号: " prop="id">
-          <u-input v-model="bankcardMessage.id" border="none" placeholder="请输入您的身份证号码"></u-input>
-        </u-form-item>
-      </div>
+    <u-form :model="bankcardMessage" ref="uForm" label-width="200rpx" :labelStyle="labelStyle">
       <div class="addBankcardBottom bg-w">
+        <u-form-item label="户名: " prop="name">
+          <u-input v-model="bankcardMessage.company_name" border="none" placeholder="请输入您的户名"></u-input>
+        </u-form-item>
         <u-form-item label="银行卡号: " prop="cardId">
-          <u-input v-model="bankcardMessage.cardId" border="none" placeholder="请输入持卡人本人银行卡号"></u-input>
+          <u-input v-model="bankcardMessage.card_no" border="none" placeholder="请输入持卡人本人银行卡号"></u-input>
         </u-form-item>
         <u-form-item label="开户行: " prop="bankDeposit">
-          <u-input v-model="bankcardMessage.bankDeposit" border="none" placeholder="请输入开户行"></u-input>
+          <u-input v-model="bankcardMessage.open_bank_name" border="none" placeholder="请输入开户行"></u-input>
         </u-form-item>
          <u-form-item label="开户支行: " prop="depositBranch">
-          <u-input v-model="bankcardMessage.depositBranch" border="none" placeholder="请输入开户行支行"></u-input>
-        </u-form-item>
-         <u-form-item label="银行卡预留号码: " prop="phone">
-          <u-input v-model="bankcardMessage.phone" type="number" border="none" placeholder="请输入银行卡预留号码"></u-input>
-        </u-form-item>
-         <u-form-item label="验证码: " prop="verificationCode">
-          <u-input type="number" placeholder="请输入验证码" border="none" v-model="bankcardMessage.verificationCode">
-            <template slot="suffix">
-              <u-code @change="codeChange" ref="uCode" seconds="60" changeText="X秒重新获取"></u-code>
-              <u-button @tap="getCode" :text="tips" type="primary" :customStyle="{width:'226rpx',height: '70rpx'}" shape="circle"></u-button>
-            </template>
-          </u-input>
+          <u-input v-model="bankcardMessage.branch_bank_name" border="none" placeholder="请输入开户行支行"></u-input>
         </u-form-item>
       </div>
       <div class="submitBankCard">
@@ -45,25 +29,18 @@ export default {
   data() {
     return {
       bankcardMessage: {
-        name: "",
-        id: "",
-        cardId: "",
-        bankDeposit: "",
-        depositBranch: "",
-        phone: "",
-        verificationCode: ""
+        company_name: "",
+        card_no: "",
+        open_bank_name: "",
+        branch_bank_name: "",
       },
       rules: {
-        name: [{ required: true, message: '请输入姓名', trigger: ['blur', 'change']}],
-        id: [{ required: true, message: '请输入身份证号', trigger: ['blur', 'change']}],
-        cardId: [{ required: true, message: '请输入银行卡号', trigger: ['blur', 'change']}],
-        bankDeposit: [{ required: true, message: '请输入开户行', trigger: ['blur', 'change']}],
-        depositBranch: [{ required: true, message: '请输入开户支行', trigger: ['blur', 'change']}],
-        phone: [{ required: true, message: '请输入手机号', trigger: ['blur', 'change']}],
-        verificationCode: [{ required: true, message: '请输入验证码', trigger: ['blur', 'change']}]
+        company_name: [{ required: true, message: '请输入户名', trigger: ['blur', 'change']}],
+        card_no: [{ required: true, message: '请输入银行卡号', trigger: ['blur', 'change']}],
+        open_bank_name: [{ required: true, message: '请输入开户行', trigger: ['blur', 'change']}],
+        branch_bank_name: [{ required: true, message: '请输入开户支行', trigger: ['blur', 'change']}],
       },
       title: "添加银行卡",
-      tips: "发送验证码",
       labelStyle: { // 表单的样式
         fontSize: "28rpx"
       },
@@ -78,33 +55,20 @@ export default {
     }
   },
   methods: {
-    codeChange(text) {
-      this.tips = text
-    },
-    /**
-     * 获取验证码
-     */
-    getCode() {
-      if(!this.bankcardMessage.phone) {
-        uni.$u.toast('请先输入银行卡预留号码') 
-        return 
-      }
-      if (this.$refs.uCode.canGetCode) {
-        uni.showLoading({
-          title: '正在获取验证码'
-        })
-        setTimeout(() => {
-          uni.hideLoading()
-          uni.$u.toast("验证码已发送")
-          this.$refs.uCode.start()
-        }, 2000)
-      }
-    },
     /**
      * 提交银行卡信息
      */
     submitBankCard() {
-      let flag = common.checkRules(this.bankcardMessage, this.rules)
+      if (!common.checkRules(this.bankcardMessage, this.rules)) {
+        return this.$u.toast('请输入银行卡相关信息');
+      }
+      this.$api('bank').handle(this.bankcardMessage).then(res => {
+        this.next(true);
+      }).catch(error => {
+        this.next(false);
+      })
+    },
+    next(flag) {
       if (flag) {
         this.resultParams =  {
           type: 1, // 成功
@@ -114,7 +78,6 @@ export default {
           subtitleTitle: "",
           resultBtn: "确定"
         }
-       
       } else {
         this.resultParams =  {
           type: 0, // 成功
@@ -125,13 +88,9 @@ export default {
           resultBtn: "重新添加银行卡"
         }
       }
-      uni.navigateTo({
+      uni[!flag ? 'navigateTo' : 'redirectTo']({
         url: '/pages/mine/wallet/resultView/index?resultParams=' + encodeURIComponent(JSON.stringify(this.resultParams))
       })
-      // this.$refs.uForm.validate(valid => { // 不好使
-      //   console.log(valid)
-      //   if(valid) { uni.$u.toast("验证通过")} else { uni.$u.toast("验证不通过")}
-      // })
     }
   }
 }
