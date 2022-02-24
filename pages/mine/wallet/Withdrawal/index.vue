@@ -79,12 +79,7 @@ export default {
           this.$u.toast('提现成功');
           uni.navigateBack();
           uni.hideLoading();
-        }).catch(err => {
-          this.$u.toast('提现成功,资产列表刷新失败');
-          uni.hideLoading();  
         })
-      }).catch(error => {
-        uni.hideLoading();
       })
     }
   }
