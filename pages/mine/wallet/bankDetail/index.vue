@@ -3,10 +3,10 @@
     <p-nav title="我的银行卡"/>
     <div class="bank-detail" :style="bankStyle">
       <div class="bank-info fl jc-ctr ai-ctr">
-        <image :src="require('@/static/login/banner.png')"/>
-        <span>工商银行储蓄卡</span>
+        <image :src="bank.logo"/>
+        <span>{{bank.open_bank_name}}</span>
       </div>
-      <p class="card-number">****　****　****　2869</p>
+      <p class="card-number">{{bank.number}}</p>
       <div class="payinfo">
         <p class="paysize">支付限额</p>
         <p class="paycell">
@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -30,13 +31,20 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([ 'bank' ]),
     bankStyle() {
-      return `background: ${'#D95555'};`;
+      return `background: ${this.bank.color};`;
     }
   },
   methods: {
    delAction() {
-     console.log('delAction');
+     this.$api('bank').delete(this.bank.id).then(res => {
+       // 删除成功;
+       this.$store.dispatch('user/getBankInfo').then(res => {
+         this.$u.toast('删除成功');
+         uni.navigateBack();
+       })
+     })
    }
   }
 }
@@ -57,6 +65,7 @@ export default {
         width: 100rpx;
         height: 100rpx;
         border-radius: 50rpx;
+        background-color: white;
       }
       span {
         color: white;

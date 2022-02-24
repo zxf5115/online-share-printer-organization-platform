@@ -75,8 +75,8 @@ export default {
             Promise.all([
                 this.$store.dispatch('user/getOrgAsset'),
                 this.$store.dispatch('user/getBankInfo'),
+                this.$store.dispatch('user/getBankList'),
             ]).then(res => {
-                console.log('jump获取必要数据');
                 uni.switchTab({url: '/pages/home/index'});
             }).catch(err => {
                 console.log('jump获取必要数据');

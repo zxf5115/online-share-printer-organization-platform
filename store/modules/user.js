@@ -15,15 +15,17 @@ const state = {
   openid: void 0,
   token: void 0,
   bank: void 0, // 银行卡信息
+  bankList: [], // 银行卡列表
   asset: {}, // 供销商资产
 }
 
 const mutations = {
-  SET_OPENID  : (state, openid)   => state.openid   = openid,
-  SET_USERINFO: (state, userinfo) => state.userinfo = userinfo,
-  SET_TOKEN   : (state, token)    => state.token    = token,
-  SET_ASSET   : (state, asset)    => state.asset    = asset,
-  SET_BANK    : (state, bank)     => state.bank     = bank,
+  SET_OPENID    : (state, openid)   => state.openid   = openid,
+  SET_USERINFO  : (state, userinfo) => state.userinfo = userinfo,
+  SET_TOKEN     : (state, token)    => state.token    = token,
+  SET_ASSET     : (state, asset)    => state.asset    = asset,
+  SET_BANK      : (state, bank)     => state.bank     = bank,
+  SET_BANK_LIST : (state, bankList) => state.bankList = bankList,
 }
 const actions = {
   getBankInfo({ commit, state }){
@@ -59,6 +61,16 @@ const actions = {
       }).catch(err => {
         reject(err);
       }) 
+    })
+  },
+  getBankList({commit, state}) {
+    return new Promise((resolve, reject) => {
+      api('bank').list().then(res => {
+        commit('SET_BANK_LIST', res);
+        resolve(res);
+      }).catch(error => {
+        reject(error);
+      })
     })
   },
   getOrgAsset({commit, state}) {

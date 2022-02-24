@@ -6,9 +6,6 @@
       <div class="resultTip" :style="{color: resultParams.titleColor}">{{resultParams.title}}</div>
       <div class="subtitleTitle" v-if="resultParams.subtitleTitle">{{resultParams.subtitleTitle}}</div>
       <div class="resultBtn fl ai-ctr jc-ctr" @click="pageLink(resultParams.type)" :style="{background: resultParams.type ? '#25A1F9' : '#07C160'}">{{resultParams.resultBtn}}</div>
-      <div class="resultBtn fl ai-ctr jc-ctr" @click="pageLink(resultParams.type)">
-        {{resultParams.resultBtn}}
-      </div>
     </div>
   </div>
 </template>
@@ -28,7 +25,7 @@ export default {
       * 根据当前类型跳转
      */
     pageLink(type) {
-      uni.navgateBack();
+      uni.navigateBack();
     }
   }
 }

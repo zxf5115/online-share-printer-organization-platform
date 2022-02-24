@@ -10,7 +10,7 @@ module.exports = (vm) => {
         console.log(data, !custom.notCheck && data.status !== 200);
         if (!custom.notCheck && data.status !== 200) { // 服务端返回的状态码不等于200，则reject()
             // 如果没有显式定义custom的toast参数为false的话，默认对报错进行toast弹出提示
-            if (custom.notShowToast) {
+            if (!custom.notShowToast) {
                 uni.$u.toast(data.message||'未知错误');
             }
             // 如果需要catch返回，则进行reject 

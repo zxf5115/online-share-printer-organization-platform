@@ -4,22 +4,22 @@
     <div class="wallet-top bg-w">
       <div class="total-num fl fd-r ai-ctr">
          <span class="num-tit">收益总金额：</span>
-         <span>￥<u-count-to class="count" :endVal="2000.00" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
+         <span>￥<u-count-to class="count" :endVal="asset.money" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
       </div>
       <div class="total-num fl fd-r ai-ctr">
         <span>可提现金额：</span>
-        <span>￥<u-count-to class="count" :endVal="2000.00" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
+        <span>￥<u-count-to class="count" :endVal="asset.withdrawal_money" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
       </div>
     </div>
     <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb" @click="myBankcard">
       <span class="ft-14">银行卡：</span>
-      <span v-if="hasBank"><image class="bankCard-image" src="@/static/mine/wallet/bankImg.png">中国工商银行（9552）</span>
+      <span v-if="hasBank" class="fl fd-r ai-ctr jc-sb"><image class="bankCard-image" :src="bank.logo">{{bank.open_bank_name}}（{{bank.lastNumber}}）</span>
       <span v-else>点击设置银行卡</span>
       <u-icon name="arrow-right" color="#B7B7B7" size="18" @click="leftAction"></u-icon>
     </div>
     <div class="takeNotes fl fd-c ai-ctr">
       <span class="cl-main ft-14" @click="takeNotesClick">提现记录</span>
-      <span class="green-btn">提现</span>
+      <span class="green-btn" @click="withdrawal">提现</span>
       <span class="ft-12 tl-ctr"> 提现成功后七个工作日到账<br />最小提现金额为2000元
       </span>
     </div>
@@ -34,18 +34,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([ 'hasBank', 'bankinfo' ]),
+    ...mapGetters([ 'hasBank', 'bank', 'asset' ]),
   },
-  created() {
-      this.$api('bank').data().then(res => {
-      console.log(res);
-    }).catch(error => {
-      console.log(error);
-    })
+  onShow() {
+    // 这里得调用一下, 不然不会刷新
+    this.bank;
   },
   methods: {
+    withdrawal() {
+      uni.navigateTo({ url: '/pages/mine/wallet/withdrawal/index' });
+    },
     takeNotesClick() {
-      console.log("djdjjdjdjd")
       uni.navigateTo({ url: '/pages/mine/wallet/takeNotes/index' })
     },
     leftAction() {
@@ -95,7 +94,6 @@ export default {
       width: 41rpx;
       height: 41rpx;
       margin-right: 12rpx;
-      margin-top: 6rpx;
     }
   }
 }

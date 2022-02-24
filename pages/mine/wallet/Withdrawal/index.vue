@@ -1,125 +1,168 @@
 <template>
   <div class="withdrawal">
-    <p-nav title="我的银行卡"/>
-    <div class="myBankcard">
-      <div class="bankCard-list" v-for="(item, index) in bankCardList" :key="index" :style="{'background': item.color}">
-        <div class="bankCardContent fl fd-r">
-          <div class="cardMessageLeft fl ai-ctr jc-ctr">
-            <div class="cardImg"><img src="@/static/mine/wallet/home_s.png" alt=""></div>
-          </div>
-          <div class="bankMessageRight">
-             <p class="bankCardName">{{item.name}}</p>
-             <p class="bankCardType">{{item.type}}</p>
-             <p class="bankCardNumber">**** **** **** {{item.number}}</p>
-          </div>
+    <p-nav title="提现"/>
+    <div class="bankinfo fl fd-r jc-sb ai-ctr">
+      <label>到账账户</label>
+      <div class="bank fl fd-c ai-ctr jc-ctr">
+        <div class="top fl fd-r ai-ctr">
+          <image :src="bank.logo">
+          <span>{{bank.open_bank_name}}（{{bank.lastNumber}}）</span>
+        </div>
+        <span>5个工作日内到账</span>
+      </div>
+      <u-icon name="arrow-right" color="#B7B7B7" size="32rpx"></u-icon>
+    </div>
+    <div class="with-info">
+      <p class="title">提现金额</p>
+      <div class="input fl fd-r ai-ctr">
+        <label>￥</label>
+        <div class="i-b">
+          <u-input v-model="price" style="font-weight: blod;" type="number"></u-input>
         </div>
       </div>
-      <div class="bankCard-add bg-w fl fd-r ai-ctr jc-ctr">
-        <div class="addBankcardImg" @click="addBankcard"><img src="@/static/mine/wallet/addBankcard.png" alt=""></div>
+      <div class="with-set">
+        <p>当前可提现金额{{asset.withdrawal_money}}，<span @click="withAll">全部提现</span></p>
+        <p>费率：0.10%</p>
+      </div>
+      <div class="btns fl ai-ctr jc-ctr">
+        <button @click="withdrawal">提现</button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
+  computed: {
+    ...mapGetters([ 'bank', 'asset' ]),
+  },
   data() {
     return {
-      bankCardList: [
-        {
-          color: '#D83D3D',
-          name: '中国工商银行',
-          type: '储蓄卡',
-          number: '2849'
-        },
-        {
-          color: '#199176',
-          name: '中国工商银行',
-          type: '储蓄卡',
-          number: '2849'
-        }
-      ]
+      price: '',
     }
   },
-  mounted() {
-    this.$api('bank').data().then(res => {
-      console.log(res);
-    }).catch(error => {
-      console.log(error);
-    })
-  },
+  watch: {
+    price() {
+      var price = '$' + this.price;
+      price = price
+          .replace(/[^\d.]/g, '') // 清除“数字”和“.”以外的字符
+          .replace(/\.{2,}/g, '.') // 只保留第一个. 清除多余的
+          .replace('.', '$#$')
+          .replace(/\./g, '')
+          .replace('$#$', '.')
+          .replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); // 只能输入两个小数
+      if (price.indexOf('.') < 0 && price != '') {
+          // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+          price = parseFloat(price);
+      }
+      if (price > +this.asset.withdrawal_money) price = +this.asset.withdrawal_money
+      setTimeout(() => {
+        this.price = price
+      }, 0);
+    }
+  },  
   methods: {
-    /**
-     * 添加银行卡
-     */
-    addBankcard() {
-      uni.navigateTo({ url: '/pages/mine/wallet/addBankcard/index' })
+    withAll() {
+      this.price = this.asset.withdrawal_money;
+    },
+    withdrawal() {
+      if (!this.price.length) {
+        return this.$u.toast('请输入提现金额')
+      }
+      uni.showLoading({ title: '加载中...' });
+      this.$api('asset').withdrawal_handle(this.price).then(res => {
+        this.$store.dispatch('user/getOrgAsset').then(res => {
+          this.$u.toast('提现成功');
+          uni.navigateBack();
+          uni.hideLoading();
+        }).catch(err => {
+          this.$u.toast('提现成功,资产列表刷新失败');
+          uni.hideLoading();  
+        })
+      }).catch(error => {
+        uni.hideLoading();
+      })
     }
   }
 }
 </script>
-<style scoped>
-::v-deep  .u-button__text {
-  font-size: 28rpx !important;
-}
-</style>
-<style scoped lang="scss">
 
-.myBankcard {
-  margin: 16rpx 18rpx 32rpx;
-  .bankCard-list {
-    height: 262rpx;
-    width: 100%;
-    border-radius: 10rpx;
-    color: #ffffff;
-    margin-bottom: 32rpx;
-    .bankCardContent {
-      margin: 38rpx auto auto 36rpx;
-      .cardMessageLeft {
-        width: 60rpx;
-        height: 60rpx;
-        background: #ffffff;
-        border-radius: 50%;
-        margin-right: 22rpx;
-        .cardImg {
-          width: 44rpx;
-          height: 44rpx;
-          img {
-            width: 100%;
-            height: 100%;
-          }
+<style scoped lang="scss">
+.withdrawal {
+  height: 100vh;
+  .with-info {
+    width: calc(100% - 80rpx);
+    padding: 40rpx;
+    margin-top: 40rpx;
+    background: white;
+    flex: 1;
+    .btns {
+      margin-top: 80rpx;
+      button {
+        background: #07C160;
+        width: 400rpx;
+        height: 94rpx;
+        color: white;
+        border-radius: 47rpx;
+      }
+    }
+    .title {
+      color: #454564;
+    }
+    .with-set {
+      padding: 20rpx 78rpx;
+      p {
+        height: 50rpx;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        color: #454564;
+        font-size: 24rpx;
+        span {
+          color: #25A1F9;
         }
       }
-      .bankMessageRight {
-        color: #ffffff;
-        .bankCardName {
-          height: 40rpx;
-          line-height: 40rpx;
-          font-size: 28rpx;
-        }
-        .bankCardType {
-          height: 26rpx;
-          line-height: 26rpx;
-          font-size: 18rpx;
-          margin: 6rpx 0 11rpx;
-        }
-        .bankCardNumber {
-           height: 50rpx;
-          line-height: 50rpx;
-          font-size: 36rpx;
+    }
+    .input {
+      height: 112rpx;
+      label {
+        font-size: 60rpx;
+      }
+      .i-b {
+        height: 100%;
+        width: 550rpx;
+        margin-left: 20rpx;
+        border-bottom: #F0F0F0 1rpx solid;
+        input {
+          font-size: 38rpx !important;
         }
       }
     }
   }
-  .bankCard-add {
-    height: 262rpx;
-    width: 100%;
-    border-radius: 10rpx;
-    .addBankcardImg {
-      width: 186rpx;
-      height: 40rpx;
-      img {
-        width: 100%;
-        height: 100%
+  .bankinfo {
+    background: white;
+    height: 176rpx;
+    width: calc(100% - 80rpx);
+    padding: 0 40rpx;
+    label {
+      color: #454564;
+    }
+    .bank {
+      flex: 1;
+      .top {
+        image {
+          width: 42rpx;
+          height: 42rpx; 
+          margin-right: 10rpx;
+        }
+        span {
+          color: #454564;
+          font-size: 26rpx;
+        }
+      }
+      span {
+        color: #7A7A7D;
+        font-size: 20rpx;
       }
     }
   }
