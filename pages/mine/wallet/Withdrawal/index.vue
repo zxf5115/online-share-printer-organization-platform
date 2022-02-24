@@ -21,8 +21,8 @@
         </div>
       </div>
       <div class="with-set">
-        <p>当前可提现金额{{asset.withdrawal_money}}，<span @click="withAll">全部提现</span></p>
-        <p>费率：0.10%</p>
+        <p>当前可提现金额{{asset.withdrawal_money||'-'}}，<span @click="withAll">全部提现</span></p>
+        <p>费率：{{withdrawal_data.withdrawal_rate||'-'}}%</p>
       </div>
       <div class="btns fl ai-ctr jc-ctr">
         <button @click="withdrawal">提现</button>
@@ -39,7 +39,11 @@ export default {
   data() {
     return {
       price: '',
+      withdrawal_data: {},
     }
+  },
+  onLoad(e) {
+    this.withdrawal_data = JSON.parse(e.withdrawal_data);
   },
   watch: {
     price() {
@@ -69,7 +73,7 @@ export default {
       if (!this.price.length) {
         return this.$u.toast('请输入提现金额')
       }
-      uni.showLoading({ title: '加载中...' });
+      uni.showLoading({ mask: true,  title: '加载中...' });
       this.$api('asset').withdrawal_handle(this.price).then(res => {
         this.$store.dispatch('user/getOrgAsset').then(res => {
           this.$u.toast('提现成功');

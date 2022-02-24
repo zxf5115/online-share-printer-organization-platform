@@ -80,7 +80,7 @@ export default {
       if (!common.checkRules(this.bankcardMessage, this.rules)) {
         return this.$u.toast('请输入银行卡相关信息');
       }
-      uni.showLoading({title: '加载中'});
+      uni.showLoading({ mask: true, title: '加载中'});
       this.$api('bank').handle(this.bankcardMessage).then(res => {
         this.$store.dispatch('user/getBankInfo').then(res => {
           uni.hideLoading();

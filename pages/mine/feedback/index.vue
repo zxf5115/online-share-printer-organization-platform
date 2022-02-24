@@ -86,7 +86,7 @@ export default {
             files.forEach(file => {
                 queue.push(this.$api('file').picture(file.url));
             });
-            uni.showLoading({
+            uni.showLoading({ mask: true, 
                     title: '上传中'
             });
             Promise.all(queue).then(res => {

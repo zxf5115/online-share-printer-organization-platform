@@ -20,7 +20,7 @@
     <div class="takeNotes fl fd-c ai-ctr">
       <span class="cl-main ft-14" @click="takeNotesClick">提现记录</span>
       <span class="green-btn" @click="withdrawal">提现</span>
-      <span class="ft-12 tl-ctr"> 提现成功后七个工作日到账<br />最小提现金额为2000元
+      <span class="ft-12 tl-ctr"> 提现成功后七个工作日到账<br />最小提现金额为{{withdrawal_data.minimum_amount||'-'}}元
       </span>
     </div>
   </div>
@@ -30,7 +30,8 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      title: '我的钱包'
+      title: '我的钱包',
+      withdrawal_data: {},
     }
   },
   computed: {
@@ -39,10 +40,19 @@ export default {
   onShow() {
     // 这里得调用一下, 不然不会刷新
     this.bank;
+    uni.showLoading({ mask: true, title: '加载中...'});
+    this.$api('asset').withdrawal_data().then(res => {
+      console.log(res);
+      this.withdrawal_data = res;
+      uni.hideLoading()
+    }).catch(error => {
+      uni.hideLoading()
+    })
   },
   methods: {
     withdrawal() {
-      uni.navigateTo({ url: '/pages/mine/wallet/withdrawal/index' });
+      if (!this.hasBank) return this.$u.toast('请设置银行卡');
+      uni.navigateTo({ url: `/pages/mine/wallet/withdrawal/index?withdrawal_data=${JSON.stringify(this.withdrawal_data)}` });
     },
     takeNotesClick() {
       uni.navigateTo({ url: '/pages/mine/wallet/takeNotes/index' })
