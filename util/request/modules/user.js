@@ -3,7 +3,6 @@ export default { // 这里的this指向会变成Request类
     // 这个是微信小程序操作
     async login(...args) {
         let code = await this.api('user').wxLogin();
-        // return console.lo
         // 获取code openid错误 返回个空指针
         if (!code) return void 0;
         return this.post('weixin_login', {code, ...(args[0]||{})});
@@ -16,7 +15,7 @@ export default { // 这里的this指向会变成Request类
                     resolve(res.code)
                 },
                 fail: err => {
-                    reject(void 0);
+                    reject(err);
                 }
             })
         })

@@ -1,3 +1,4 @@
+import store from '@/store'
 /**
  * 响应拦截
  * @param {Object} http 
@@ -6,8 +7,15 @@ module.exports = (vm) => {
     uni.$u.http.interceptors.response.use((response) => { /* 对响应成功做点什么 可使用async await 做异步操作*/
         const data = response.data||{}
         // 自定义参数
-        const custom = response.config?.custom
-        console.log(data, !custom.notCheck && data.status !== 200);
+        const custom = response.config?.custom;
+        // 超时或数据错误登出逻辑
+        if(data.status === -101) {
+            // 清除数据
+            store.commit('user/CLEAR_USERINFO');
+            // 这里跳登录页
+            uni.reLaunch('/pages/login/index');
+            return;
+        }
         if (!custom.notCheck && data.status !== 200) { // 服务端返回的状态码不等于200，则reject()
             // 如果没有显式定义custom的toast参数为false的话，默认对报错进行toast弹出提示
             if (!custom.notShowToast) {
@@ -22,7 +30,6 @@ module.exports = (vm) => {
             //     return new Promise(() => { })
             // }
         }
-        console.log(111);
         if (custom.responseAll)
             return data || {};
         else

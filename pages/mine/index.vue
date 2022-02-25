@@ -10,7 +10,7 @@
                     <image src="../../static/icon/edit.png" />
                 </p>
             </div>
-            <div class="item fl fd-r ai-ctr" v-for="(item, i) in items" :key="i" @click="jump(item)">
+            <div class="item fl fd-r ai-ctr" v-for="(item, i) in menus" :key="i" @click="jump(item)">
                 <image :src="item.icon" />
                 <p>{{item.title}}</p>
                 <u-icon name="arrow-right" color="#B7B7B7" size="16"></u-icon>
@@ -24,6 +24,12 @@ import { mapGetters } from 'vuex';
 export default {
     computed: {
         ...mapGetters(['userinfo']),
+        menus() {
+            if (this.userinfo.role_id == 2)  // 店长
+                return this.items.filter((e, i) => i != 4);
+            else // 分销商
+                return this.items.filter((e, i) => i != 0);
+        }
     },
     onShow: function() {
         
@@ -36,26 +42,36 @@ export default {
             items: [
                 {
                     icon: require('../../static/mine/index/item1.png'),
+                    title: '邀请店长加入',
+                    path: '/pages/mine/myDevice/index',
+                },
+                {
+                    icon: require('../../static/mine/index/item1.png'),
                     title: '我的设备',
                     path: '/pages/mine/myDevice/index',
-                }, {
+                },
+                 {
                     icon: require('../../static/mine/index/item2.png'),
                     title: '收益统计',
                     path: '/pages/printRevenue/index',
                     type: 'tabbar',
-                }, {
+                },
+                 {
                     icon: require('../../static/mine/index/item3.png'),
                     title: '我的钱包',
                     path: '/pages/mine/wallet/index',
-                }, {
+                }, 
+                {
                     icon: require('../../static/mine/index/item4.png'),
                     title: '绑定设备',
                     path: '',
-                }, {
+                },
+                 {
                     icon: require('../../static/mine/index/item5.png'),
                     title: '意见反馈',
                     path: '/pages/mine/feedback/index',
-                }, {
+                },
+                 {
                     icon: require('../../static/mine/index/item6.png'),
                     title: '联系我们',
                     path: '/pages/mine/contact/index',

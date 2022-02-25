@@ -64,6 +64,7 @@ export default {
                     this.jumpHome();
                 }
             }).catch(err => {
+                console.log(err);
                 this.errorFlag = true;
             });
         },

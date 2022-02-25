@@ -16,30 +16,39 @@
 			height: `calc(100vh - ${navInfo.height||0}px - 268rpx)`,
 			background: '#fff'
 		}">
+			<template v-if="hasPower">
 			<!-- 数据列表 -->
-			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" :scrollTop="scrollTop">
-				<template v-slot:list>
-					<div class="list">
-						<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
-							<!-- 头像 -->
-							<image :src="item.avatar" width="80rpx" height="80rpx" class="ava" shape="circle"></image>
-							<!-- 信息 -->
-							<div class="userinfo fl-wp jc-sb">
-								<span>{{item.nickname}}</span>
-								<span :class="{'shopowner': activeIndex == 2,'level2': activeIndex == 3}">{{item.level.text}}</span>
+				<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, 0, 1)" @pull="$_loadMore(requestList)" :scrollTop="scrollTop">
+					<template v-slot:list>
+						<div class="list">
+							<div class="item fl ai-ctr fd-r" v-for="(item, i) in l_listData" :key="i">
+								<!-- 头像 -->
+								<image :src="item.avatar" width="80rpx" height="80rpx" class="ava" shape="circle"></image>
+								<!-- 信息 -->
+								<div class="userinfo fl-wp jc-sb">
+									<span>{{item.nickname}}</span>
+									<span :class="{'shopowner': activeIndex == 2,'level2': activeIndex == 3}">{{item.level.text}}</span>
+								</div>
+								<!-- 右边俩标签 -->
+								<span class="price vertical-center">￥{{item.asset.proportion}}</span>
+								<span class="detail vertical-center" @click="toDetail(item)">详情</span>
 							</div>
-							<!-- 右边俩标签 -->
-							<span class="price vertical-center">￥{{item.asset.proportion}}</span>
-							<span class="detail vertical-center" @click="toDetail(item)">详情</span>
 						</div>
-					</div>
-				</template>
-			</p-list-view>
+					</template>
+				</p-list-view>
+			</template>
+			<template v-else>
+				<div class="power-toast">
+					<p>{{powerToast}}</p>
+					<p>请联系：13488697701</p>
+				</div>
+			</template>
 		</div>
 	</div>
 </template>
 <script>
 import listViewMixin from '../../../mixins/listView'
+import { mapGetters } from 'vuex'
 export default {
 	mixins: [ listViewMixin ],
 	data() {
@@ -57,11 +66,31 @@ export default {
 	created() {
 		this.requestList(true);
 	},
+	computed: {
+		...mapGetters([ 'userinfo' ]),
+		hasPower() { // 权限判断
+			// 一级分销商看二级分销商
+			if (this.userinfo.role_id.value == 3 && this.userinfo.level.value.value == 1) {
+				return true;
+			} else if (this.userinfo.role_id.value == 3 && this.userinfo.level.value == 2 && this.activeIndex == 2) {
+				return true;
+			}
+			this.l_firstLoad = false;
+			return false;
+		},
+		powerToast() {
+			if (this.userinfo.role_id.value == 3) {
+				return `您目前权限为${this.userinfo.role_id.text}，如果想升级为一级分销商`;
+			}
+			return `您目前权限为${this.userinfo.role_id.text}，如果想升级为分销商`;
+		},
+	},
 	methods: {
 		toDetail(item) {
 			uni.navigateTo({url: '/pages/home/distributionManager/detail/index?id=' + item.id});
 		},
 		requestList(firstLoad = false, cover = false) {
+			if (!this.hasPower) return;
 			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
 			this.$api('org').subordinate({page: this.l_pageinfo.page, role_id: this.activeIndex}).then(res => {
@@ -104,6 +133,12 @@ export default {
 		}
 	}
 	.list {
+		.power-toast {
+			padding-top: 116rpx;
+			p {
+				text-align: center;
+			}
+		}
 		.item {
 			width: calc(100% - 40rpx);
 			position: relative;

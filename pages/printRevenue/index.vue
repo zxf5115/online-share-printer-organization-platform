@@ -26,11 +26,19 @@
 		<div class="list" :style="{
 			height: listHeight,
 		}">
-			<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, false, true)" @pull="$_loadMore(requestList)">
-				<template v-slot:list>
-					<list-item :source="{'item': item}" v-for="(item, i) in l_listData" :key="i" @detail="toDetail(item)"></list-item>
-				</template>
-			</p-list-view>
+			<template v-if="hasPower">
+				<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, false, true)" @pull="$_loadMore(requestList)">
+					<template v-slot:list>
+						<list-item :source="{'item': item}" v-for="(item, i) in l_listData" :key="i" @detail="toDetail(item)"></list-item>
+					</template>
+				</p-list-view>
+			</template>
+			<template v-else>
+				<div class="power-toast">
+					<p>{{powerToast}}</p>
+					<p>请联系：13488697701</p>
+				</div>
+			</template>
 		</div>
 	</div>
 </template>
@@ -39,6 +47,7 @@ import selectDate from '../../components/ui/select-date'
 import { dateManager } from '../../util/date/DateManager'
 import listView from "../../mixins/listView";
 import listItem from './components/listItem.vue'
+import { mapGetters } from 'vuex'
 export default {
 	components: { selectDate, listItem },
 	mixins: [ listView ],
@@ -56,6 +65,22 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters([ 'userinfo' ]),
+		hasPower() { // 权限判断
+			// 一级分销商看二级分销商
+			if (this.userinfo.role_id.value == 3 && this.userinfo.level.value.value == 1) {
+				return true;
+			} else if (this.userinfo.role_id.value == 3 && this.userinfo.level.value == 2 && this.role_id == 2) {
+				return true;
+			}
+			return false;
+		},
+		powerToast() {
+			if (this.userinfo.role_id.value == 3) {
+				return `您目前权限为${this.userinfo.role_id.text}，如果想升级为一级分销商`;
+			}
+			return `您目前权限为${this.userinfo.role_id.text}，如果想升级为分销商`;
+		},
 		monthDateParam() {
 			let y = dateManager.year (this.monthDate);
 			let m = dateManager.month(this.monthDate);
@@ -99,6 +124,8 @@ export default {
 		},
 	},
 	created() {
+// 		您目前权限为店长，如果想升级为分销商
+// 请联系：13488697701
 		// #ifdef MP	
 		this.listHeight = `calc(100vh - ${this.navHeight}px - 450rpx)`;
 		// #endif
@@ -109,12 +136,12 @@ export default {
 	},
 	methods: {
 		toDetail(e) {
-			console.log('去详情', e);
 			uni.navigateTo({
 				url: `/pages/printRevenue/profitList/list?type=${this.topDateIndex?'dateyear':'datemonth'}&timestamp=${this.topDateIndex?this.yearDate.getTime():this.monthDate.getTime()}&member_id=${e.id}&sum=${e.obtain_money}`
 			})
 		},
 		requestList(firstLoad = false, cover = false) {
+			if (!this.hasPower) return;
 			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
 			this.$api('obtain').getSubLevelObtain(this.requestParams).then(res => {
@@ -202,6 +229,12 @@ export default {
 	.list {
 		margin-top: 20rpx;
 		background-color: white;
+		.power-toast {
+			padding-top: 116rpx;
+			p {
+				text-align: center;
+			}
+		}
 	}
 }
 </style>

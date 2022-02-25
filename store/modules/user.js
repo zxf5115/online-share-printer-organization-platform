@@ -26,6 +26,16 @@ const mutations = {
   SET_ASSET     : (state, asset)    => state.asset    = asset,
   SET_BANK      : (state, bank)     => state.bank     = bank,
   SET_BANK_LIST : (state, bankList) => state.bankList = bankList,
+  CLEAR_USERINFO: (state) => {
+    Object.assign(state, {
+      userinfo: {},
+      openid: void 0,
+      token: void 0,
+      bank: void 0, // 银行卡信息
+      bankList: [], // 银行卡列表
+      asset: {}, // 供销商资产
+    })
+  }
 }
 const actions = {
   getBankInfo({ commit, state }){
@@ -52,6 +62,9 @@ const actions = {
         reject(err)
       })
     });
+  },
+  clearUserinfo({commit, state}) {
+    commit('CLEAR_USERINFO');
   },
   setUserinfo({ commit, state }, userinfo) {
     return new Promise((resolve, reject) => {
