@@ -5,6 +5,9 @@ import App from './App'
 import uView from '@/uni_modules/uview-ui'
 Vue.use(uView);
 import mixin from './common/mixin'
+// 验证类
+import Validate from './util/validate/index'
+Vue.prototype.$validate = Validate.validate;
 
 Vue.prototype.$store = store
 

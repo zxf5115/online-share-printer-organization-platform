@@ -16,6 +16,9 @@ module.exports = (vm) => {
             uni.reLaunch('/pages/login/index');
             return;
         }
+        if (response.statusCode == 200 && response.tempFilePath) { // 下载文件的接口
+            return response || {};
+        }
         if (!custom.notCheck && data.status !== 200) { // 服务端返回的状态码不等于200，则reject()
             // 如果没有显式定义custom的toast参数为false的话，默认对报错进行toast弹出提示
             if (!custom.notShowToast) {

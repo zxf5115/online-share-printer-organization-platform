@@ -4,7 +4,7 @@
         <div class="ctn">
             <div class="top fl jc-ctr ai-ctr">
                 <image src="https://cdn.uviewui.com/uview/album/1.jpg" />
-                <span>点击获取微信头像</span>
+                <span >点击获取微信头像</span>
             </div>
             <p-cell label="姓名：" padding="20rpx 40rpx">
                 <u--input placeholder="请输入姓名" border="bottom" clearable v-model="source.name" />
@@ -14,9 +14,6 @@
             </p-cell>
             <p-cell label="所在地：" padding="20rpx 40rpx">
                 <u--input placeholder="请输入所在地" border="bottom" clearable v-model="source.name" />
-            </p-cell>
-            <p-cell label="年龄：" padding="20rpx 40rpx">
-                <u--input placeholder="请输入年龄" border="bottom" clearable v-model="source.name" />
             </p-cell>
             <p-cell label="手机号：" padding="20rpx 40rpx">
                 <u--input placeholder="请输入手机号" border="bottom" clearable v-model="source.name" />

@@ -50,5 +50,6 @@ module.exports = {
         require('./requestInterceptors')(vm)
         require('./responseInterceptors')(vm)
         Vue.prototype.$api = uni.$api;
+        Vue.prototype.$R   = uni.$R;
     }
 }

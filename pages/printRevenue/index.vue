@@ -18,8 +18,8 @@
 			</div>
 			<!-- 收益详情 -->
 			<div class="profit">
-				<label>共收入{{viewData.count}}笔，合计</label>
-				<p>￥{{viewData.price}}</p>
+				<label>共收入{{viewData.total||'-'}}笔，合计</label>
+				<p>￥{{viewData.money||'-'}}</p>
 			</div>
 		</div>
 		<!-- 列表 -->
@@ -58,17 +58,14 @@ export default {
 			yearDate: new Date(),
 			role_id: 2, // 身份
 			viewData: {
-				count: 1324,
-				price: '48340.00',
 			},
-			listHeight: '',
 		}
 	},
 	computed: {
 		...mapGetters([ 'userinfo' ]),
 		hasPower() { // 权限判断
 			// 一级分销商看二级分销商
-			if (this.userinfo.role_id.value == 3 && this.userinfo.level.value.value == 1) {
+			if (this.userinfo.role_id.value == 3 && this.userinfo.level.value == 1) {
 				return true;
 			} else if (this.userinfo.role_id.value == 3 && this.userinfo.level.value == 2 && this.role_id == 2) {
 				return true;
@@ -144,10 +141,14 @@ export default {
 			if (!this.hasPower) return;
 			firstLoad ? this.$_listInit() : void 0;
 			cover = cover || firstLoad;
-			this.$api('obtain').getSubLevelObtain(this.requestParams).then(res => {
-				this.l_total = res.total;
-				let list = res.data;
+			Promise.all([
+				this.$api('obtain').getSubLevelObtain(this.requestParams),
+				this.$api('obtain').center({create_time:this.requestParams.create_time}),
+			]).then(res => {
+				this.l_total = res[0].total;
+				let list = res[0].data;
 				cover ? this.$_setListData(list) : this.$_appendListData(list);
+				this.viewData = res[1];
 			})
 		}
 	},

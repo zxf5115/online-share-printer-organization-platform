@@ -7,5 +7,8 @@ export default { // 这里的this指向会变成Request类
     // },
     data(params) {
         return this.get('organization/obtain/data', {params});
-    }
+    },
+    center(params) {
+        return this.get('organization/obtain/center', {params});
+    },
 };

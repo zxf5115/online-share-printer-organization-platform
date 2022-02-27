@@ -70,7 +70,8 @@ export default {
 		...mapGetters([ 'userinfo' ]),
 		hasPower() { // 权限判断
 			// 一级分销商看二级分销商
-			if (this.userinfo.role_id.value == 3 && this.userinfo.level.value.value == 1) {
+			console.log(this.userinfo.role_id.value);
+			if (this.userinfo.role_id.value == 3 && this.userinfo.level.value == 1) {
 				return true;
 			} else if (this.userinfo.role_id.value == 3 && this.userinfo.level.value == 2 && this.activeIndex == 2) {
 				return true;

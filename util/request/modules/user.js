@@ -20,6 +20,9 @@ export default { // 这里的this指向会变成Request类
             })
         })
     },
+    archive() {
+        return this.get('organization/archive');
+    },
     setUserinfo(userinfo) {
         return this.post('organization/handle', userinfo);
     }

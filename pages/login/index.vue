@@ -41,6 +41,7 @@ export default {
         
     },
     mounted() {
+        console.log(this.isLogin, this.hasUserinfo)
         if (this.isLogin && this.hasUserinfo && !this.token) { // 已登录就直接跳转到home/index
             this.jumpHome();
         } else if (!this.isLogin || this.token) { // 未登录就去登录

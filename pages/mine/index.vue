@@ -25,10 +25,11 @@ export default {
     computed: {
         ...mapGetters(['userinfo']),
         menus() {
-            if (this.userinfo.role_id == 2)  // 店长
-                return this.items.filter((e, i) => i != 4);
-            else // 分销商
+            console.log(this.userinfo.role_id, 123123123);
+            if (this.userinfo.role_id.value == 2)  // 店长
                 return this.items.filter((e, i) => i != 0);
+            else // 分销商
+                return this.items.filter((e, i) => i != 4);
         }
     },
     onShow: function() {
@@ -43,7 +44,7 @@ export default {
                 {
                     icon: require('../../static/mine/index/item1.png'),
                     title: '邀请店长加入',
-                    path: '/pages/mine/myDevice/index',
+                    path: '/pages/mine/inviteManager/index',
                 },
                 {
                     icon: require('../../static/mine/index/item1.png'),
@@ -64,7 +65,7 @@ export default {
                 {
                     icon: require('../../static/mine/index/item4.png'),
                     title: '绑定设备',
-                    path: '',
+                    path: '/pages/mine/myDevice/add',
                 },
                  {
                     icon: require('../../static/mine/index/item5.png'),

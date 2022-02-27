@@ -63,7 +63,7 @@ export default {
     toDeviceList(item) {
       console.log(item);
       uni.navigateTo({
-        url: `/pages/mine/myDevice/list?&id=${item.id}&sum=${item.asset.should_printer_total}&nickname=${item.nickname}&avatar=${item.avatar}`,
+        url: `/pages/mine/myDevice/list?&id=${item.id}&sum=${item.asset.should_printer_total}&nickname=${item.nickname}&avatar=${item.avatar}&role_id=${item.role_id.value}`,
       })
     },
     requestList(firstLoad = false, cover = false) {

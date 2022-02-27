@@ -54,6 +54,7 @@ export default class Request {
     }
 
     middleware(config) {
+        console.log(config);
         config = mergeConfig(this.config, config)
         const chain = [dispatchRequest, undefined]
         let promise = Promise.resolve(config)

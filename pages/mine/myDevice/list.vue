@@ -30,7 +30,7 @@
             >
               <p>{{item.code}}</p>
               <div class="fl fd-r jc-sb">
-                <device-status :status="item.activate_status.value" style="margin-right: 20rpx"/>
+                <device-status :status="item.equipment_status.value" style="margin-right: 20rpx"/>
                 <u-icon
                   name="arrow-right"
                   color="#B7B7B7"
@@ -61,11 +61,12 @@ export default {
     };
   },
   // id=55&sum=2&nickname=123&avatar=
-  onLoad({id, sum, nickname, avatar}) {
+  onLoad({id, sum, nickname, avatar, role_id}) {
     this.id = id;
     this.sum = sum;
     this.nickname = nickname;
     this.avatar = avatar;
+    this.role_id = role_id;
     this.requestList(true);
   },
   methods: {
@@ -78,7 +79,13 @@ export default {
       console.log("模拟请求数据", firstLoad, cover);
       this.l_firstLoad = firstLoad;
       cover = cover || firstLoad;
-      this.$api('printer').list(Object.assign(this.l_pageinfo, {member_id: this.id})).then(res => {
+      let idParam = {};
+      if (this.role_id == 2) {
+        idParam.manager_id = this.id;
+      } else {
+        idParam.member_id = this.id;
+      }
+      this.$api('printer').list(Object.assign(this.l_pageinfo, idParam)).then(res => {
 				this.l_total = res.total;
 				let list = res.data;
 				cover ? this.$_setListData(list) : this.$_appendListData(list);

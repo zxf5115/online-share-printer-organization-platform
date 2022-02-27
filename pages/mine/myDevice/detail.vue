@@ -3,7 +3,7 @@
     <p-nav title="设备详情" @callback="navInfo = $event"/>
     <div class="m-d">
       <p-cell label="打印机：" padding="40rpx" class="top" style="border-bottom: 1rpx solid #f0f0f0;">
-        <device-status :status="source.activate_status.value" style="width: 94rpx"/>
+        <device-status :status="source.equipment_status.value" style="width: 124rpx"/>
       </p-cell>
       <div class="ctn">
         <p-cell label="型号：" :value="source.model"/>
@@ -12,12 +12,20 @@
         <p-cell label="电话：" :value="source.manager.username"/>
       </div>
     </div>
+    <div class="btns fl fd-r ai-ctr jc-sb" v-if="userinfo.role_id.value == 3 && source.equipment_status.value == 5">
+        <button @click="second_step">同意</button>
+        <button @click="third_step">不同意</button>
+      </div>
   </div>
 </template>
 <script>
 import deviceStatus from './components/deviceStatus.vue'
+import { mapGetters } from 'vuex'
 export default {
   components: { deviceStatus },
+  computed: {
+    ...mapGetters([ 'userinfo' ])
+  },
   data() {
     return {
       id: void 0,
@@ -29,12 +37,32 @@ export default {
     this.requestData();
   },
   methods: {
+    third_step() {
+      uni.showLoading({mask: true, title: '加载中...'});
+      this.$api('printer').third_step(this.id).then(res => {
+        console.log(res);
+        uni.hideLoading();
+        this.requestData();
+      })
+    },
+    second_step() {
+      uni.showLoading({mask: true, title: '加载中...'});
+      this.$api('printer').second_step(this.id).then(res => {
+        console.log(res);
+        uni.hideLoading();
+        this.requestData();
+      })
+    },
     requestData() {
+      console.log(this.userinfo)
+      uni.showLoading({mask: true, title: '加载中...'});
       this.$api('printer').view(this.id).then(res => {
         console.log(res);
+        uni.hideLoading();
         this.source = res;
       })
-    }
+    },
+
   },
 };
 </script>
@@ -44,5 +72,18 @@ export default {
   .ctn {
     margin: 30rpx 0;
   }
+  
 }
+.btns {
+    width: 100%;
+    margin-top: 50rpx;
+    button {
+      background: #25A1F9;
+      color: #fff;
+      width: 256rpx;
+      height: 94rpx;
+      border-radius: 47rpx;
+    }
+
+  }
 </style>
