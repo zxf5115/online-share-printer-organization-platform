@@ -3,11 +3,11 @@
         <p-nav title="用户信息" :line="false" />
         <div class="ctn">
             <div class="top fl jc-ctr ai-ctr">
-                <image src="https://cdn.uviewui.com/uview/album/1.jpg" />
+                <image :src="source.avatar" />
                 <span >点击获取微信头像</span>
             </div>
             <p-cell label="姓名：" padding="20rpx 40rpx">
-                <u--input placeholder="请输入姓名" border="bottom" clearable v-model="source.name" />
+                <u--input placeholder="请输入姓名" border="bottom" clearable v-model="source.nickname" />
             </p-cell>
             <p-cell label="性别：" padding="20rpx 40rpx">
                 <u--input placeholder="请输入性别" border="bottom" clearable v-model="source.name" />
@@ -42,8 +42,12 @@ export default {
     },
     data() {
         return {
-            soruce: {},
+            source: {},
         }
+    },
+    mounted() {
+        this.source = JSON.parse(JSON.stringify(this.userinfo));
+        console.log(this.source);
     },
     methods: {
     },

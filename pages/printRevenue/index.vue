@@ -1,5 +1,5 @@
 <template>
-	<div class="content " @touchmove.stop.prevent @catchtouchmove="()=>{}">
+	<div class="content" @touchmove.stop.prevent @catchtouchmove="()=>{}">
 		<p-nav title="收益统计"/>
 		<div class="top">
 			<!-- 年月账单 -->
@@ -18,8 +18,8 @@
 			</div>
 			<!-- 收益详情 -->
 			<div class="profit">
-				<label>共收入{{viewData.total||'-'}}笔，合计</label>
-				<p>￥{{viewData.money||'-'}}</p>
+				<label>共收入{{sumTotal}}笔，合计</label>
+				<p>￥{{sumMoney}}</p>
 			</div>
 		</div>
 		<!-- 列表 -->
@@ -63,6 +63,12 @@ export default {
 	},
 	computed: {
 		...mapGetters([ 'userinfo' ]),
+		sumTotal() {
+			return this.viewData.money == void 0 ? '-' : this.viewData.money;
+		},
+		sumMoney() {
+			return this.viewData.money == void 0 ? '-' : this.viewData.money;
+		},
 		hasPower() { // 权限判断
 			// 一级分销商看二级分销商
 			if (this.userinfo.role_id.value == 3 && this.userinfo.level.value == 1) {
@@ -149,6 +155,7 @@ export default {
 				let list = res[0].data;
 				cover ? this.$_setListData(list) : this.$_appendListData(list);
 				this.viewData = res[1];
+				console.log(this.viewData);
 			})
 		}
 	},
@@ -228,6 +235,7 @@ export default {
 		
 	}
 	.list {
+		flex: 1;
 		margin-top: 20rpx;
 		background-color: white;
 		.power-toast {
