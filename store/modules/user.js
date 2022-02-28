@@ -22,6 +22,9 @@ const state = {
 const mutations = {
   SET_OPENID    : (state, openid)   => state.openid   = openid,
   SET_USERINFO  : (state, userinfo) => state.userinfo = userinfo,
+  UPDATE_USERINFO  : (state, userinfo) => {
+    state.userinfo = Object.assign(state.userinfo, userinfo);
+  },
   SET_TOKEN     : (state, token)    => state.token    = token,
   SET_ASSET     : (state, asset)    => state.asset    = asset,
   SET_BANK      : (state, bank)     => state.bank     = bank,
@@ -69,7 +72,7 @@ const actions = {
   setUserinfo({ commit, state }, userinfo) {
     return new Promise((resolve, reject) => {
       api('user').setUserinfo(userinfo).then(res => {
-        commit('SET_USERINFO', res);
+        commit('UPDATE_USERINFO', res);
         resolve(res);
       }).catch(err => {
         reject(err);

@@ -14,5 +14,8 @@ export default { // 这里的this指向会变成Request类
     third_step(printer_id) {
         return this.post('organization/printer/third_step', {printer_id});
     },
+    delete(printer_id) {
+        return this.post('organization/printer/delete', {printer_id});
+    }
     
 };

@@ -1,5 +1,5 @@
 <template>
-	<div class="content" @touchmove.stop.prevent @catchtouchmove="()=>{}">
+	<div class="content fl vh-100" @touchmove.stop.prevent @catchtouchmove="()=>{}">
 		<p-nav title="收益统计"/>
 		<div class="top">
 			<!-- 年月账单 -->
@@ -23,9 +23,7 @@
 			</div>
 		</div>
 		<!-- 列表 -->
-		<div class="list" :style="{
-			height: listHeight,
-		}">
+		<div class="list">
 			<template v-if="hasPower">
 				<p-list-view style="height: 100%" :more="l_more" :firstLoad="l_firstLoad" :downRefresh="l_refresh" :nodata="l_nodata" @refresh="$_refresh(requestList, false, true)" @pull="$_loadMore(requestList)">
 					<template v-slot:list>
@@ -34,7 +32,7 @@
 				</p-list-view>
 			</template>
 			<template v-else>
-				<div class="power-toast">
+				<div class="power-toast bg-w" style="height: 100%">
 					<p>{{powerToast}}</p>
 					<p>请联系：13488697701</p>
 				</div>
@@ -57,6 +55,7 @@ export default {
 			monthDate: new Date(),
 			yearDate: new Date(),
 			role_id: 2, // 身份
+			listHeight: '',
 			viewData: {
 			},
 		}

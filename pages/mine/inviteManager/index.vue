@@ -11,22 +11,13 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
-    data() {
-        return {
-            userinfo: void 0,
-        }
-    },
-    created() {
-        uni.showLoading({mask: true, title: '加载中...'});
-        this.$api('user').archive().then(res => {
-            uni.hideLoading();
-            this.userinfo = res;
-        })
+    computed: {
+        ...mapGetters([ 'userinfo' ]),
     },
     methods: {
         save() {
-            console.log(this.$R);
             let that = this;
             this.$R.download(this.userinfo.archive.invitation_qrcode_url).then(res => {
                 uni.saveImageToPhotosAlbum({

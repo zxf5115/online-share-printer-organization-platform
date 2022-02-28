@@ -4,7 +4,7 @@
     <div class="m-d">
       <div class="head fl jc-sb fd-r ai-ctr bg-w">
         <image style="width: 80rpx;height:80rpx;" :src="avatar"/>
-        <p class="fl fd-r jc-sb ai-ctr"><span>{{nickname}}</span><label>{{sum}}台</label></p>
+        <p class="fl fd-r jc-sb ai-ctr"><span>{{nickname}}</span><label v-if="sum">{{sum}}台</label></p>
       </div>
       <!-- 列表主体 -->
       <div :style="{
@@ -55,19 +55,23 @@ export default {
     return {
       navInfo: {},
       id: void 0,
-      sum: '-',
+      sum: void 0,
       nickname: '-',
       avatar: '',
     };
   },
   // id=55&sum=2&nickname=123&avatar=
-  onLoad({id, sum, nickname, avatar, role_id}) {
+  onLoad({id, sum = void 0, nickname, avatar, role_id}) {
     this.id = id;
     this.sum = sum;
     this.nickname = nickname;
     this.avatar = avatar;
     this.role_id = role_id;
     this.requestList(true);
+  },
+  onShow() {
+    if (!this.l_firstLoad)
+      this.requestList();
   },
   methods: {
     toDetail(item) {

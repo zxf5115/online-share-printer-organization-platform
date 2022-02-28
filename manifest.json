@@ -107,7 +107,12 @@
             "subPackages" : true
         },
         "runmode" : "liberate", // 开启分包优化后，必须配置资源释放模式
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission": {
+            "scope.userLocation": {
+                "desc": "你的位置信息将用于小程序位置接口的效果展示" 
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true,

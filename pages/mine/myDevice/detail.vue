@@ -3,7 +3,10 @@
     <p-nav title="设备详情" @callback="navInfo = $event"/>
     <div class="m-d">
       <p-cell label="打印机：" padding="40rpx" class="top" style="border-bottom: 1rpx solid #f0f0f0;">
-        <device-status :status="source.equipment_status.value" style="width: 124rpx"/>
+        <div class="fl fd-r jc-sb ai-ctr">
+          <device-status :status="source.equipment_status.value" style="width: 124rpx"/>
+          <span style="color: red;" @click="del()" v-if="userinfo.role_id.value == 2 && source.equipment_status.value <= 3">删除</span>
+        </div>
       </p-cell>
       <div class="ctn">
         <p-cell label="型号：" :value="source.model"/>
@@ -37,6 +40,13 @@ export default {
     this.requestData();
   },
   methods: {
+    del() {
+      uni.showLoading({mask: true, title: '加载中...'});
+      this.$api('printer').delete(this.id).then(res => {
+        uni.hideLoading();
+        uni.navigateBack();
+      })
+    },
     third_step() {
       uni.showLoading({mask: true, title: '加载中...'});
       this.$api('printer').third_step(this.id).then(res => {

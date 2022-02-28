@@ -8,10 +8,12 @@
     </div>
   </div>
 </template>
-
 <script>
-
+import { mapGetters } from 'vuex';
 export default {
+  computed: {
+    ...mapGetters([ 'userinfo' ])
+  },
   props: ['source'],
   data() {
     return {
@@ -35,6 +37,12 @@ export default {
           path: '/pages/mine/wallet/index',
         }, 
       ]
+    }
+  },
+  mounted() {
+    // 这里改下我的设备的path
+    if (this.userinfo.role_id.value === 2) {
+      this.items[0].path = `/pages/mine/myDevice/list?&id=${this.userinfo.id}&nickname=${this.userinfo.nickname}&avatar=${this.userinfo.avatar}&role_id=${this.userinfo.role_id.value}`;
     }
   },
   methods: {
