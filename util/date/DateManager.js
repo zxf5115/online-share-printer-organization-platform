@@ -17,6 +17,7 @@ function DateManager ()
    *            step      : 1 // 数值代表单位长度
    *            type      : 返回数组的类型，默认为正常返回，2 为单独拆分为序列化的数组，供picker使用 参数为2时需要填写splitKey为拆分key
    *            splitKey  : '-' 序列化拆分标志 默认为'-',
+   *            serialize : true|false 是否需要序列化
    *            callBack  : 传入callBack为异步 TODO: 未实现
    *          }
    *        }
@@ -30,7 +31,12 @@ function DateManager ()
     let step      = param['step']     || 1; 
     let type      = param['type']     || 1;
     let obj       = {};
+    if (param.serialize) {
+      starDate = this.serializeDate(starDate, stepType);
+      endDate  = this.serializeDate(endDate, stepType);
+    }
     let result;
+    // 初始化
     if ([1].indexOf(type) >= 0) 
       result = [];
     else 
@@ -45,6 +51,26 @@ function DateManager ()
       } 
     }
     return result;
+  }
+  this.serializeDate = (date, type) => {
+    // y M d
+    if (type == 'y') {
+      date.setMonth(0);
+      date.setDate(1);
+      date.setMinutes(0);
+      date.setHours(0);
+      date.setSeconds(0);
+    } else if (type == 'M') {
+      date.setDate(1);
+      date.setMinutes(0);
+      date.setHours(0);
+      date.setSeconds(0);
+    } else if (type == 'd') {
+      date.setMinutes(0);
+      date.setHours(0);
+      date.setSeconds(0);
+    }
+    return date;
   }
   this.serializationDateArray = (date, format, array, type = 1, splitKey = '-') => {
     switch (type) {

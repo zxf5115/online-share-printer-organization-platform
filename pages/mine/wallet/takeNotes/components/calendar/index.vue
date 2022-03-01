@@ -28,12 +28,10 @@ export default {
   },
   watch: {
     startTime () {
-      console.log('startTime', this.endTime, this.startTime);
       if (this.endTime)
         this.$emit('changed', {startTime: this.startTime + ' 00:00:00', endTime: this.endTime + ' 23:59:59'})
     },
     endTime() {
-      console.log('endTime', this.endTime, this.startTime);
       if (this.startTime) 
         this.$emit('changed', {startTime: this.startTime + ' 00:00:00', endTime: this.endTime + ' 23:59:59'})
     }

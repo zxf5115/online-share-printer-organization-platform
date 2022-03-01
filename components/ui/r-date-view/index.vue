@@ -198,6 +198,7 @@ export default {
     setArrayList() {
       // 年数组
       this.yearList = dateManager.getDateArray({
+        serialize: true,
         starDate: dateManager.format(new Date(this.minTimestamp), 'yyyy-MM-dd'),
         endDate: dateManager.format(new Date(this.maxTimestamp), 'yyyy-MM-dd'),
         stepType: 'y',
