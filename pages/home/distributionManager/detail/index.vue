@@ -4,7 +4,7 @@
 		<div class="dm-detail bg-w">
 			<div class="head fl fd-r ai-ctr">
 				<image class="ava" width="166rpx" height="166rpx" :src="source.avatar"/>
-				<p class="fl fd-r ai-ctr">收益分成： <span>¥{{source.asset.proportion}}/页</span></p>
+				<p class="fl fd-r ai-ctr" v-if="source.asset.proportion">收益分成： <span>¥{{source.asset.proportion||'-'}}/页</span></p>
 			</div>
 			<p class="cell fl fd-r"><label>姓名：</label><span>{{source.nickname}}</span></p>
 			<p class="cell fl fd-r"><label>性别：</label><span>{{source.archive.sex.text}}</span></p>

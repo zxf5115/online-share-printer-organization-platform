@@ -93,6 +93,7 @@ export default {
             this.$store.dispatch('user/setUserinfo', this.source).then(res => {
                 uni.hideLoading();
                 this.$u.toast('成功');
+                uni.navigateBack()
             }).catch(error => {
                 uni.hideLoading();
                 uni.showToast({

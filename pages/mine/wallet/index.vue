@@ -4,11 +4,11 @@
     <div class="wallet-top bg-w">
       <div class="total-num fl fd-r ai-ctr">
          <span class="num-tit">收益总金额：</span>
-         <span>￥<u-count-to class="count" :endVal="asset.money" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
+         <span>￥<u-count-to class="count" :endVal="asset.total_money" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
       </div>
       <div class="total-num fl fd-r ai-ctr">
         <span>可提现金额：</span>
-        <span>￥<u-count-to class="count" :endVal="asset.withdrawal_money" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
+        <span>￥<u-count-to class="count" :endVal="asset.money" :decimals="2" fontSize="48rpx" color="#FF8A00"></u-count-to></span>
       </div>
     </div>
     <div class="select-bankCard bg-w fl fd-r ai-ctr jc-sb" @click="myBankcard">

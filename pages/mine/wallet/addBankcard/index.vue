@@ -89,11 +89,11 @@ export default {
           uni.hideLoading();
         })
       }).catch(error => {
-         uni.hideLoading();
-        this.next(false);
+        uni.hideLoading();
+        this.next(false, error.message);
       })
     },
-    next(flag) {
+    next(flag, message) {
       if (flag) {
         this.resultParams =  {
           type: 1, // 成功
@@ -109,7 +109,7 @@ export default {
           title: '添加失败',
           img: require("@/static/mine/wallet/Info.png"),
           titleColor: '#F76160',
-          subtitleTitle: "请重新添加银行卡",
+          subtitleTitle: message||"请重新添加银行卡",
           resultBtn: "重新添加银行卡"
         }
       }

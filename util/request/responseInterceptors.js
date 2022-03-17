@@ -9,6 +9,7 @@ module.exports = (vm) => {
         // 自定义参数
         const custom = response.config?.custom;
         // 超时或数据错误登出逻辑
+        console.log(data);
         if(data.status === -101) {
             // 清除数据
             store.commit('user/CLEAR_USERINFO');

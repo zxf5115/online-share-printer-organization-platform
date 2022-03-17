@@ -63,6 +63,7 @@ export default {
       })
     },
     confirm(e) {
+      this.$set
       console.log(e)
     },
     requestList(firstLoad = false, cover = false) {

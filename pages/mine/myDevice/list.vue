@@ -67,11 +67,13 @@ export default {
     this.nickname = nickname;
     this.avatar = avatar;
     this.role_id = role_id;
-    this.requestList(true);
+    this.requestList(true, true);
   },
   onShow() {
-    if (!this.l_firstLoad)
-      this.requestList();
+    if (!this.l_firstLoad) {
+      this.l_pageinfo = { page: 1, size: 10 };
+      this.requestList(true, true);
+    }
   },
   methods: {
     toDetail(item) {
@@ -92,6 +94,7 @@ export default {
       this.$api('printer').list(Object.assign(this.l_pageinfo, idParam)).then(res => {
 				this.l_total = res.total;
 				let list = res.data;
+        console.log('本次调用cover', cover);
 				cover ? this.$_setListData(list) : this.$_appendListData(list);
 			})
     },

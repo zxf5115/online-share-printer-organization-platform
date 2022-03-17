@@ -4,7 +4,7 @@
     <div class="ctn fl jc-end ai-ctr">
       <image :src="icon">
       <p :style="{color: titleColor}">{{type ? '添加成功' : '添加失败'}}</p>
-      <label v-if="!type">请重新添加打印机</label>
+      <label v-if="!type">{{message}}</label>
     </div>
     <div class="btns fl jc-ctr ai-ctr fd-r">
       <button @click="navigateBack(success ? 2 : 1)">返回</button>
@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       type: void 0,
+      message: '',
     }
   },
   computed: {
@@ -35,9 +36,9 @@ export default {
       }
     }
   },
-  onLoad({type = 1,}) {
+  onLoad({type = 1, message=""}) {
     this.type = +type;
-    console.log(+type);
+    this.message = message;
   },
   methods: {
     navigateBack(delta = 1) {

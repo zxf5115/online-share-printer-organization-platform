@@ -155,6 +155,7 @@ export default {
         width: 582rpx;
         overflow-y: hidden;
         overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
     }
     .btns {
         margin-top: 40rpx;

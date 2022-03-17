@@ -23,7 +23,11 @@
     >
       <!-- 外传slot -->
 
+      <div :style="{
+        'min-height': 'calc(100% - 68rpx)'
+        }">
         <slot name="list"></slot>	
+      </div>
       <!-- 加载更多 -->
   		<u-loadmore v-if="more && !firstLoad && !nodata" :status="loadmore[more - 1]" line  />
     </scroll-view>

@@ -202,7 +202,6 @@ export default {
           .select('#_root').boundingClientRect().exec(res => res[0] ? resolve(res[0]) : reject('Root label not found'))
       })
     },
-
     /**
      * @description 设置内容
      * @param {String} content html 内容

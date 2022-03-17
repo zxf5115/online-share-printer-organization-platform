@@ -3,7 +3,7 @@
     <p-nav title="我的设备" @callback="navInfo = $event"/>
     <div class="m-d">
       <div class="head fl jc-sb fd-r ai-ctr bg-w">
-        <p><span>{{printerInfo.printer_total}}</span><label>设备数量</label></p>
+        <p @click="jumpMyDevices"><span>{{printerInfo.printer_total}}</span><label>设备数量</label></p>
         <icon class="line" />
         <p><span>{{printerInfo.already_printer_total}}</span><label>已分配</label></p>
         <icon class="line" />
@@ -43,9 +43,12 @@
 </template>
 <script>
 import listView from "../../../mixins/listView";
-
+import { mapGetters } from "vuex";
 export default {
   mixins: [listView],
+  computed: {
+    ...mapGetters(['userinfo'])
+  },
   data() {
     return {
       navInfo: {},
@@ -61,7 +64,6 @@ export default {
   },
   methods: {
     toDeviceList(item) {
-      console.log(item);
       uni.navigateTo({
         url: `/pages/mine/myDevice/list?&id=${item.id}&sum=${item.asset.should_printer_total}&nickname=${item.nickname}&avatar=${item.avatar}&role_id=${item.role_id.value}`,
       })
@@ -73,9 +75,18 @@ export default {
       this.$api('org').subordinate(this.l_pageinfo).then(res => {
 				this.l_total = res.total;
 				let list = res.data;
+        if (list.length == 0 && this.l_pageinfo.page == 1) {
+          // 跳转到 下一个页面
+          return this.jumpMyDevices();
+        }
 				cover ? this.$_setListData(list) : this.$_appendListData(list);
 			})
     },
+    jumpMyDevices() {
+      uni.redirectTo({
+          url: `/pages/mine/myDevice/list?&id=${this.userinfo.id}&nickname=${this.userinfo.nickname}&avatar=${this.userinfo.avatar}&role_id=${this.userinfo.role_id.value}`
+        })
+    }
   },
 };
 </script>

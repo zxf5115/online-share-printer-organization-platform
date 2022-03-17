@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="with-set">
-        <p>当前可提现金额{{asset.withdrawal_money||'-'}}，<span @click="withAll">全部提现</span></p>
+        <p>当前可提现金额{{asset.money||'-'}}，<span @click="withAll">全部提现</span></p>
         <p>费率：{{withdrawal_data.withdrawal_rate||'-'}}%</p>
       </div>
       <div class="btns fl ai-ctr jc-ctr">
@@ -59,7 +59,7 @@ export default {
           // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
           price = parseFloat(price);
       }
-      if (price > +this.asset.withdrawal_money) price = +this.asset.withdrawal_money
+      if (price > +this.asset.money) price = +this.asset.money
       setTimeout(() => {
         this.price = price
       }, 0);
@@ -67,7 +67,7 @@ export default {
   },  
   methods: {
     withAll() {
-      this.price = this.asset.withdrawal_money;
+      this.price = this.asset.money;
     },
     withdrawal() {
       if (!this.price.length) {

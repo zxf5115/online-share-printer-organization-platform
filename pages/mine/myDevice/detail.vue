@@ -10,9 +10,11 @@
       </p-cell>
       <div class="ctn">
         <p-cell label="型号：" :value="source.model"/>
+        <p-cell label="编号：" :value="source.code"/>
         <p-cell label="地址：" :value="source.address"/>
         <p-cell label="店长：" :value="source.manager.nickname"/>
         <p-cell label="电话：" :value="source.manager.username"/>
+        
       </div>
     </div>
     <div class="btns fl fd-r ai-ctr jc-sb" v-if="userinfo.role_id.value == 3 && source.equipment_status.value == 5">

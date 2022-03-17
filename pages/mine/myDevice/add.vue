@@ -44,7 +44,7 @@ export default {
         uni.navigateTo({url: '/pages/mine/myDevice/result?type=1'});
       }).catch(error => {
         uni.hideLoading();
-        uni.navigateTo({url: '/pages/mine/myDevice/result?type=0'});
+        uni.navigateTo({url: `/pages/mine/myDevice/result?type=0&message=${error.message||'请重新添加打印机'}`});
       })
     }
   },
@@ -78,7 +78,7 @@ export default {
     /deep/ .u-input {
       flex: 1;
       border-bottom: 1rpx solid #AFAFAF;
-      padding: 15rpx 0 !important;
+      padding: 15rpx!important;
       border-radius: 0;
       font-size: 24rpx !important;
     }
