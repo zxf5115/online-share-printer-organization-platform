@@ -138,6 +138,7 @@ export default {
 	},
 	methods: {
 		toDetail(e) {
+			console.log(e);
 			uni.navigateTo({
 				url: `/pages/printRevenue/profitList/list?type=${this.topDateIndex?'dateyear':'datemonth'}&timestamp=${this.topDateIndex?this.yearDate.getTime():this.monthDate.getTime()}&member_id=${e.id}&sum=${e.obtain_money}`
 			})

@@ -23,11 +23,10 @@
 import { mapGetters } from 'vuex';
 export default {
     computed: {
-        ...mapGetters(['userinfo']),
+        ...mapGetters(['userinfo', 'asset']),
         menus() {
-            console.log(this.userinfo.role_id, 123123123);
             if (this.userinfo.role_id.value == 2)  // 店长
-                return this.items.filter((e, i) => i != 0);
+                return this.items.filter((e, i) => this.asset.already_printer_total >= 3 ? i !=0 && i != 4 : i != 0);
             else // 分销商
                 return this.items.filter((e, i) => i != 4);
         }

@@ -88,6 +88,7 @@ export default {
 	},
 	methods: {
 		toDetail(item) {
+			console.log(item);
 			uni.navigateTo({url: '/pages/home/distributionManager/detail/index?id=' + item.id});
 		},
 		requestList(firstLoad = false, cover = false) {

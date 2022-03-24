@@ -32,7 +32,7 @@ export default {
 	},
 	methods: {
 		requestData() {
-			this.$api('org').data(this.id).then(res => this.source = res);
+			this.$api('org').data({id: this.id}).then(res => this.source = res);
 		}
 	},
 }
